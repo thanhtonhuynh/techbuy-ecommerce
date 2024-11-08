@@ -10,14 +10,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-// import { User } from "@/lib/auth/session";
-// import { logoutAction } from "@/app/(auth)/actions";
-// import { hasAccess } from "@/utils/access-control";
-// import { ProfilePicture } from "@/components/ProfilePicture";
+import { User } from "@/lib/auth/session";
+import { logoutAction } from "@/app/(auth)/actions";
+import { hasAccess } from "@/utils/access-control";
+import { ProfilePicture } from "@/components/ProfilePicture";
 import { ModeToggle } from "@/components/ModeToggle";
 
 interface UserButtonProps {
-  user: any;
+  user: User;
 }
 
 export default function UserButton({ user }: UserButtonProps) {
@@ -28,11 +28,11 @@ export default function UserButton({ user }: UserButtonProps) {
           size="icon"
           className="flex-none rounded-full border bg-background text-primary shadow-md hover:bg-muted hover:ring-1 hover:ring-border"
         >
-          {/* {user.image ? (
+          {user.image ? (
             <ProfilePicture image={user.image} size={50} />
-          ) : ( */}
-          <UserRound size={20} />
-          {/* )} */}
+          ) : (
+            <UserRound size={20} />
+          )}
         </Button>
       </DropdownMenuTrigger>
 
@@ -49,14 +49,14 @@ export default function UserButton({ user }: UserButtonProps) {
         {user.accountStatus === "active" && (
           <>
             <DropdownMenuGroup>
-              {/* {hasAccess(user.role, "/admin") && ( */}
-              <DropdownMenuItem asChild>
-                <Link href="/admin" className="cursor-pointer">
-                  <Lock className="mr-2 h-4 w-4" />
-                  Admin
-                </Link>
-              </DropdownMenuItem>
-              {/* )} */}
+              {hasAccess(user.role, "/admin") && (
+                <DropdownMenuItem asChild>
+                  <Link href="/admin" className="cursor-pointer">
+                    <Lock className="mr-2 h-4 w-4" />
+                    Admin
+                  </Link>
+                </DropdownMenuItem>
+              )}
 
               <DropdownMenuItem asChild>
                 <Link href="/employees" className="cursor-pointer">
@@ -86,11 +86,11 @@ export default function UserButton({ user }: UserButtonProps) {
         <DropdownMenuSeparator className="sm:hidden" />
 
         <DropdownMenuItem asChild>
-          {/* <form action={logoutAction}> */}
-          <button type="submit" className="flex w-full items-center">
-            <LogOut className="mr-2 h-4 w-4" /> Sign Out
-          </button>
-          {/* </form> */}
+          <form action={logoutAction}>
+            <button type="submit" className="flex w-full items-center">
+              <LogOut className="mr-2 h-4 w-4" /> Sign Out
+            </button>
+          </form>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
