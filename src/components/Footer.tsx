@@ -7,7 +7,7 @@ export default async function Footer() {
       <div className="container flex items-center justify-center gap-4">
         <Link href="/" className="flex items-center gap-1 font-bold">
           <MonitorSpeaker size={25} />
-          <span className="text-lg tracking-wider">techbuy</span>
+          <span className="select-none text-lg tracking-wider">techbuy</span>
         </Link>
 
         <div className="text-sm text-muted-foreground">

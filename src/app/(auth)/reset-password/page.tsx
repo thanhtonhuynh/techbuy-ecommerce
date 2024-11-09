@@ -13,8 +13,8 @@ export default async function Page() {
   if (session) redirect("/");
 
   return (
-    <main className="flex h-[90vh] items-center justify-center">
-      <div className="flex h-full max-h-[35rem] w-full max-w-[40rem] flex-col items-center justify-center space-y-4 rounded-xl border p-4 py-8 shadow-xl">
+    <section className="absolute left-1/2 top-1/2 w-screen -translate-x-1/2 -translate-y-1/2 p-2 md:w-2/3 md:p-0 lg:w-1/2">
+      <div className="flex flex-col space-y-4 rounded-md border p-8 shadow-md">
         <h1>Enter new password</h1>
 
         <div className="flex w-1/2 flex-col space-y-4">
@@ -28,6 +28,6 @@ export default async function Page() {
           </Button>
         </div>
       </div>
-    </main>
+    </section>
   );
 }

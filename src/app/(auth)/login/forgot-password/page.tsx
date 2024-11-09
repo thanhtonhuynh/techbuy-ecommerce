@@ -17,38 +17,32 @@ export default async function Page(props: { searchParams: SearchParams }) {
   if (session) redirect("/");
 
   return (
-    <main className="flex h-[90vh] items-center justify-center">
-      <div className="flex h-full max-h-[35rem] w-full max-w-[40rem] flex-col items-center justify-center space-y-4 rounded-xl border bg-card p-4 py-8 shadow-xl">
+    <section className="absolute left-1/2 top-1/2 w-screen -translate-x-1/2 -translate-y-1/2 p-2 md:w-2/3 md:p-0 lg:w-1/2">
+      <div className="flex flex-col space-y-4 rounded-md border p-8 shadow-md">
         {resetLinkExpired && (
           <ErrorMessage message="The reset password link has expired. Please request a new one." />
         )}
 
         <h1>Forgot your password?</h1>
 
-        <div className="flex w-2/3 flex-col space-y-4">
-          <p className="text-sm text-gray-500">
+        <div className="space-y-1 text-muted-foreground">
+          <p className="text-primary">
             Enter your email address and we'll send you
             {resetLinkExpired ? " another" : " a"} link to reset your password.
           </p>
-
-          <p className="text-sm text-gray-500">
-            For security reasons, the link will expire in 30 minutes.
-          </p>
-
-          <p className="text-sm text-gray-500">
-            Please allow a few minutes for the email to arrive.
-          </p>
-
-          <ForgotPasswordForm />
-
-          <Button className="w-full gap-1" variant={"outline"} asChild>
-            <Link href={"/login"}>
-              <ArrowLeft size={15} />
-              Back to Login
-            </Link>
-          </Button>
+          <p>For security reasons, the link will expire in 30 minutes.</p>
+          <p>Please allow a few minutes for the email to arrive.</p>
         </div>
+
+        <ForgotPasswordForm />
+
+        <Button className="w-full gap-1" variant={"outline"} asChild>
+          <Link href={"/login"}>
+            <ArrowLeft size={15} />
+            Back to Login
+          </Link>
+        </Button>
       </div>
-    </main>
+    </section>
   );
 }

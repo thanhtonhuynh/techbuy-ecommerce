@@ -44,10 +44,7 @@ export function SignUpForm() {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col space-y-2"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         {error && <ErrorMessage message={error} />}
 
         <FormField

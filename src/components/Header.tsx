@@ -4,10 +4,10 @@ import { getCurrentSession } from "@/lib/auth/session";
 import { Nav, NavLink } from "./Nav";
 import { ModeToggle } from "@/components/ModeToggle";
 import { MonitorSpeaker } from "lucide-react";
+import { Button } from "./ui/button";
 
 export default async function Header() {
   const { user } = await getCurrentSession();
-  if (!user) return null;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:border-border">
@@ -15,7 +15,7 @@ export default async function Header() {
         <div className="flex items-center space-x-4">
           <Link href="/" className="flex items-center space-x-1 font-bold">
             <MonitorSpeaker size={25} />
-            <span className="text-xl tracking-wider">techbuy</span>
+            <span className="select-none text-xl tracking-wider">techbuy</span>
           </Link>
 
           <Nav>
@@ -30,7 +30,13 @@ export default async function Header() {
             <ModeToggle />
           </div>
 
-          <UserButton user={user} />
+          {user ? (
+            <UserButton user={user} />
+          ) : (
+            <Button asChild>
+              <Link href={`/login`}>Login</Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>
