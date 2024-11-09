@@ -19,9 +19,13 @@ export default async function Header() {
           </Link>
 
           <Nav>
-            <NavLink href={`/a`}>Link</NavLink>
-            <NavLink href={`/b`}>Link</NavLink>
-            <NavLink href={`/c`}>Link</NavLink>
+            <NavLink href={`/a`}>All</NavLink>
+            <NavLink href={`/c`}>Mac</NavLink>
+            <NavLink href={`/b`}>iPhone</NavLink>
+            <NavLink href={`/d`}>iPad</NavLink>
+            <NavLink href={`/e`}>Apple Watch</NavLink>
+            <NavLink href={`/f`}>AirPods</NavLink>
+            <NavLink href={`/g`}>Accessories</NavLink>
           </Nav>
         </div>
 

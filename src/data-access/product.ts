@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NewProductInput } from "@/lib/validations/product";
+import { cache } from "react";
 import "server-only";
 
 export async function createProduct({
@@ -12,3 +13,7 @@ export async function createProduct({
     data: { name, description, price, image },
   });
 }
+
+export const getProducts = cache(async () => {
+  return await prisma.product.findMany();
+});
