@@ -26,6 +26,10 @@ export default async function Header() {
         </div>
 
         <div className="flex items-center space-x-2">
+          <Button asChild variant={`outline`}>
+            <Link href={`/product/new`}>Add Product</Link>
+          </Button>
+
           <div className="hidden sm:block">
             <ModeToggle />
           </div>

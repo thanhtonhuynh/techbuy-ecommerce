@@ -1,4 +1,4 @@
-import { Lock, LogOut, Settings, UserRound, Users } from "lucide-react";
+import { Lock, LogOut, Settings, UserRound } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -52,22 +52,15 @@ export default function UserButton({ user }: UserButtonProps) {
               {hasAccess(user.role, "/admin") && (
                 <DropdownMenuItem asChild>
                   <Link href="/admin" className="cursor-pointer">
-                    <Lock className="mr-2 h-4 w-4" />
+                    <Lock size={16} />
                     Admin
                   </Link>
                 </DropdownMenuItem>
               )}
 
               <DropdownMenuItem asChild>
-                <Link href="/employees" className="cursor-pointer">
-                  <Users className="mr-2 h-4 w-4" />
-                  Employees
-                </Link>
-              </DropdownMenuItem>
-
-              <DropdownMenuItem asChild>
                 <Link href="/settings" className="cursor-pointer">
-                  <Settings className="mr-2 h-4 w-4" />
+                  <Settings size={16} />
                   <span>Account settings</span>
                 </Link>
               </DropdownMenuItem>
@@ -87,8 +80,8 @@ export default function UserButton({ user }: UserButtonProps) {
 
         <DropdownMenuItem asChild>
           <form action={logoutAction}>
-            <button type="submit" className="flex w-full items-center">
-              <LogOut className="mr-2 h-4 w-4" /> Sign Out
+            <button type="submit" className="flex w-full items-center gap-2">
+              <LogOut size={16} /> Sign Out
             </button>
           </form>
         </DropdownMenuItem>
