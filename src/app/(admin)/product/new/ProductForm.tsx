@@ -35,6 +35,10 @@ export function ProductForm() {
       const { error } = await addProductAction(data);
 
       if (error) toast.error(error);
+      else {
+        form.reset();
+        toast.success("Product created successfully");
+      }
     });
   }
 
