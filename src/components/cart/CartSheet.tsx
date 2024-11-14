@@ -23,11 +23,15 @@ export function CartSheet({ cart }: CartSheetProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" size={`sm`} className="relative">
+        <Button
+          variant="outline"
+          size={`icon`}
+          className="relative rounded-full"
+        >
           <ShoppingCart />
           {cart && cart.totalQuantity > 0 && (
             <span
-              className={`absolute right-0 top-0 -mr-2 -mt-2 rounded bg-blue-600 px-1 py-[1px] text-xs font-semibold text-white`}
+              className={`absolute right-0 top-0 -mr-[5px] -mt-[5px] rounded bg-blue-600 px-1 py-[1px] text-xs font-semibold text-white`}
             >
               {cart.totalQuantity}
             </span>
@@ -43,9 +47,12 @@ export function CartSheet({ cart }: CartSheetProps) {
           </SheetHeader>
 
           {!cart || cart.items.length === 0 ? (
-            <p>Your cart is empty.</p>
+            <div className="mt-16 flex flex-col items-center space-y-4 text-xl font-bold">
+              <ShoppingCart className="h-12 w-12" />
+              <p>Your cart is empty.</p>
+            </div>
           ) : (
-            <ul className="">
+            <ul>
               {cart.items.map((item) => (
                 <li
                   key={item.id}
@@ -84,11 +91,13 @@ export function CartSheet({ cart }: CartSheetProps) {
           )}
         </div>
 
-        <SheetClose asChild>
-          <Button type="submit" className="bg-blue-600 hover:bg-blue-600/90">
-            Proceed to Checkout
-          </Button>
-        </SheetClose>
+        {cart && cart.items.length > 0 && (
+          <SheetClose asChild>
+            <Button type="submit" className="bg-blue-600 hover:bg-blue-600/90">
+              Proceed to Checkout
+            </Button>
+          </SheetClose>
+        )}
       </SheetContent>
     </Sheet>
   );
