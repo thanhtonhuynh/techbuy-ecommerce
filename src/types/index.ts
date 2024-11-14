@@ -20,3 +20,13 @@ export type Cart = CartWithProducts & {
   totalQuantity: number;
   totalAmount: number;
 };
+
+export type CartItem = Prisma.CartItemGetPayload<{
+  select: {
+    id: true;
+    quantity: true;
+    product: {
+      omit: { createdAt: true; updatedAt: true };
+    };
+  };
+}>;

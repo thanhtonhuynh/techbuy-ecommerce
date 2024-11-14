@@ -18,21 +18,30 @@ export async function addItem(cartId: string, productId: string) {
   });
 }
 
-export async function updateItemQuantity(
-  cartId: string,
-  productId: string,
-  quantity: number,
-) {
+// export async function updateItemQuantity(
+//   cartId: string,
+//   productId: string,
+//   quantity: number,
+// ) {
+//   return await prisma.cartItem.update({
+//     where: { cartId_productId: { cartId, productId } },
+//     data: { quantity },
+//   });
+// }
+export async function updateItemQuantity(cartItemId: string, quantity: number) {
   return await prisma.cartItem.update({
-    where: { cartId_productId: { cartId, productId } },
+    where: { id: cartItemId },
     data: { quantity },
   });
 }
 
-export async function removeItem(cartId: string, productId: string) {
-  return await prisma.cartItem.delete({
-    where: { cartId_productId: { cartId, productId } },
-  });
+// export async function removeItem(cartId: string, productId: string) {
+//   return await prisma.cartItem.delete({
+//     where: { cartId_productId: { cartId, productId } },
+//   });
+// }
+export async function removeItem(cartItemId: string) {
+  return await prisma.cartItem.delete({ where: { id: cartItemId } });
 }
 
 function reshapeCart(cart: CartWithProducts): Cart {

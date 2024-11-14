@@ -15,7 +15,8 @@ export async function addToCartAction(productId: string) {
     const itemInCart = cart.items.find((item) => item.product.id === productId);
 
     if (itemInCart) {
-      await updateItemQuantity(cart.id, productId, itemInCart.quantity + 1);
+      // await updateItemQuantity(cart.id, productId, itemInCart.quantity + 1);
+      await updateItemQuantity(itemInCart.id, itemInCart.quantity + 1);
     } else {
       await addItem(cart.id, productId);
     }

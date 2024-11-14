@@ -3,6 +3,7 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -12,6 +13,7 @@ import { Cart } from "@/types";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { EditItemQuantityButton } from "./EditItemQuantityButton";
 
 type CartSheetProps = {
   cart: Cart | null;
@@ -33,10 +35,11 @@ export function CartSheet({ cart }: CartSheetProps) {
         </Button>
       </SheetTrigger>
 
-      <SheetContent className="flex flex-col justify-between bg-background/80 backdrop-blur-xl">
+      <SheetContent className="flex w-full flex-col justify-between bg-background/80 backdrop-blur-xl sm:max-w-[540px]">
         <div>
           <SheetHeader>
             <SheetTitle>My Cart</SheetTitle>
+            <SheetDescription />
           </SheetHeader>
 
           {!cart || cart.items.length === 0 ? (
@@ -64,12 +67,17 @@ export function CartSheet({ cart }: CartSheetProps) {
                       className="flex flex-1 flex-col justify-center self-stretch"
                     >
                       <span className="font-medium">{item.product.name}</span>
+                      <p className="text-sm text-muted-foreground">
+                        {formatPrice(item.product.price / 100)}
+                      </p>
                     </Link>
                   </div>
 
-                  <p className="text-sm">
-                    {formatPrice(item.product.price / 100)}
-                  </p>
+                  <div className="flex items-center gap-2 rounded-full border text-sm dark:border-primary/30">
+                    <EditItemQuantityButton item={item} type="minus" />
+                    <p className="font-medium">{item.quantity}</p>
+                    <EditItemQuantityButton item={item} type="plus" />
+                  </div>
                 </li>
               ))}
             </ul>
