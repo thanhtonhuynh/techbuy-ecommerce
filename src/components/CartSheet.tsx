@@ -1,18 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { formatPrice } from "@/lib/utils";
 import { Cart } from "@/types";
 import { ShoppingCart } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 type CartSheetProps = {
   cart: Cart | null;
@@ -34,28 +33,54 @@ export function CartSheet({ cart }: CartSheetProps) {
         </Button>
       </SheetTrigger>
 
-      <SheetContent className="backdrop-blur">
-        <SheetHeader>
-          <SheetTitle>My Cart</SheetTitle>
-        </SheetHeader>
+      <SheetContent className="flex flex-col justify-between bg-background/80 backdrop-blur-xl">
+        <div>
+          <SheetHeader>
+            <SheetTitle>My Cart</SheetTitle>
+          </SheetHeader>
 
-        {cart ? (
-          <>
-            <p>
-              You have {cart.totalQuantity} item{cart.totalQuantity > 1 && "s"}{" "}
-              in your cart.
-            </p>
-            <p>Total: ${cart.totalAmount.toFixed(2)}</p>
-          </>
-        ) : (
-          <p>Your cart is empty.</p>
-        )}
+          {!cart || cart.items.length === 0 ? (
+            <p>Your cart is empty.</p>
+          ) : (
+            <ul className="">
+              {cart.items.map((item) => (
+                <li
+                  key={item.id}
+                  className="flex items-center justify-between gap-2 border-b px-1 py-4"
+                >
+                  <div className="flex flex-1 flex-row items-center gap-2">
+                    <div className="h-16 w-16 rounded-md border">
+                      <Image
+                        src={item.product.image}
+                        alt={item.product.name}
+                        width={64}
+                        height={64}
+                        className="aspect-square h-full w-full rounded-md object-cover"
+                      />
+                    </div>
 
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button type="submit">Proceed to Checkout</Button>
-          </SheetClose>
-        </SheetFooter>
+                    <Link
+                      href={`/product/${item.product.id}`}
+                      className="flex flex-1 flex-col justify-center self-stretch"
+                    >
+                      <span className="font-medium">{item.product.name}</span>
+                    </Link>
+                  </div>
+
+                  <p className="text-sm">
+                    {formatPrice(item.product.price / 100)}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <SheetClose asChild>
+          <Button type="submit" className="bg-blue-600 hover:bg-blue-600/90">
+            Proceed to Checkout
+          </Button>
+        </SheetClose>
       </SheetContent>
     </Sheet>
   );
