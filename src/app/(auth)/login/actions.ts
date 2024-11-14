@@ -18,6 +18,7 @@ import { isRedirectError } from "next/dist/client/components/redirect";
 // } from '@/lib/email-verification';
 import { LoginSchema, LoginSchemaTypes } from "@/lib/validations/auth";
 import { rateLimitByKey, unauthenticatedRateLimit } from "@/utils/rate-limiter";
+import { syncWithLocalCart } from "@/data-access/cart";
 
 export async function loginAction(data: LoginSchemaTypes) {
   try {
@@ -69,6 +70,8 @@ export async function loginAction(data: LoginSchemaTypes) {
     // if (existingUser.twoFactorEnabled) {
     //   redirect(`/2fa`);
     // }
+
+    await syncWithLocalCart(existingUser.id);
   } catch (error) {
     if (isRedirectError(error)) {
       throw error;
