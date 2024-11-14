@@ -5,7 +5,7 @@ import { Nav, NavLink } from "./Nav";
 import { ModeToggle } from "@/components/ModeToggle";
 import { MonitorSpeaker } from "lucide-react";
 import { Button } from "./ui/button";
-import { CartSheet } from "./CartSheet";
+import { CartSheet } from "./cart/CartSheet";
 import { getCart } from "@/data-access/cart";
 
 export default async function Header() {
