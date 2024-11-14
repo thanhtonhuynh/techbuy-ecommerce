@@ -21,7 +21,7 @@ export default async function Header() {
             <span className="select-none text-xl tracking-wider">techbuy</span>
           </Link>
 
-          <Nav>
+          <Nav className="hidden lg:block">
             <NavLink href={`/a`}>All</NavLink>
             <NavLink href={`/c`}>Mac</NavLink>
             <NavLink href={`/b`}>iPhone</NavLink>
@@ -36,10 +36,6 @@ export default async function Header() {
           <Button asChild variant={`outline`}>
             <Link href={`/manage-product/new`}>Add Product</Link>
           </Button>
-
-          <div className="hidden sm:block">
-            <ModeToggle />
-          </div>
 
           <CartSheet cart={cart} />
 

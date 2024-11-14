@@ -70,14 +70,6 @@ export default function UserButton({ user }: UserButtonProps) {
           </>
         )}
 
-        <DropdownMenuGroup className="sm:hidden">
-          <DropdownMenuItem asChild>
-            <ModeToggle />
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-
-        <DropdownMenuSeparator className="sm:hidden" />
-
         <DropdownMenuItem asChild>
           <form action={logoutAction}>
             <button type="submit" className="flex w-full items-center gap-2">
