@@ -5,9 +5,12 @@ import { Nav, NavLink } from "./Nav";
 import { ModeToggle } from "@/components/ModeToggle";
 import { MonitorSpeaker } from "lucide-react";
 import { Button } from "./ui/button";
+import { CartSheet } from "./CartSheet";
+import { getCart } from "@/data-access/cart";
 
 export default async function Header() {
   const { user } = await getCurrentSession();
+  const cart = await getCart();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:border-border">
@@ -31,12 +34,14 @@ export default async function Header() {
 
         <div className="flex items-center space-x-2">
           <Button asChild variant={`outline`}>
-            <Link href={`/product/new`}>Add Product</Link>
+            <Link href={`/manage-product/new`}>Add Product</Link>
           </Button>
 
           <div className="hidden sm:block">
             <ModeToggle />
           </div>
+
+          <CartSheet cart={cart} />
 
           {user ? (
             <UserButton user={user} />
