@@ -11,20 +11,27 @@ export function Nav({ children, className }: { children: ReactNode; className?: 
 }
 
 export function NavLink(props: Omit<ComponentProps<typeof Link>, "className">) {
-  const pathname = usePathname();
-  const { href } = props;
-  const isActive = pathname === href;
+  // const pathname = usePathname();
+  // const { href } = props;
+  // const isActive = pathname === href;
 
   return (
     <Button
       asChild
       variant={`link`}
       className={cn(
-        "px-2 text-blue-500 transition-colors",
-        !isActive && "font-normal text-muted-foreground hover:text-primary",
+        // "px-2 text-blue-500 transition-colors",
+        "px-2 font-normal text-muted-foreground transition-colors hover:text-blue-600",
+        // !isActive && "font-normal text-muted-foreground hover:text-primary",
       )}
     >
-      <Link {...props} className={cn("hover:no-underline", isActive && "cursor-default")} />
+      <Link
+        {...props}
+        className={cn(
+          "hover:no-underline",
+          // isActive && "cursor-default"
+        )}
+      />
     </Button>
   );
 }
