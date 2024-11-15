@@ -30,12 +30,10 @@ export default async function Header() {
           </Nav>
         </div>
 
-        <div className="flex items-center space-x-2">
-          {/* <Button asChild variant={`outline`}>
-            <Link href={`/manage-product/new`}>Add Product</Link>
-          </Button> */}
-
-          <Search />
+        <div className="flex w-full items-center space-x-2 lg:w-1/3">
+          <div className="flex-1">
+            <Search />
+          </div>
 
           <CartSheet />
 
