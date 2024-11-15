@@ -1,10 +1,11 @@
 import Link from "next/link";
 import UserButton from "@/components/buttons/UserButton";
 import { getCurrentSession } from "@/lib/auth/session";
-import { Nav, NavLink } from "./Nav";
+import { Nav, NavLink } from "@/components/layout/Nav";
 import { MonitorSpeaker } from "lucide-react";
-import { Button } from "./ui/button";
-import { CartSheet } from "./cart/CartSheet";
+import { Button } from "@/components/ui/button";
+import { CartSheet } from "@/components/cart/CartSheet";
+import { Search } from "@/components/layout/Search";
 
 export default async function Header() {
   const { user } = await getCurrentSession();
@@ -30,9 +31,11 @@ export default async function Header() {
         </div>
 
         <div className="flex items-center space-x-2">
-          <Button asChild variant={`outline`}>
+          {/* <Button asChild variant={`outline`}>
             <Link href={`/manage-product/new`}>Add Product</Link>
-          </Button>
+          </Button> */}
+
+          <Search />
 
           <CartSheet />
 

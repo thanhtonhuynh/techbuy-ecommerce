@@ -14,7 +14,6 @@ import { User } from "@/lib/auth/session";
 import { logoutAction } from "@/app/(auth)/actions";
 import { hasAccess } from "@/utils/access-control";
 import { ProfilePicture } from "@/components/ProfilePicture";
-import { ModeToggle } from "@/components/ModeToggle";
 
 interface UserButtonProps {
   user: User;
@@ -28,20 +27,14 @@ export default function UserButton({ user }: UserButtonProps) {
           size="icon"
           className="flex-none rounded-full border bg-background text-primary shadow-md hover:bg-muted hover:ring-1 hover:ring-border"
         >
-          {user.image ? (
-            <ProfilePicture image={user.image} size={50} />
-          ) : (
-            <UserRound size={20} />
-          )}
+          {user.image ? <ProfilePicture image={user.image} size={50} /> : <UserRound size={20} />}
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-48">
         <DropdownMenuLabel className="space-y-1">
           <div>{user.name}</div>
-          <div className="text-xs capitalize text-muted-foreground">
-            {user.role}
-          </div>
+          <div className="text-xs capitalize text-muted-foreground">{user.role}</div>
         </DropdownMenuLabel>
 
         <DropdownMenuSeparator />

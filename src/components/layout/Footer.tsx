@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { MonitorSpeaker } from "lucide-react";
-import { ModeToggle } from "./ModeToggle";
+import { ModeToggle } from "@/components/layout/ModeToggle";
 
 export default async function Footer() {
   return (
