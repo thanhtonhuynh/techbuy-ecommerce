@@ -16,6 +16,7 @@ export function Search() {
       />
 
       <Input
+        key={searchParams.get("q")}
         type="text"
         name="q"
         placeholder="Search for products..."

@@ -2,7 +2,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { getProducts } from "@/data-access/product";
 
 export default async function Home() {
-  const products = await getProducts();
+  const products = await getProducts({});
 
   return (
     <>
