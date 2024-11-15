@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -8,32 +10,37 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { formatPrice } from "@/lib/utils";
-import { Cart } from "@/types";
+import { formatPriceFull } from "@/lib/utils";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { EditItemQuantityButton } from "./EditItemQuantityButton";
+import { useCart } from "@/providers/CartProvider";
+import { useEffect, useRef, useState } from "react";
+import { RemoveItemButton } from "./RemoveItemButton";
 
-type CartSheetProps = {
-  cart: Cart | null;
-};
+export function CartSheet() {
+  const { optimisticCart } = useCart();
+  const [isOpen, setIsOpen] = useState(false);
+  const quantityRef = useRef(optimisticCart?.totalQuantity);
 
-export function CartSheet({ cart }: CartSheetProps) {
+  useEffect(() => {
+    if (optimisticCart?.totalQuantity !== quantityRef.current) {
+      if (!isOpen) setIsOpen(true);
+      quantityRef.current = optimisticCart?.totalQuantity;
+    }
+  }, [optimisticCart?.totalQuantity]);
+
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button
-          variant="outline"
-          size={`icon`}
-          className="relative rounded-full"
-        >
+        <Button variant="outline" size={`icon`} className="relative rounded-full">
           <ShoppingCart />
-          {cart && cart.totalQuantity > 0 && (
+          {optimisticCart && optimisticCart.totalQuantity > 0 && (
             <span
               className={`absolute right-0 top-0 -mr-[5px] -mt-[5px] rounded bg-blue-600 px-1 py-[1px] text-xs font-semibold text-white`}
             >
-              {cart.totalQuantity}
+              {optimisticCart.totalQuantity}
             </span>
           )}
         </Button>
@@ -46,19 +53,23 @@ export function CartSheet({ cart }: CartSheetProps) {
             <SheetDescription />
           </SheetHeader>
 
-          {!cart || cart.items.length === 0 ? (
+          {!optimisticCart || optimisticCart.items.length === 0 ? (
             <div className="mt-16 flex flex-col items-center space-y-4 text-xl font-bold">
               <ShoppingCart className="h-12 w-12" />
               <p>Your cart is empty.</p>
             </div>
           ) : (
             <ul>
-              {cart.items.map((item) => (
+              {optimisticCart.items.map((item) => (
                 <li
                   key={item.id}
                   className="flex items-center justify-between gap-2 border-b px-1 py-4"
                 >
-                  <div className="flex flex-1 flex-row items-center gap-2">
+                  <div className="relative flex flex-1 flex-row items-center gap-2">
+                    <div className="absolute top-0 -ml-3 -mt-3">
+                      <RemoveItemButton item={item} />
+                    </div>
+
                     <div className="h-16 w-16 rounded-md border">
                       <Image
                         src={item.product.image}
@@ -75,14 +86,14 @@ export function CartSheet({ cart }: CartSheetProps) {
                     >
                       <span className="font-medium">{item.product.name}</span>
                       <p className="text-sm text-muted-foreground">
-                        {formatPrice(item.product.price / 100)}
+                        {formatPriceFull(item.totalAmount / 100)}
                       </p>
                     </Link>
                   </div>
 
-                  <div className="flex items-center gap-2 rounded-full border text-sm dark:border-primary/30">
+                  <div className="flex items-center gap-1 rounded-full border text-sm dark:border-primary/30">
                     <EditItemQuantityButton item={item} type="minus" />
-                    <p className="font-medium">{item.quantity}</p>
+                    <p className="w-5 text-center font-medium">{item.quantity}</p>
                     <EditItemQuantityButton item={item} type="plus" />
                   </div>
                 </li>
@@ -91,7 +102,7 @@ export function CartSheet({ cart }: CartSheetProps) {
           )}
         </div>
 
-        {cart && cart.items.length > 0 && (
+        {optimisticCart && optimisticCart.items.length > 0 && (
           <SheetClose asChild>
             <Button type="submit" className="bg-blue-600 hover:bg-blue-600/90">
               Proceed to Checkout

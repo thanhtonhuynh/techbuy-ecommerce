@@ -13,3 +13,12 @@ export function formatPrice(amount: number) {
     maximumFractionDigits: 2,
   }).format(amount);
 }
+
+export function formatPriceFull(amount: number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "CAD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount);
+}

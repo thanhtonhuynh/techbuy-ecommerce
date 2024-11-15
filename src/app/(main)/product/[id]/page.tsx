@@ -34,7 +34,7 @@ export default async function Page(props: { params: Params }) {
             {formatPrice(product.price / 100)}
           </p>
 
-          <AddToCartButton productId={product.id} />
+          <AddToCartButton product={product} />
         </div>
       </section>
     </>

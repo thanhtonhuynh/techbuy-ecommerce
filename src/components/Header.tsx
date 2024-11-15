@@ -2,15 +2,12 @@ import Link from "next/link";
 import UserButton from "@/components/buttons/UserButton";
 import { getCurrentSession } from "@/lib/auth/session";
 import { Nav, NavLink } from "./Nav";
-import { ModeToggle } from "@/components/ModeToggle";
 import { MonitorSpeaker } from "lucide-react";
 import { Button } from "./ui/button";
 import { CartSheet } from "./cart/CartSheet";
-import { getCart } from "@/data-access/cart";
 
 export default async function Header() {
   const { user } = await getCurrentSession();
-  const cart = await getCart();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:border-border">
@@ -37,7 +34,7 @@ export default async function Header() {
             <Link href={`/manage-product/new`}>Add Product</Link>
           </Button>
 
-          <CartSheet cart={cart} />
+          <CartSheet />
 
           {user ? (
             <UserButton user={user} />

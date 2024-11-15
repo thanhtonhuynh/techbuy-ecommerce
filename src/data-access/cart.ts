@@ -4,11 +4,7 @@ import prisma from "@/lib/prisma";
 import { Cart, CartWithProducts } from "@/types";
 import { cookies } from "next/headers";
 import { cache } from "react";
-import {
-  deleteCartTokenCookie,
-  generateCartToken,
-  setCartTokenCookie,
-} from "@/utils/cart";
+import { deleteCartTokenCookie, generateCartToken, setCartTokenCookie } from "@/utils/cart";
 import { encodeHexLowerCase } from "@oslojs/encoding";
 import { sha256 } from "@oslojs/crypto/sha2";
 
@@ -18,16 +14,6 @@ export async function addItem(cartId: string, productId: string) {
   });
 }
 
-// export async function updateItemQuantity(
-//   cartId: string,
-//   productId: string,
-//   quantity: number,
-// ) {
-//   return await prisma.cartItem.update({
-//     where: { cartId_productId: { cartId, productId } },
-//     data: { quantity },
-//   });
-// }
 export async function updateItemQuantity(cartItemId: string, quantity: number) {
   return await prisma.cartItem.update({
     where: { id: cartItemId },
@@ -35,11 +21,6 @@ export async function updateItemQuantity(cartItemId: string, quantity: number) {
   });
 }
 
-// export async function removeItem(cartId: string, productId: string) {
-//   return await prisma.cartItem.delete({
-//     where: { cartId_productId: { cartId, productId } },
-//   });
-// }
 export async function removeItem(cartItemId: string) {
   return await prisma.cartItem.delete({ where: { id: cartItemId } });
 }
@@ -47,11 +28,12 @@ export async function removeItem(cartItemId: string) {
 function reshapeCart(cart: CartWithProducts): Cart {
   return {
     ...cart,
+    items: cart.items.map((item) => ({
+      ...item,
+      totalAmount: item.quantity * item.product.price,
+    })),
     totalQuantity: cart.items.reduce((acc, item) => acc + item.quantity, 0),
-    totalAmount: cart.items.reduce(
-      (acc, item) => acc + item.quantity * item.product.price,
-      0,
-    ),
+    totalAmount: cart.items.reduce((acc, item) => acc + item.quantity * item.product.price, 0),
   };
 }
 
@@ -81,12 +63,10 @@ export const getCart = cache(async (): Promise<Cart | null> => {
 
     if (!localCartToken) return null;
 
-    const cartId = encodeHexLowerCase(
-      sha256(new TextEncoder().encode(localCartToken)),
-    );
+    const localCartId = encodeHexLowerCase(sha256(new TextEncoder().encode(localCartToken)));
 
     cart = await prisma.cart.findUnique({
-      where: { id: cartId },
+      where: { id: localCartId },
       select: {
         items: {
           select: {
@@ -112,9 +92,7 @@ export async function createCart(): Promise<Cart> {
   const { user } = await getCurrentSession();
 
   const cartToken = generateCartToken();
-  const cartId = encodeHexLowerCase(
-    sha256(new TextEncoder().encode(cartToken)),
-  );
+  const cartId = encodeHexLowerCase(sha256(new TextEncoder().encode(cartToken)));
 
   const payload = user ? { id: cartId, userId: user.id } : { id: cartId };
   const newCart = await prisma.cart.create({
@@ -139,9 +117,7 @@ export async function syncWithLocalCart(userId: string) {
   if (!localCartToken) return;
 
   // Find local cart in database
-  const localCartId = encodeHexLowerCase(
-    sha256(new TextEncoder().encode(localCartToken)),
-  );
+  const localCartId = encodeHexLowerCase(sha256(new TextEncoder().encode(localCartToken)));
   const localCart = await prisma.cart.findUnique({
     where: { id: localCartId },
     include: { items: true },
@@ -164,9 +140,7 @@ export async function syncWithLocalCart(userId: string) {
     } else {
       // If user cart exists, merge local cart items into user cart
       for (const item of localCart.items) {
-        const existingItem = userCart.items.find(
-          (i) => i.productId === item.productId,
-        );
+        const existingItem = userCart.items.find((i) => i.productId === item.productId);
 
         if (existingItem) {
           await tx.cartItem.update({
