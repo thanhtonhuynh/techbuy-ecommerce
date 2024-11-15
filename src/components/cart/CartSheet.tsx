@@ -25,7 +25,11 @@ export function CartSheet() {
   const quantityRef = useRef(optimisticCart?.totalQuantity);
 
   useEffect(() => {
-    if (optimisticCart?.totalQuantity !== quantityRef.current) {
+    if (
+      optimisticCart &&
+      optimisticCart.totalQuantity !== quantityRef.current &&
+      optimisticCart.totalQuantity > 0
+    ) {
       if (!isOpen) setIsOpen(true);
       quantityRef.current = optimisticCart?.totalQuantity;
     }
