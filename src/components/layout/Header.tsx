@@ -20,13 +20,13 @@ export default async function Header() {
           </Link>
 
           <Nav className="hidden lg:block">
-            <NavLink href={`/search`}>All</NavLink>
-            <NavLink href={`/search/mac`}>Mac</NavLink>
-            <NavLink href={`/search/iphone`}>iPhone</NavLink>
-            <NavLink href={`/search/ipad`}>iPad</NavLink>
-            <NavLink href={`/search/apple-watch`}>Apple Watch</NavLink>
-            <NavLink href={`/search/airpods`}>AirPods</NavLink>
-            <NavLink href={`/search/accessories`}>Accessories</NavLink>
+            <NavLink href={`/shop`}>All</NavLink>
+            <NavLink href={`/shop/mac`}>Mac</NavLink>
+            <NavLink href={`/shop/iphone`}>iPhone</NavLink>
+            <NavLink href={`/shop/ipad`}>iPad</NavLink>
+            <NavLink href={`/shop/apple-watch`}>Apple Watch</NavLink>
+            <NavLink href={`/shop/airpods`}>AirPods</NavLink>
+            <NavLink href={`/shop/accessories`}>Accessories</NavLink>
           </Nav>
         </div>
 

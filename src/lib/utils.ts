@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { ReadonlyURLSearchParams } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -21,4 +22,11 @@ export function formatPriceFull(amount: number) {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount);
+}
+
+export function createUrl(pathname: string, params: URLSearchParams | ReadonlyURLSearchParams) {
+  const paramsString = params.toString();
+  const queryString = `${paramsString.length ? `?${paramsString}` : ""}`;
+
+  return `${pathname}${queryString}`;
 }

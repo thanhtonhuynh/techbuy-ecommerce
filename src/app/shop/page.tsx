@@ -1,13 +1,16 @@
 import { ProductCard } from "@/components/ProductCard";
+import { defaultSort, sortFilters } from "@/constants";
 import { getProducts } from "@/data-access/product";
+import { FilterList } from "./FilterList";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 export default async function Page(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;
-  const { q: searchValue } = searchParams as { [key: string]: string };
+  const { sort, q: searchValue } = searchParams as { [key: string]: string };
+  const { sortKey, reverse } = sortFilters.find((filter) => filter.slug === sort) || defaultSort;
 
-  const products = await getProducts({ query: searchValue });
+  const products = await getProducts({ sortKey, reverse, query: searchValue });
   const resultsText = products.length > 1 ? "results" : "result";
 
   return (
@@ -21,9 +24,11 @@ export default async function Page(props: { searchParams: SearchParams }) {
             <span className="font-extrabold">&quot;{searchValue}&quot;</span>
           </h1>
         ) : (
-          <h1>Browse All Products</h1>
+          <h1>Shop All Products</h1>
         )}
       </section>
+
+      <FilterList list={searchValue ? sortFilters : sortFilters.slice(1)} />
 
       <section className="px-4 py-8 md:px-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

@@ -27,6 +27,7 @@ export function ProductForm() {
       description: "",
       price: 0,
       image: "",
+      category: "",
     },
   });
 
@@ -70,6 +71,20 @@ export function ProductForm() {
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Input {...field} placeholder="The best phone ever" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder="iPhone" />
               </FormControl>
               <FormMessage />
             </FormItem>

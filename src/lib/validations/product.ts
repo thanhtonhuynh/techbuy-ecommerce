@@ -11,5 +11,6 @@ export const NewProductSchema = z.object({
     .int("Must be an integer")
     .positive("Must be positive"),
   image: requiredString.url("Must be a valid URL"),
+  category: requiredString,
 });
 export type NewProductInput = z.infer<typeof NewProductSchema>;
