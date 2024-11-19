@@ -18,8 +18,9 @@ import { EditItemQuantityButton } from "./EditItemQuantityButton";
 import { useCart } from "@/providers/CartProvider";
 import { useEffect, useRef, useState } from "react";
 import { RemoveItemButton } from "./RemoveItemButton";
+import { User } from "@/lib/auth/session";
 
-export function CartSheet() {
+export function CartSheet({ user }: { user: User | null }) {
   const { optimisticCart } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const quantityRef = useRef(optimisticCart?.totalQuantity);
@@ -108,8 +109,10 @@ export function CartSheet() {
 
         {optimisticCart && optimisticCart.items.length > 0 && (
           <SheetClose asChild>
-            <Button type="submit" className="bg-blue-600 hover:bg-blue-600/90">
-              Proceed to Checkout
+            <Button type="submit" className="bg-blue-600 hover:bg-blue-600/90" asChild>
+              <Link href={user ? "/checkout" : "/login"}>
+                {user ? "Proceed to Checkout" : "Login to Checkout"}
+              </Link>
             </Button>
           </SheetClose>
         )}

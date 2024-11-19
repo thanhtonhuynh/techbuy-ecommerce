@@ -35,7 +35,7 @@ export default async function Header() {
             <Search />
           </div>
 
-          <CartSheet />
+          <CartSheet user={user} />
 
           {user ? (
             <UserButton user={user} />
