@@ -3,19 +3,19 @@ import { getCategoryProducts } from "@/data-access/product";
 import { cn } from "@/lib/utils";
 import { getCategoryName } from "@/utils/category";
 import { FilterList } from "../FilterList";
-import { sortFilters } from "@/constants";
+import { defaultSort, sortFilters } from "@/constants";
 
 type Params = Promise<{ category: string }>;
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export default async function Page(props: { params: Params; searchParams: SearchParams }) {
+export default async function Page(props: { params: Params; searchParams?: SearchParams }) {
   const params = await props.params;
   const searchParams = await props.searchParams;
   const { category } = params;
-  const { q: searchValue } = searchParams as { [key: string]: string };
+  const { sort } = searchParams as { [key: string]: string };
+  const { sortKey, reverse } = sortFilters.find((filter) => filter.slug === sort) || defaultSort;
 
-  const products = await getCategoryProducts({ category: params.category });
-  const resultsText = products.length > 1 ? "results" : "result";
+  const products = await getCategoryProducts({ category: params.category, sortKey, reverse });
 
   return (
     <>
@@ -28,7 +28,7 @@ export default async function Page(props: { params: Params; searchParams: Search
         </h1>
       </section>
 
-      <FilterList list={sortFilters} />
+      <FilterList list={sortFilters.slice(1)} />
 
       <section className="px-4 py-8 md:px-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

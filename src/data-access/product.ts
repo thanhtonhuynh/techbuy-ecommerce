@@ -52,9 +52,27 @@ export const getProducts = cache(
 );
 
 // Get products by category
-export const getCategoryProducts = cache(async ({ category }: { category: string }) => {
-  return await prisma.product.findMany({ where: { category } });
-});
+export const getCategoryProducts = cache(
+  async ({
+    category,
+    sortKey,
+    reverse,
+  }: {
+    category: string;
+    sortKey?: string;
+    reverse?: boolean;
+  }) => {
+    if (sortKey) {
+      return await prisma.product.findMany({
+        where: { category },
+        orderBy: {
+          [sortKey]: reverse ? "desc" : "asc",
+        },
+      });
+    }
+    return await prisma.product.findMany({ where: { category } });
+  },
+);
 
 // Get a product by ID
 export const getProductById = cache(async (id: string) => {
