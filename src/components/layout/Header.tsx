@@ -1,5 +1,5 @@
 import Link from "next/link";
-import UserButton from "@/components/buttons/UserButton";
+import { UserButton } from "@/components/buttons/UserButton";
 import { getCurrentSession } from "@/lib/auth/session";
 import { Nav, NavLink } from "@/components/layout/Nav";
 import { MonitorSpeaker } from "lucide-react";
@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { CartSheet } from "@/components/cart/CartSheet";
 import { Search } from "@/components/layout/Search";
 
-export default async function Header() {
+export async function Header() {
   const { user } = await getCurrentSession();
 
   return (
@@ -35,7 +35,7 @@ export default async function Header() {
             <Search />
           </div>
 
-          <CartSheet user={user} />
+          <CartSheet />
 
           {user ? (
             <UserButton user={user} />

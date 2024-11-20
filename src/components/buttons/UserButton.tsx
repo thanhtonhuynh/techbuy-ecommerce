@@ -19,14 +19,11 @@ interface UserButtonProps {
   user: User;
 }
 
-export default function UserButton({ user }: UserButtonProps) {
+export function UserButton({ user }: UserButtonProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          size="icon"
-          className="flex-none rounded-full border bg-background text-primary shadow-md hover:bg-muted hover:ring-1 hover:ring-border"
-        >
+        <Button size="icon" variant={`outline`} className="rounded-full">
           {user.image ? <ProfilePicture image={user.image} size={50} /> : <UserRound size={20} />}
         </Button>
       </DropdownMenuTrigger>

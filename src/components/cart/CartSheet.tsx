@@ -18,9 +18,10 @@ import { EditItemQuantityButton } from "./EditItemQuantityButton";
 import { useCart } from "@/providers/CartProvider";
 import { useEffect, useRef, useState } from "react";
 import { RemoveItemButton } from "./RemoveItemButton";
-import { User } from "@/lib/auth/session";
+import { useSession } from "@/providers/SessionProvider";
 
-export function CartSheet({ user }: { user: User | null }) {
+export function CartSheet() {
+  const { user } = useSession();
   const { optimisticCart } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const quantityRef = useRef(optimisticCart?.totalQuantity);

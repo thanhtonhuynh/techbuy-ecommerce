@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { Toaster } from "sonner";
 import { getCart } from "@/data-access/cart";
 import { CartProvider } from "@/providers/CartProvider";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
+import { getCurrentSession } from "@/lib/auth/session";
+import { SessionProvider } from "@/providers/SessionProvider";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -29,6 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const cart = getCart();
+  const session = getCurrentSession();
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -36,13 +39,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen font-sans antialiased`}
       >
         <ThemeProvider>
-          <CartProvider cartPromise={cart}>
-            <div className="relative mx-auto flex min-h-screen w-full flex-col border-border/40 dark:border-border min-[1800px]:max-w-screen-2xl min-[1800px]:border-x">
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
-          </CartProvider>
+          <SessionProvider sessionPromise={session}>
+            <CartProvider cartPromise={cart}>
+              <div className="relative mx-auto flex min-h-screen w-full flex-col border-border/40 dark:border-border min-[1800px]:max-w-screen-2xl min-[1800px]:border-x">
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
+            </CartProvider>
+          </SessionProvider>
         </ThemeProvider>
         <Toaster richColors closeButton />
       </body>
