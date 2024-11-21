@@ -53,7 +53,7 @@ export function CartSheet() {
         </Button>
       </SheetTrigger>
 
-      <SheetContent className="flex w-full flex-col justify-between bg-background/80 backdrop-blur-xl sm:max-w-[540px]">
+      <SheetContent className="flex w-full flex-col justify-between">
         <div>
           <SheetHeader>
             <SheetTitle>My Cart</SheetTitle>
