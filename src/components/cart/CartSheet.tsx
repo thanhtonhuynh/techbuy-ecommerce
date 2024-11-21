@@ -36,7 +36,7 @@ export function CartSheet() {
       if (!isOpen) setIsOpen(true);
       quantityRef.current = optimisticCart?.totalQuantity;
     }
-  }, [optimisticCart?.totalQuantity]);
+  }, [isOpen, optimisticCart?.totalQuantity]);
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -68,44 +68,46 @@ export function CartSheet() {
           ) : (
             <>
               <ul className="mb-2">
-                {optimisticCart.items.map((item) => (
-                  <li
-                    key={item.id}
-                    className="flex items-center justify-between gap-2 border-b px-1 py-4"
-                  >
-                    <div className="relative flex flex-1 flex-row items-center gap-2">
-                      <div className="absolute top-0 -ml-3 -mt-3">
-                        <RemoveItemButton item={item} />
+                {optimisticCart.items
+                  .sort((a, b) => a.product.name.localeCompare(b.product.name))
+                  .map((item) => (
+                    <li
+                      key={item.id}
+                      className="flex items-center justify-between gap-2 border-b px-1 py-4"
+                    >
+                      <div className="relative flex flex-1 flex-row items-center gap-2">
+                        <div className="absolute top-0 -ml-3 -mt-3">
+                          <RemoveItemButton item={item} />
+                        </div>
+
+                        <div className="h-16 w-16 rounded-md border">
+                          <Image
+                            src={item.product.image}
+                            alt={item.product.name}
+                            width={64}
+                            height={64}
+                            className="aspect-square h-full w-full rounded-md object-cover"
+                          />
+                        </div>
+
+                        <Link
+                          href={`/product/${item.product.id}`}
+                          className="flex flex-1 flex-col justify-center self-stretch"
+                        >
+                          <span className="font-medium">{item.product.name}</span>
+                          <p className="text-sm text-muted-foreground">
+                            {formatPriceFull(item.totalAmount / 100)}
+                          </p>
+                        </Link>
                       </div>
 
-                      <div className="h-16 w-16 rounded-md border">
-                        <Image
-                          src={item.product.image}
-                          alt={item.product.name}
-                          width={64}
-                          height={64}
-                          className="aspect-square h-full w-full rounded-md object-cover"
-                        />
+                      <div className="flex items-center gap-1 rounded-full border text-sm dark:border-primary/30">
+                        <EditItemQuantityButton item={item} type="minus" />
+                        <p className="w-5 text-center font-medium">{item.quantity}</p>
+                        <EditItemQuantityButton item={item} type="plus" />
                       </div>
-
-                      <Link
-                        href={`/product/${item.product.id}`}
-                        className="flex flex-1 flex-col justify-center self-stretch"
-                      >
-                        <span className="font-medium">{item.product.name}</span>
-                        <p className="text-sm text-muted-foreground">
-                          {formatPriceFull(item.totalAmount / 100)}
-                        </p>
-                      </Link>
-                    </div>
-
-                    <div className="flex items-center gap-1 rounded-full border text-sm dark:border-primary/30">
-                      <EditItemQuantityButton item={item} type="minus" />
-                      <p className="w-5 text-center font-medium">{item.quantity}</p>
-                      <EditItemQuantityButton item={item} type="plus" />
-                    </div>
-                  </li>
-                ))}
+                    </li>
+                  ))}
               </ul>
 
               <ClearCartButton />

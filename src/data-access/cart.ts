@@ -47,11 +47,11 @@ export const getCart = cache(async (): Promise<Cart | null> => {
       select: {
         items: {
           select: {
+            id: true,
+            quantity: true,
             product: {
               omit: { createdAt: true, updatedAt: true },
             },
-            id: true,
-            quantity: true,
           },
         },
         id: true,
