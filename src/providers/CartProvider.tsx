@@ -11,12 +11,14 @@ type CartAction =
   | {
       type: "UPDATE_ITEM";
       payload: { productId: string; updateType: UpdateType };
-    };
+    }
+  | { type: "CLEAR_CART" };
 
 type CartContextType = {
   optimisticCart: Cart | null;
   addOptimisticItem: (product: Product) => void;
   updateOptimisticItem: (productId: string, updateType: UpdateType) => void;
+  clearOptimisticCart: () => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -98,6 +100,9 @@ function cartReducer(state: Cart | null, action: CartAction): Cart {
       };
     }
 
+    case "CLEAR_CART":
+      return createEmptyCart();
+
     default:
       return currentCart;
   }
@@ -121,11 +126,16 @@ export function CartProvider({
     updateOptimisticCart({ type: "UPDATE_ITEM", payload: { productId, updateType } });
   }
 
+  function clearOptimisticCart() {
+    updateOptimisticCart({ type: "CLEAR_CART" });
+  }
+
   const value = useMemo(
     () => ({
       optimisticCart,
       addOptimisticItem,
       updateOptimisticItem,
+      clearOptimisticCart,
     }),
     [optimisticCart],
   );

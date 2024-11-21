@@ -169,3 +169,7 @@ export async function syncWithLocalCart(userId: string) {
     await deleteCartTokenCookie();
   });
 }
+
+export async function deleteCart(cartId: string) {
+  return await prisma.cart.delete({ where: { id: cartId } });
+}

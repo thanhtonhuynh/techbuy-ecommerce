@@ -1,6 +1,6 @@
 "use server";
 
-import { getCart, removeItem, updateItemQuantity } from "@/data-access/cart";
+import { deleteCart, getCart, removeItem, updateItemQuantity } from "@/data-access/cart";
 import { revalidatePath } from "next/cache";
 
 export async function updateItemQuantityAction(payload: { productId: string; quantity: number }) {
@@ -48,5 +48,19 @@ export async function removeItemAction(payload: { productId: string }) {
   } catch (error) {
     console.error(error);
     return "Error removing item";
+  }
+}
+
+export async function clearCartAction() {
+  try {
+    const cart = await getCart();
+    if (!cart) return "Error fetching cart";
+
+    await deleteCart(cart.id);
+
+    revalidatePath("/");
+  } catch (error) {
+    console.error(error);
+    return "Error clearing cart";
   }
 }

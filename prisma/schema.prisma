@@ -99,9 +99,9 @@ model Order {
   items           OrderItem[]
   userId          String      @db.ObjectId
   paymentIntentId String      @unique
-  paymentStatus   String
-  deliveryStatus  String
-  address         Address
+  paymentStatus   String      @default("pending")
+  deliveryStatus  String      @default("awaiting-payment")
+  address         Address?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -112,7 +112,7 @@ model Order {
 model OrderItem {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
   quantity  Int
-  pricePaid Int
+  unitPrice Int
   orderId   String @db.ObjectId
   productId String @db.ObjectId
 
