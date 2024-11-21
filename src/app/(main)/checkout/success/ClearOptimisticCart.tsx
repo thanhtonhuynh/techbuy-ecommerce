@@ -11,9 +11,8 @@ export function ClearOptimisticCart() {
   useEffect(() => {
     startTransition(() => {
       clearOptimisticCart();
+      router.refresh();
     });
-
-    router.refresh();
   }, []);
 
   return null;

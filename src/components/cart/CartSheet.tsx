@@ -34,8 +34,8 @@ export function CartSheet() {
       optimisticCart.totalQuantity > 0
     ) {
       if (!isOpen) setIsOpen(true);
-      quantityRef.current = optimisticCart?.totalQuantity;
     }
+    quantityRef.current = optimisticCart?.totalQuantity;
   }, [isOpen, optimisticCart?.totalQuantity]);
 
   return (

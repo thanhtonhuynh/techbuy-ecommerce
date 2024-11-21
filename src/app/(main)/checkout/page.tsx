@@ -1,5 +1,5 @@
 import { getCart } from "@/data-access/cart";
-import { createOrder, getOrder } from "@/data-access/order";
+import { createOrder, retrieveAndUpdateOrder } from "@/data-access/order";
 import { getCurrentSession } from "@/lib/auth/session";
 import { stripe } from "@/lib/stripe";
 import { notFound, redirect } from "next/navigation";
@@ -16,7 +16,7 @@ export default async function Page() {
   const cart = await getCart();
   if (!cart || !cart.items.length) redirect("/");
 
-  const order = (await getOrder()) ?? (await createOrder());
+  const order = (await retrieveAndUpdateOrder()) ?? (await createOrder());
   if (!order) redirect("/");
 
   const paymentIntent = await stripe.paymentIntents.retrieve(order.paymentIntentId);

@@ -19,9 +19,8 @@ export default async function Page(props: { searchParams: SearchParams }) {
 
   const isSuccess = paymentIntent.status === "succeeded";
   const orderId = paymentIntent.metadata.orderId;
-  const cartId = paymentIntent.metadata.cartId;
 
-  if (!cartId || !orderId) return notFound();
+  if (!orderId) return notFound();
 
   return (
     <>

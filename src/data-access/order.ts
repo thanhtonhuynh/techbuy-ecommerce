@@ -48,7 +48,7 @@ export async function createOrder() {
   return order;
 }
 
-export async function getOrder() {
+export async function retrieveAndUpdateOrder() {
   const { user } = await getCurrentSession();
   if (!user) return null;
 
