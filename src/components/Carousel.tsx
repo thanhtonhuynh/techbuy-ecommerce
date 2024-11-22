@@ -20,7 +20,7 @@ export function ProductsCarousel({ products }: { products: Product[] }) {
         {products.map((product, index) => (
           <CarouselItem
             key={product.id}
-            className={cn("basis-1/3", index === products.length - 1 && "mr-20")}
+            className={cn("basis-auto", index === products.length - 1 && "mr-20")}
           >
             <ProductCard product={product} />
           </CarouselItem>
