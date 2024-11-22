@@ -48,12 +48,9 @@ export async function createOrder() {
   return order;
 }
 
-export async function retrieveAndUpdateOrder() {
-  const { user } = await getCurrentSession();
-  if (!user) return null;
-
+export async function retrieveAndUpdateOrder(userId: string) {
   const existingOrder = await prisma.order.findFirst({
-    where: { userId: user.id, paymentStatus: "pending" },
+    where: { userId: userId, paymentStatus: "pending" },
   });
   if (!existingOrder) return null;
 

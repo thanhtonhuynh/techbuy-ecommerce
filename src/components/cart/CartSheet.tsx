@@ -11,7 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { formatPriceFull } from "@/lib/utils";
-import { ShoppingCart } from "lucide-react";
+import { Loader2, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { EditItemQuantityButton } from "./EditItemQuantityButton";
@@ -20,12 +20,16 @@ import { useEffect, useRef, useState } from "react";
 import { RemoveItemButton } from "./RemoveItemButton";
 import { useSession } from "@/providers/SessionProvider";
 import { ClearCartButton } from "./ClearCartButton";
+import { redirectToCheckoutAction } from "./actions";
+import { useFormStatus } from "react-dom";
+import { useRouter } from "next/navigation";
 
 export function CartSheet() {
   const { user } = useSession();
   const { optimisticCart } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const quantityRef = useRef(optimisticCart?.totalQuantity);
+  const router = useRouter();
 
   useEffect(() => {
     if (
@@ -36,7 +40,7 @@ export function CartSheet() {
       if (!isOpen) setIsOpen(true);
     }
     quantityRef.current = optimisticCart?.totalQuantity;
-  }, [isOpen, optimisticCart?.totalQuantity]);
+  }, [optimisticCart?.totalQuantity]);
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -116,15 +120,35 @@ export function CartSheet() {
         </div>
 
         {optimisticCart && optimisticCart.items.length > 0 && (
-          <SheetClose asChild>
-            <Button type="submit" className="bg-blue-600 hover:bg-blue-600/90" asChild>
-              <Link href={user ? "/checkout" : "/login"}>
-                {user ? "Proceed to Checkout" : "Login to Checkout"}
-              </Link>
-            </Button>
-          </SheetClose>
+          <>
+            {user ? (
+              <form action={redirectToCheckoutAction}>
+                <CheckoutButton />
+              </form>
+            ) : (
+              <SheetClose asChild>
+                <Button type="submit" variant={`outline`} asChild>
+                  <Link href="/login">Login to Checkout</Link>
+                </Button>
+              </SheetClose>
+            )}
+          </>
         )}
       </SheetContent>
     </Sheet>
+  );
+}
+
+function CheckoutButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button className="w-full bg-blue-600 hover:bg-blue-600/90" type="submit" disabled={pending}>
+      {pending ? (
+        <Loader2 size={15} className="mx-auto my-10 animate-spin" />
+      ) : (
+        "Proceed to Checkout"
+      )}
+    </Button>
   );
 }

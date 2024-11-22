@@ -2,6 +2,7 @@
 
 import { deleteCart, getCart, removeItem, updateItemQuantity } from "@/data-access/cart";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function updateItemQuantityAction(payload: { productId: string; quantity: number }) {
   const { productId, quantity } = payload;
@@ -63,4 +64,8 @@ export async function clearCartAction() {
     console.error(error);
     return "Error clearing cart";
   }
+}
+
+export async function redirectToCheckoutAction() {
+  redirect(`/checkout`);
 }

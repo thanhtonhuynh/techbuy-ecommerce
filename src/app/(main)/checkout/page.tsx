@@ -16,7 +16,7 @@ export default async function Page() {
   const cart = await getCart();
   if (!cart || !cart.items.length) redirect("/");
 
-  const order = (await retrieveAndUpdateOrder()) ?? (await createOrder());
+  const order = (await retrieveAndUpdateOrder(user.id)) ?? (await createOrder());
   if (!order) redirect("/");
 
   const paymentIntent = await stripe.paymentIntents.retrieve(order.paymentIntentId);

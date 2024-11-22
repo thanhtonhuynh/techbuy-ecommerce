@@ -10,7 +10,7 @@ export function ClearOptimisticCart() {
 
   useEffect(() => {
     startTransition(() => {
-      clearOptimisticCart();
+      // clearOptimisticCart();
       router.refresh();
     });
   }, []);
