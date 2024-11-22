@@ -1,8 +1,8 @@
 "use client";
 
 import { useCart } from "@/providers/CartProvider";
-import { useEffect, startTransition } from "react";
 import { useRouter } from "next/navigation";
+import { startTransition, useEffect } from "react";
 
 export function ClearOptimisticCart() {
   const { clearOptimisticCart } = useCart();
@@ -10,7 +10,7 @@ export function ClearOptimisticCart() {
 
   useEffect(() => {
     startTransition(() => {
-      // clearOptimisticCart();
+      clearOptimisticCart();
       router.refresh();
     });
   }, []);
