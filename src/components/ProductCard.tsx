@@ -1,7 +1,7 @@
-import { Product } from "@prisma/client";
-import Link from "next/link";
-import Image from "next/image";
 import { formatPrice } from "@/lib/utils";
+import { Product } from "@prisma/client";
+import Image from "next/image";
+import Link from "next/link";
 
 type ProductCardProps = {
   product: Product;
@@ -11,10 +11,10 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/product/${product.id}`}
-      className="flex cursor-pointer flex-col items-center rounded-md border text-center transition hover:scale-105 hover:border-blue-600"
+      className="flex cursor-pointer flex-col items-center rounded-md text-center shadow-[0_0_10px_0_rgba(0,0,0,0.2)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_0_10px_0_rgba(0,0,0,0.3)]"
     >
       <Image
-        className="aspect-square h-full w-full rounded-md object-cover"
+        className="aspect-square h-full w-full rounded-t-md object-cover"
         src={product.image}
         alt={product.name + " image"}
         width={300}

@@ -1,5 +1,5 @@
-import { Lock, LogOut, Settings, UserRound } from "lucide-react";
-import Link from "next/link";
+import { logoutAction } from "@/app/(auth)/actions";
+import { ProfilePicture } from "@/components/ProfilePicture";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,9 +11,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from "@/lib/auth/session";
-import { logoutAction } from "@/app/(auth)/actions";
 import { hasAccess } from "@/utils/access-control";
-import { ProfilePicture } from "@/components/ProfilePicture";
+import { Lock, LogOut, Settings, UserRound } from "lucide-react";
+import Link from "next/link";
 
 interface UserButtonProps {
   user: User;
@@ -24,7 +24,7 @@ export function UserButton({ user }: UserButtonProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button size="icon" variant={`outline`} className="rounded-full">
-          {user.image ? <ProfilePicture image={user.image} size={50} /> : <UserRound size={20} />}
+          {user.image ? <ProfilePicture image={user.image} size={50} /> : <UserRound size={17} />}
         </Button>
       </DropdownMenuTrigger>
 

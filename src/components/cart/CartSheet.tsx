@@ -11,17 +11,17 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { formatPriceFull } from "@/lib/utils";
+import { useCart } from "@/providers/CartProvider";
+import { useSession } from "@/providers/SessionProvider";
 import { Loader2, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { EditItemQuantityButton } from "./EditItemQuantityButton";
-import { useCart } from "@/providers/CartProvider";
 import { useEffect, useRef, useState } from "react";
-import { RemoveItemButton } from "./RemoveItemButton";
-import { useSession } from "@/providers/SessionProvider";
-import { ClearCartButton } from "./ClearCartButton";
-import { redirectToCheckoutAction } from "./actions";
 import { useFormStatus } from "react-dom";
+import { ClearCartButton } from "./ClearCartButton";
+import { EditItemQuantityButton } from "./EditItemQuantityButton";
+import { RemoveItemButton } from "./RemoveItemButton";
+import { redirectToCheckoutAction } from "./actions";
 
 export function CartSheet() {
   const { user } = useSession();
@@ -44,7 +44,7 @@ export function CartSheet() {
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button variant="outline" size={`icon`} className="relative rounded-full">
-          <ShoppingCart />
+          <ShoppingCart size={16} />
           {optimisticCart && optimisticCart.totalQuantity > 0 && (
             <span
               className={`absolute right-0 top-0 -mr-[5px] -mt-[5px] rounded bg-blue-600 px-1 py-[1px] text-xs font-semibold text-white`}

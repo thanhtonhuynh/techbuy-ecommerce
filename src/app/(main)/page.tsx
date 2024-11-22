@@ -1,13 +1,13 @@
-import { ProductCard } from "@/components/ProductCard";
+import { ProductsCarousel } from "@/components/Carousel";
 import { getProducts } from "@/data-access/product";
 import Image from "next/image";
 
 export default async function Home() {
-  const products = await getProducts({});
+  const products = await getProducts({ sortKey: "best-selling" });
 
   return (
     <>
-      <section className="flex items-center justify-center border-b border-border/40 px-4 py-8 dark:border-border md:px-8 md:py-10 lg:py-12">
+      <section className="flex items-center justify-center px-4 py-8 md:px-8 md:py-10 lg:py-12">
         <h1>Personal. Private. Powerful.</h1>
 
         <Image
@@ -19,13 +19,7 @@ export default async function Home() {
         />
       </section>
 
-      <section className="px-4 py-8 md:px-8">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      </section>
+      <ProductsCarousel products={products} />
     </>
   );
 }
