@@ -1,17 +1,10 @@
-import { getCurrentSession } from "@/lib/auth/session";
 import "server-only";
-import { getCart } from "./cart";
 import { stripe } from "@/lib/stripe";
 import prisma from "@/lib/prisma";
 import { Order } from "@prisma/client";
+import { Cart } from "@/types";
 
-export async function createOrder() {
-  const { user } = await getCurrentSession();
-  if (!user) return null;
-
-  const cart = await getCart();
-  if (!cart || !cart.items.length) return null;
-
+export async function createOrder(userId: string, cart: Cart) {
   const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(cart.totalAmount * 1.12),
     currency: "cad",
@@ -19,7 +12,7 @@ export async function createOrder() {
 
   const order = await prisma.order.create({
     data: {
-      userId: user.id,
+      userId: userId,
       paymentIntentId: paymentIntent.id,
       items: {
         create: cart.items.map((item) => ({
@@ -29,16 +22,7 @@ export async function createOrder() {
         })),
       },
     },
-    include: {
-      items: {
-        select: {
-          id: true,
-          quantity: true,
-          unitPrice: true,
-          product: { select: { id: true, name: true, image: true } },
-        },
-      },
-    },
+    select: { id: true },
   });
 
   await stripe.paymentIntents.update(paymentIntent.id, {
@@ -48,14 +32,11 @@ export async function createOrder() {
   return order;
 }
 
-export async function retrieveAndUpdateOrder(userId: string) {
+export async function retrieveAndUpdateOrder(userId: string, cart: Cart) {
   const existingOrder = await prisma.order.findFirst({
     where: { userId: userId, paymentStatus: "pending" },
   });
   if (!existingOrder) return null;
-
-  const cart = await getCart();
-  if (!cart || !cart.items.length) return null;
 
   await stripe.paymentIntents.update(existingOrder.paymentIntentId, {
     amount: Math.round(cart.totalAmount * 1.12),
@@ -73,16 +54,7 @@ export async function retrieveAndUpdateOrder(userId: string) {
         })),
       },
     },
-    include: {
-      items: {
-        select: {
-          id: true,
-          quantity: true,
-          unitPrice: true,
-          product: { select: { id: true, name: true, image: true } },
-        },
-      },
-    },
+    select: { id: true },
   });
 
   return order;
@@ -96,5 +68,11 @@ export async function updateOrder(id: string, data: Partial<Order>) {
   return prisma.order.update({
     where: { id },
     data,
+  });
+}
+
+export async function getUserPendingOrder(userId: string) {
+  return prisma.order.findFirst({
+    where: { userId, paymentStatus: "pending" },
   });
 }

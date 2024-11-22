@@ -1,11 +1,11 @@
 import { getCart } from "@/data-access/cart";
-import { createOrder, retrieveAndUpdateOrder } from "@/data-access/order";
+import { getUserPendingOrder } from "@/data-access/order";
 import { getCurrentSession } from "@/lib/auth/session";
 import { stripe } from "@/lib/stripe";
-import { notFound, redirect } from "next/navigation";
+import { formatPriceFull } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { formatPriceFull } from "@/lib/utils";
+import { notFound, redirect } from "next/navigation";
 import { CheckoutForm } from "./CheckoutForm";
 
 export default async function Page() {
@@ -14,10 +14,10 @@ export default async function Page() {
   if (user.accountStatus !== "active") return notFound();
 
   const cart = await getCart();
-  if (!cart || !cart.items.length) redirect("/");
+  if (!cart || !cart.items.length) return notFound();
 
-  const order = (await retrieveAndUpdateOrder(user.id)) ?? (await createOrder());
-  if (!order) redirect("/");
+  const order = await getUserPendingOrder(user.id);
+  if (!order) return notFound();
 
   const paymentIntent = await stripe.paymentIntents.retrieve(order.paymentIntentId);
   const clientSecret = paymentIntent.client_secret;

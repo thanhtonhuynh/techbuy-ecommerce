@@ -22,14 +22,12 @@ import { useSession } from "@/providers/SessionProvider";
 import { ClearCartButton } from "./ClearCartButton";
 import { redirectToCheckoutAction } from "./actions";
 import { useFormStatus } from "react-dom";
-import { useRouter } from "next/navigation";
 
 export function CartSheet() {
   const { user } = useSession();
   const { optimisticCart } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const quantityRef = useRef(optimisticCart?.totalQuantity);
-  const router = useRouter();
 
   useEffect(() => {
     if (
@@ -145,7 +143,10 @@ function CheckoutButton() {
   return (
     <Button className="w-full bg-blue-600 hover:bg-blue-600/90" type="submit" disabled={pending}>
       {pending ? (
-        <Loader2 size={15} className="mx-auto my-10 animate-spin" />
+        <span className="flex items-center gap-2">
+          <Loader2 size={15} className="animate-spin" />
+          Please wait...
+        </span>
       ) : (
         "Proceed to Checkout"
       )}
