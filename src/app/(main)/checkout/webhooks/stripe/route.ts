@@ -15,7 +15,10 @@ export async function POST(req: NextRequest) {
     const charge = event.data.object;
 
     await Promise.all([
-      updateOrder(charge.metadata.orderId, { paymentStatus: "succeeded" }),
+      updateOrder(charge.metadata.orderId, {
+        paymentStatus: "succeeded",
+        deliveryStatus: "pending",
+      }),
       updateProductsPurchasedCount(charge.metadata.orderId),
       deleteCart(charge.metadata.cartId),
     ]);
