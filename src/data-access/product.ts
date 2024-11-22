@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NewProductInput } from "@/lib/validations/product";
+import { Product } from "@prisma/client";
 import { cache } from "react";
 import "server-only";
 
@@ -28,6 +29,20 @@ export const getProducts = cache(
     query?: string;
   }) => {
     if (sortKey) {
+      if (sortKey === "best-selling") {
+        return await prisma.product.findMany({
+          where: {
+            OR: [
+              { name: { contains: query, mode: "insensitive" } },
+              { description: { contains: query, mode: "insensitive" } },
+            ],
+            purchasedCount: { gt: 0 },
+          },
+          orderBy: {
+            purchasedCount: reverse ? "asc" : "desc",
+          },
+        });
+      }
       return await prisma.product.findMany({
         where: {
           OR: [
@@ -78,3 +93,27 @@ export const getCategoryProducts = cache(
 export const getProductById = cache(async (id: string) => {
   return await prisma.product.findUnique({ where: { id } });
 });
+
+// Update a product
+export async function updateProduct(id: string, data: Partial<Product>) {
+  return await prisma.product.update({ where: { id }, data });
+}
+
+// Update purchased count for products in an order, for each order item in an order, there's a quantity of the product purchased
+export async function updateProductsPurchasedCount(orderId: string) {
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+    select: { items: { select: { productId: true, quantity: true } } },
+  });
+
+  if (!order) return;
+
+  await Promise.all(
+    order.items.map(async (item) => {
+      await prisma.product.update({
+        where: { id: item.productId },
+        data: { purchasedCount: { increment: item.quantity } },
+      });
+    }),
+  );
+}
