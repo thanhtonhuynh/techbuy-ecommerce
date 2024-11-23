@@ -24,7 +24,7 @@ export default async function Page(props: { searchParams?: SearchParams }) {
             <span className="font-extrabold">&quot;{searchValue}&quot;</span>
           </h1>
         ) : (
-          <h1>Shop All Products</h1>
+          <h1 className="gradient-text w-fit">Shop All Products</h1>
         )}
       </section>
 

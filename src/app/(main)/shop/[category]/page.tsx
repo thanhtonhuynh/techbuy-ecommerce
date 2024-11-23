@@ -1,9 +1,9 @@
 import { ProductCard } from "@/components/ProductCard";
+import { defaultSort, sortFilters } from "@/constants";
 import { getCategoryProducts } from "@/data-access/product";
 import { cn } from "@/lib/utils";
 import { getCategoryName } from "@/utils/category";
 import { FilterList } from "../FilterList";
-import { defaultSort, sortFilters } from "@/constants";
 
 type Params = Promise<{ category: string }>;
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
@@ -20,7 +20,7 @@ export default async function Page(props: { params: Params; searchParams?: Searc
   return (
     <>
       <section className="border-b border-border/40 px-4 py-8 dark:border-border md:px-8 md:py-10 lg:py-12">
-        <h1>
+        <h1 className="gradient-text w-fit">
           <span>Shop </span>
           <span className={cn(category !== "iphone" && category !== "ipad" && "capitalize")}>
             {getCategoryName(category)}
