@@ -41,9 +41,9 @@ export function UserButton({ user }: UserButtonProps) {
             <DropdownMenuGroup>
               {hasAccess(user.role, "/admin") && (
                 <DropdownMenuItem asChild>
-                  <Link href="/admin" className="cursor-pointer">
+                  <Link href="/admin-dashboard" className="cursor-pointer">
                     <Lock size={16} />
-                    Admin
+                    Admin dashboard
                   </Link>
                 </DropdownMenuItem>
               )}

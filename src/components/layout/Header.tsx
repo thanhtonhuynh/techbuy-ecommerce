@@ -1,9 +1,10 @@
-import { UserButton } from "@/components/buttons/UserButton";
 import { CartSheet } from "@/components/cart/CartSheet";
 import { Nav, NavLink } from "@/components/layout/Nav";
 import { Search } from "@/components/layout/Search";
+import { UserButton } from "@/components/layout/UserButton";
 import { Button } from "@/components/ui/button";
 import { getCurrentSession } from "@/lib/auth/session";
+import { hasAccess } from "@/utils/access-control";
 import { MonitorSpeaker } from "lucide-react";
 import Link from "next/link";
 
@@ -34,6 +35,12 @@ export async function Header() {
           <div className="flex-1">
             <Search />
           </div>
+
+          {user && hasAccess(user.role, "/admin") && (
+            <Button asChild variant={`outline`}>
+              <Link href="/admin-dashboard">Admin Dashboard</Link>
+            </Button>
+          )}
 
           <CartSheet />
 
