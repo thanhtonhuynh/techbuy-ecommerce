@@ -1,11 +1,11 @@
-import Link from "next/link";
 import { UserButton } from "@/components/buttons/UserButton";
-import { getCurrentSession } from "@/lib/auth/session";
-import { Nav, NavLink } from "@/components/layout/Nav";
-import { MonitorSpeaker } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { CartSheet } from "@/components/cart/CartSheet";
+import { Nav, NavLink } from "@/components/layout/Nav";
 import { Search } from "@/components/layout/Search";
+import { Button } from "@/components/ui/button";
+import { getCurrentSession } from "@/lib/auth/session";
+import { MonitorSpeaker } from "lucide-react";
+import Link from "next/link";
 
 export async function Header() {
   const { user } = await getCurrentSession();

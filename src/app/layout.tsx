@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
-import { ThemeProvider } from "@/providers/ThemeProvider";
-import { Toaster } from "sonner";
-import { getCart } from "@/data-access/cart";
-import { CartProvider } from "@/providers/CartProvider";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { TailwindScreenSizeIndicator } from "@/components/TailwindScreenSizeIndicator";
+import { getCart } from "@/data-access/cart";
 import { getCurrentSession } from "@/lib/auth/session";
+import { CartProvider } from "@/providers/CartProvider";
 import { SessionProvider } from "@/providers/SessionProvider";
+import { ThemeProvider } from "@/providers/ThemeProvider";
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import { Toaster } from "sonner";
+import "./globals.css";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -50,6 +51,7 @@ export default function RootLayout({
           </SessionProvider>
         </ThemeProvider>
         <Toaster richColors closeButton />
+        <TailwindScreenSizeIndicator />
       </body>
     </html>
   );

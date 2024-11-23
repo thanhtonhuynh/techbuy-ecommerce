@@ -60,6 +60,41 @@ export default {
         sans: ["var(--font-geist-sans)"],
         mono: ["var(--font-geist-mono)"],
       },
+      keyframes: {
+        bgGradient: {
+          "0%, 100%": {
+            "background-position": "0% 50%",
+          },
+          "50%": {
+            "background-position": "100% 100%",
+          },
+        },
+        blobby: {
+          "0%": {
+            transform: "scale(1) translate(0px, 0px)",
+          },
+          "33%": {
+            transform: "scale(1.1) translate(20, -20px)",
+          },
+          "66%": {
+            transform: "scale(0.9) translate(30px, 20px)",
+          },
+          "100%": {
+            transform: "scale(1) translate(0px, 0px)",
+          },
+        },
+      },
+      animation: {
+        bgGradient: "bgGradient 12s ease infinite",
+        blobby: "blobby 7s ease infinite",
+      },
+      backgroundImage: {
+        gradient45: "linear-gradient(-45deg, #4158D0, #E560DC, #FFB374, #EF5F5F, #D840B6)",
+      },
+      transitionDelay: {
+        2000: "2000ms",
+        4000: "4000ms",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
