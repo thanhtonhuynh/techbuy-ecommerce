@@ -1,9 +1,6 @@
 "use client";
 
-import { NewProductInput, NewProductSchema } from "@/lib/validations/product";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { LoadingButton } from "@/components/buttons/LoadingButton";
 import {
   Form,
   FormControl,
@@ -12,10 +9,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { addProductAction } from "./actions";
-import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
-import { LoadingButton } from "@/components/buttons/LoadingButton";
+import { NewProductInput, NewProductSchema } from "@/lib/validations/product";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { addProductAction } from "./actions";
 
 export function ProductForm() {
   const [isPending, startTransition] = useTransition();
@@ -45,10 +45,7 @@ export function ProductForm() {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="mx-auto max-w-3xl space-y-8 rounded border p-4 shadow md:p-16"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-3xl space-y-4">
         <FormField
           control={form.control}
           name="name"
