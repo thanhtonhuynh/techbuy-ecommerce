@@ -1,4 +1,4 @@
-import { logoutAction } from "@/app/(auth)/actions";
+import { logoutAction } from "@/app/(main)/(auth)/actions";
 import { ProfilePicture } from "@/components/ProfilePicture";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,7 +41,7 @@ export function UserButton({ user }: UserButtonProps) {
             <DropdownMenuGroup>
               {hasAccess(user.role, "/admin") && (
                 <DropdownMenuItem asChild>
-                  <Link href="/admin-dashboard" className="cursor-pointer">
+                  <Link href="/dashboard" className="cursor-pointer">
                     <Lock size={16} />
                     Admin dashboard
                   </Link>

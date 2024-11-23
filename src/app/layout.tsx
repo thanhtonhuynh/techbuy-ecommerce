@@ -1,5 +1,3 @@
-import { Footer } from "@/components/layout/Footer";
-import { Header } from "@/components/layout/Header";
 import { TailwindScreenSizeIndicator } from "@/components/TailwindScreenSizeIndicator";
 import { getCart } from "@/data-access/cart";
 import { getCurrentSession } from "@/lib/auth/session";
@@ -42,11 +40,12 @@ export default function RootLayout({
         <ThemeProvider>
           <SessionProvider sessionPromise={session}>
             <CartProvider cartPromise={cart}>
-              <div className="relative mx-auto flex min-h-screen w-full flex-col border-border/40 dark:border-border min-[1800px]:max-w-screen-2xl min-[1800px]:border-x">
+              {/* <div className="relative mx-auto flex min-h-screen w-full flex-col border-border/40 dark:border-border min-[1800px]:max-w-screen-2xl min-[1800px]:border-x">
                 <Header />
                 <main className="flex-1">{children}</main>
                 <Footer />
-              </div>
+              </div> */}
+              {children}
             </CartProvider>
           </SessionProvider>
         </ThemeProvider>

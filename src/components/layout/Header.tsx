@@ -38,7 +38,7 @@ export async function Header() {
 
           {user && hasAccess(user.role, "/admin") && (
             <Button asChild variant={`outline`}>
-              <Link href="/admin-dashboard">Admin Dashboard</Link>
+              <Link href="/dashboard">Admin Dashboard</Link>
             </Button>
           )}
 
