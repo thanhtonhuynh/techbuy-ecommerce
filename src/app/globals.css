@@ -82,3 +82,9 @@ body {
     @apply text-xl font-semibold;
   }
 }
+
+@layer utilities {
+  .gradient-text {
+    @apply bg-gradient-to-r from-blue-500 via-pink-500 to-orange-500 bg-clip-text text-transparent;
+  }
+}
