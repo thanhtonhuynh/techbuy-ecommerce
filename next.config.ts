@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "store.storeimages.cdn-apple.com",
       },
+      {
+        protocol: "https",
+        hostname: "techbuy-bucket.s3.ca-central-1.amazonaws.com",
+      },
     ],
   },
 };

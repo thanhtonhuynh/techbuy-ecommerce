@@ -2,6 +2,7 @@ import { UserButton } from "@/components/layout/UserButton";
 import { Button } from "@/components/ui/button";
 import { getCurrentSession } from "@/lib/auth/session";
 import Link from "next/link";
+import { ModeToggle } from "../layout/ModeToggle";
 import { Nav, NavLink } from "../layout/Nav";
 
 export async function AdminHeader() {
@@ -22,7 +23,10 @@ export async function AdminHeader() {
           </Nav>
         </div>
 
-        <div className="flex items-center space-x-2">{user && <UserButton user={user} />}</div>
+        <div className="flex items-center space-x-2">
+          <ModeToggle />
+          {user && <UserButton user={user} />}
+        </div>
       </div>
     </header>
   );

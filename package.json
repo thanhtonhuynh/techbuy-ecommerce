@@ -11,6 +11,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.701.0",
     "@hookform/resolvers": "^3.9.1",
     "@node-rs/argon2": "^2.0.0",
     "@oslojs/binary": "^1.0.0",
@@ -38,6 +39,7 @@
     "nodemailer": "^6.9.16",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react-dropzone": "^14.3.5",
     "react-hook-form": "^7.53.1",
     "server-only": "^0.0.1",
     "sonner": "^1.7.0",

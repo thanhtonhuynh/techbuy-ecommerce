@@ -1,5 +1,4 @@
 import prisma from "@/lib/prisma";
-import { NewProductInput } from "@/lib/validations/product";
 import { Product } from "@prisma/client";
 import { cache } from "react";
 import "server-only";
@@ -11,7 +10,13 @@ export async function createProduct({
   price,
   image,
   category,
-}: NewProductInput) {
+}: {
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  category: string;
+}) {
   return await prisma.product.create({
     data: { name, description, price, image, category },
   });

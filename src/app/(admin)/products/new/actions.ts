@@ -2,6 +2,7 @@
 
 import { createProduct } from "@/data-access/product";
 import { getCurrentSession } from "@/lib/auth/session";
+import { uploadFileToS3 } from "@/lib/s3";
 import { NewProductInput, NewProductSchema } from "@/lib/validations/product";
 import { hasAccess } from "@/utils/access-control";
 import { authenticatedRateLimit, rateLimitByKey } from "@/utils/rate-limiter";
@@ -9,11 +10,7 @@ import { authenticatedRateLimit, rateLimitByKey } from "@/utils/rate-limiter";
 export async function addProductAction(data: NewProductInput) {
   try {
     const { user } = await getCurrentSession();
-    if (
-      !user ||
-      user.accountStatus !== "active" ||
-      !hasAccess(user.role, "/admin")
-    ) {
+    if (!user || user.accountStatus !== "active" || !hasAccess(user.role, "/admin")) {
       return { error: "Unauthorized" };
     }
 
@@ -33,7 +30,9 @@ export async function addProductAction(data: NewProductInput) {
 
     const parsedData = NewProductSchema.parse(data);
 
-    await createProduct(parsedData);
+    const imageUrl = await uploadFileToS3(parsedData.image[0]);
+
+    await createProduct({ ...parsedData, image: imageUrl });
 
     return {};
   } catch (error) {
