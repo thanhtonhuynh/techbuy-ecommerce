@@ -3,7 +3,11 @@ import { getProducts } from "@/data-access/product";
 import Image from "next/image";
 
 export default async function Home() {
-  const { products } = await getProducts({ sortKey: "best-selling" });
+  const { products } = await getProducts({
+    status: "active",
+    sortKey: "purchasedCount",
+    reverse: true,
+  });
 
   return (
     <>

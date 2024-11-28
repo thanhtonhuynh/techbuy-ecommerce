@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { GetProductsOptions } from "@/types";
 import { Product } from "@prisma/client";
 import { cache } from "react";
 import "server-only";
@@ -24,103 +25,34 @@ export async function createProduct({
 
 // Get products
 export const getProducts = cache(
-  async ({
-    status,
-    sortKey,
-    reverse,
-    query = "",
-    page = 1,
-    perPage = 10,
-  }: {
-    status?: string;
-    sortKey?: string;
-    reverse?: boolean;
-    query?: string;
-    page?: number;
-    perPage?: number;
-  }) => {
-    let data: Product[] = [];
-    let total: number;
-
-    if (sortKey) {
-      if (sortKey === "best-selling") {
-        data = await prisma.product.findMany({
-          where: {
-            OR: [
-              { name: { contains: query, mode: "insensitive" } },
-              { description: { contains: query, mode: "insensitive" } },
-            ],
-            purchasedCount: { gt: 0 },
-          },
-          orderBy: {
-            purchasedCount: reverse ? "asc" : "desc",
-          },
-          skip: (page - 1) * perPage,
-          take: perPage,
-        });
-
-        total = await prisma.product.count({
-          where: {
-            OR: [
-              { name: { contains: query, mode: "insensitive" } },
-              { description: { contains: query, mode: "insensitive" } },
-            ],
-            purchasedCount: { gt: 0 },
-          },
-        });
-
-        return { products: data, total };
-      }
-
-      data = await prisma.product.findMany({
-        where: {
-          OR: [
-            { name: { contains: query, mode: "insensitive" } },
-            { description: { contains: query, mode: "insensitive" } },
-          ],
-        },
-        orderBy: {
-          [sortKey]: reverse ? "desc" : "asc",
-        },
-        skip: (page - 1) * perPage,
-        take: perPage,
-      });
-
-      total = await prisma.product.count({
-        where: {
-          OR: [
-            { name: { contains: query, mode: "insensitive" } },
-            { description: { contains: query, mode: "insensitive" } },
-          ],
-        },
-      });
-
-      return { products: data, total };
-    }
-
-    data = await prisma.product.findMany({
+  async ({ status, sortKey, reverse, query = "", page = 1, perPage = 10 }: GetProductsOptions) => {
+    const products = await prisma.product.findMany({
       where: {
         status,
         OR: [
           { name: { contains: query, mode: "insensitive" } },
           { description: { contains: query, mode: "insensitive" } },
         ],
+        ...(sortKey === "purchasedCount" && { purchasedCount: { gt: 0 } }),
+      },
+      orderBy: {
+        ...(sortKey && { [sortKey]: reverse ? "desc" : "asc" }),
       },
       skip: (page - 1) * perPage,
       take: perPage,
     });
 
-    total = await prisma.product.count({
+    const total = await prisma.product.count({
       where: {
-        status,
         OR: [
           { name: { contains: query, mode: "insensitive" } },
           { description: { contains: query, mode: "insensitive" } },
         ],
+        ...(sortKey === "purchasedCount" && { purchasedCount: { gt: 0 } }),
       },
     });
 
-    return { products: data, total };
+    return { products, total };
   },
 );
 

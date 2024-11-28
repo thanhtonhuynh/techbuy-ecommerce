@@ -36,3 +36,12 @@ export type Cart = {
   totalQuantity: number;
   totalAmount: number;
 };
+
+export type GetProductsOptions = {
+  status?: string;
+  sortKey?: string;
+  reverse?: boolean;
+  query?: string;
+  page?: number;
+  perPage?: number;
+};
