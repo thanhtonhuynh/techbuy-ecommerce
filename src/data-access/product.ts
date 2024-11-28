@@ -44,6 +44,7 @@ export const getProducts = cache(
 
     const total = await prisma.product.count({
       where: {
+        status,
         OR: [
           { name: { contains: query, mode: "insensitive" } },
           { description: { contains: query, mode: "insensitive" } },
