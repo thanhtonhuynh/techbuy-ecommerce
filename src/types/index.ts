@@ -45,3 +45,10 @@ export type GetProductsOptions = {
   page?: number;
   perPage?: number;
 };
+
+export type GetCategoryProductsOptions = {
+  category: string;
+  status?: string;
+  sortKey?: string;
+  reverse?: boolean;
+};

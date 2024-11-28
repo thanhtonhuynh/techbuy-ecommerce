@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { GetProductsOptions } from "@/types";
+import { GetCategoryProductsOptions, GetProductsOptions } from "@/types";
 import { Prisma, Product } from "@prisma/client";
 import { cache } from "react";
 import "server-only";
@@ -40,13 +40,14 @@ export const getProducts = cache(
       orderBy: {
         ...(sortKey && { [sortKey]: reverse ? "desc" : "asc" }),
       },
-      skip: (page - 1) * perPage,
-      take: perPage,
+      // skip: (page - 1) * perPage,
+      // take: perPage,
     });
 
-    const total = await prisma.product.count({ where: whereConditions });
+    // const total = await prisma.product.count({ where: whereConditions });
 
-    return { products, total };
+    // return { products, total };
+    return { products };
   },
 );
 
@@ -76,25 +77,16 @@ export const getAdminProducts = cache(
 
 // Get products by category
 export const getCategoryProducts = cache(
-  async ({
-    category,
-    sortKey,
-    reverse,
-  }: {
-    category: string;
-    sortKey?: string;
-    reverse?: boolean;
-  }) => {
-    if (sortKey) {
-      return await prisma.product.findMany({
-        where: { category: { contains: category, mode: "insensitive" } },
-        orderBy: {
-          [sortKey]: reverse ? "desc" : "asc",
-        },
-      });
-    }
+  async ({ category, status, sortKey, reverse }: GetCategoryProductsOptions) => {
     return await prisma.product.findMany({
-      where: { category: { contains: category, mode: "insensitive" } },
+      where: {
+        status,
+        category: { contains: category, mode: "insensitive" },
+        ...(sortKey === "purchasedCount" && { purchasedCount: { gt: 0 } }),
+      },
+      orderBy: {
+        ...(sortKey && { [sortKey]: reverse ? "desc" : "asc" }),
+      },
     });
   },
 );
