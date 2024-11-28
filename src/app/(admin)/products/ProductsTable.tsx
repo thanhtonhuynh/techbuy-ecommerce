@@ -1,6 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -13,6 +12,7 @@ import { formatPriceFull } from "@/lib/utils";
 import { Product } from "@prisma/client";
 import moment from "moment";
 import Image from "next/image";
+import { ProductStatusBadge } from "./ProductStatusBadge";
 
 export function ProductsTable({ products }: { products: Product[] }) {
   return (
@@ -62,9 +62,7 @@ export function ProductsTable({ products }: { products: Product[] }) {
               <TableCell>{formatPriceFull(product.price / 100)}</TableCell>
 
               <TableCell>
-                <Badge variant={`outline`} className="capitalize text-green-500">
-                  {product.status}
-                </Badge>
+                <ProductStatusBadge status={product.status} />
               </TableCell>
 
               <TableCell>{product.category}</TableCell>
