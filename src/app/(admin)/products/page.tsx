@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { getProducts } from "@/data-access/product";
+import { getAdminProducts } from "@/data-access/product";
 import { getCurrentSession } from "@/lib/auth/session";
 import { hasAccess } from "@/utils/access-control";
 import { ChevronRight } from "lucide-react";
@@ -25,7 +25,7 @@ export default async function Page(props: { searchParams?: SearchParams }) {
 
   if (page < 1 || perPage < 1) return notFound();
 
-  const { products, total } = await getProducts({ status, query: searchValue, page, perPage });
+  const { products, total } = await getAdminProducts({ status, query: searchValue, page, perPage });
 
   return (
     <>

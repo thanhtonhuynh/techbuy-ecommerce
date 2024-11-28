@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import { GetProductsOptions } from "@/types";
-import { Product } from "@prisma/client";
+import { Prisma, Product } from "@prisma/client";
 import { cache } from "react";
 import "server-only";
 
@@ -26,15 +26,17 @@ export async function createProduct({
 // Get products
 export const getProducts = cache(
   async ({ status, sortKey, reverse, query = "", page = 1, perPage = 10 }: GetProductsOptions) => {
+    const whereConditions = Prisma.validator<Prisma.ProductWhereInput>()({
+      status,
+      OR: [
+        { name: { contains: query, mode: "insensitive" } },
+        { description: { contains: query, mode: "insensitive" } },
+      ],
+      ...(sortKey === "purchasedCount" && { purchasedCount: { gt: 0 } }),
+    });
+
     const products = await prisma.product.findMany({
-      where: {
-        status,
-        OR: [
-          { name: { contains: query, mode: "insensitive" } },
-          { description: { contains: query, mode: "insensitive" } },
-        ],
-        ...(sortKey === "purchasedCount" && { purchasedCount: { gt: 0 } }),
-      },
+      where: whereConditions,
       orderBy: {
         ...(sortKey && { [sortKey]: reverse ? "desc" : "asc" }),
       },
@@ -42,16 +44,31 @@ export const getProducts = cache(
       take: perPage,
     });
 
-    const total = await prisma.product.count({
-      where: {
-        status,
-        OR: [
-          { name: { contains: query, mode: "insensitive" } },
-          { description: { contains: query, mode: "insensitive" } },
-        ],
-        ...(sortKey === "purchasedCount" && { purchasedCount: { gt: 0 } }),
-      },
+    const total = await prisma.product.count({ where: whereConditions });
+
+    return { products, total };
+  },
+);
+
+// Get Admin Products
+export const getAdminProducts = cache(
+  async ({ status, sortKey, reverse, query = "", page = 1, perPage = 10 }: GetProductsOptions) => {
+    const whereConditions = Prisma.validator<Prisma.ProductWhereInput>()({
+      status,
+      name: { contains: query, mode: "insensitive" },
+      ...(sortKey === "purchasedCount" && { purchasedCount: { gt: 0 } }),
     });
+
+    const products = await prisma.product.findMany({
+      where: whereConditions,
+      orderBy: {
+        ...(sortKey && { [sortKey]: reverse ? "desc" : "asc" }),
+      },
+      skip: (page - 1) * perPage,
+      take: perPage,
+    });
+
+    const total = await prisma.product.count({ where: whereConditions });
 
     return { products, total };
   },
