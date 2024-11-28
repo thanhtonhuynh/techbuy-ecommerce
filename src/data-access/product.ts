@@ -29,7 +29,7 @@ export const getProducts = cache(
     reverse,
     query = "",
     page = 1,
-    perPage = 5,
+    perPage = 10,
   }: {
     sortKey?: string;
     reverse?: boolean;
@@ -133,13 +133,15 @@ export const getCategoryProducts = cache(
   }) => {
     if (sortKey) {
       return await prisma.product.findMany({
-        where: { category },
+        where: { category: { contains: category, mode: "insensitive" } },
         orderBy: {
           [sortKey]: reverse ? "desc" : "asc",
         },
       });
     }
-    return await prisma.product.findMany({ where: { category } });
+    return await prisma.product.findMany({
+      where: { category: { contains: category, mode: "insensitive" } },
+    });
   },
 );
 

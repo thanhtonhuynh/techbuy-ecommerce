@@ -14,6 +14,7 @@ export default async function Page(props: { params: Params; searchParams?: Searc
   const { category } = params;
   const { sort } = searchParams as { [key: string]: string };
   const { sortKey, reverse } = sortFilters.find((filter) => filter.slug === sort) || defaultSort;
+  console.log(category);
 
   const products = await getCategoryProducts({ category: params.category, sortKey, reverse });
 

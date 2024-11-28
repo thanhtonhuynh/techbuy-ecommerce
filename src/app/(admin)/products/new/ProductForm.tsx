@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { NewProductInput, NewProductSchema } from "@/lib/validations/product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImagePlus } from "lucide-react";
@@ -36,6 +37,7 @@ export function ProductForm() {
       description: "",
       price: 0,
       category: "",
+      image: [],
     },
   });
   const dropZoneConfig = {
@@ -86,7 +88,7 @@ export function ProductForm() {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="The best phone ever" />
+                <Textarea {...field} placeholder="The best phone ever" className="h-32" />
               </FormControl>
               <FormMessage />
             </FormItem>

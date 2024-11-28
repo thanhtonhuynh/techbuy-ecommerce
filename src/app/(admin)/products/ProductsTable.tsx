@@ -19,7 +19,7 @@ export function ProductsTable({ products }: { products: Product[] }) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="hidden w-[72px] px-0 sm:table-cell">
+          <TableHead className="hidden w-[50px] px-0 sm:table-cell">
             <span className="sr-only">Image</span>
           </TableHead>
 
@@ -41,12 +41,12 @@ export function ProductsTable({ products }: { products: Product[] }) {
         {products.length ? (
           products.map((product) => (
             <TableRow key={product.id}>
-              <TableCell className="hidden min-w-[64px] px-0 sm:table-cell">
+              <TableCell className="hidden min-w-[50px] px-0 sm:table-cell">
                 <Image
                   src={product.image}
                   alt={product.name}
-                  width={64}
-                  height={64}
+                  width={50}
+                  height={50}
                   quality={100}
                   className="aspect-square rounded-md object-cover"
                 />
@@ -76,7 +76,7 @@ export function ProductsTable({ products }: { products: Product[] }) {
           ))
         ) : (
           <TableRow>
-            <TableCell colSpan={7} className="text-center text-lg font-bold">
+            <TableCell colSpan={7} className="text-center font-bold">
               No products found
             </TableCell>
           </TableRow>
