@@ -1,3 +1,5 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -36,41 +38,49 @@ export function ProductsTable({ products }: { products: Product[] }) {
       </TableHeader>
 
       <TableBody>
-        {products.map((product) => (
-          <TableRow key={product.id}>
-            <TableCell className="hidden min-w-[64px] px-0 sm:table-cell">
-              <Image
-                src={product.image}
-                alt={product.name}
-                width={64}
-                height={64}
-                quality={100}
-                className="aspect-square rounded-md object-cover"
-              />
+        {products.length ? (
+          products.map((product) => (
+            <TableRow key={product.id}>
+              <TableCell className="hidden min-w-[64px] px-0 sm:table-cell">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  width={64}
+                  height={64}
+                  quality={100}
+                  className="aspect-square rounded-md object-cover"
+                />
+              </TableCell>
+
+              <TableCell>
+                <div className="flex flex-col">
+                  <span className="font-bold">{product.name}</span>
+                  <span className="text-muted-foreground">{product.id}</span>
+                </div>
+              </TableCell>
+
+              <TableCell>{formatPriceFull(product.price / 100)}</TableCell>
+
+              <TableCell>
+                <Badge variant={`outline`} className="capitalize text-green-500">
+                  {product.status}
+                </Badge>
+              </TableCell>
+
+              <TableCell>{product.category}</TableCell>
+
+              <TableCell>{product.purchasedCount}</TableCell>
+
+              <TableCell>{moment(product.createdAt).format("MMM DD, YYYY")}</TableCell>
+            </TableRow>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={7} className="text-center text-lg font-bold">
+              No products found
             </TableCell>
-
-            <TableCell>
-              <div className="flex flex-col">
-                <span className="font-bold">{product.name}</span>
-                <span className="text-muted-foreground">{product.id}</span>
-              </div>
-            </TableCell>
-
-            <TableCell>{formatPriceFull(product.price / 100)}</TableCell>
-
-            <TableCell>
-              <Badge variant={`outline`} className="capitalize text-green-500">
-                {product.status}
-              </Badge>
-            </TableCell>
-
-            <TableCell>{product.category}</TableCell>
-
-            <TableCell>{product.purchasedCount}</TableCell>
-
-            <TableCell>{moment(product.createdAt).format("MMM DD, YYYY")}</TableCell>
           </TableRow>
-        ))}
+        )}
       </TableBody>
     </Table>
   );

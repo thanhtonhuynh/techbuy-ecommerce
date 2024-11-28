@@ -6,7 +6,7 @@ import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { PaginationControls } from "./PaginationControls";
-import { ProductsTable } from "./ProductsTable";
+import { Products } from "./Products";
 
 type SearchParams = Promise<{ [key: string]: string | undefined }>;
 
@@ -47,7 +47,7 @@ export default async function Page(props: { searchParams?: SearchParams }) {
       </section>
 
       <section className="mt-8 space-y-2 px-4 md:px-8">
-        <ProductsTable products={products} />
+        <Products initialProducts={products} />
       </section>
     </>
   );
