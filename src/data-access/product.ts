@@ -25,12 +25,14 @@ export async function createProduct({
 // Get products
 export const getProducts = cache(
   async ({
+    status,
     sortKey,
     reverse,
     query = "",
     page = 1,
     perPage = 10,
   }: {
+    status?: string;
     sortKey?: string;
     reverse?: boolean;
     query?: string;
@@ -98,6 +100,7 @@ export const getProducts = cache(
 
     data = await prisma.product.findMany({
       where: {
+        status,
         OR: [
           { name: { contains: query, mode: "insensitive" } },
           { description: { contains: query, mode: "insensitive" } },
@@ -109,6 +112,7 @@ export const getProducts = cache(
 
     total = await prisma.product.count({
       where: {
+        status,
         OR: [
           { name: { contains: query, mode: "insensitive" } },
           { description: { contains: query, mode: "insensitive" } },

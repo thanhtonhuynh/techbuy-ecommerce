@@ -6,6 +6,7 @@ import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { PaginationControls } from "./PaginationControls";
+import { ProductNav } from "./ProductNav";
 import { Products } from "./Products";
 
 type SearchParams = Promise<{ [key: string]: string | undefined }>;
@@ -19,9 +20,11 @@ export default async function Page(props: { searchParams?: SearchParams }) {
   const searchParams = await props.searchParams;
   const page = searchParams?.page ? parseInt(searchParams.page) : 1;
   const perPage = searchParams?.perPage ? parseInt(searchParams.perPage) : 10;
+  const status = searchParams?.status;
+
   if (page < 1 || perPage < 1) return notFound();
 
-  const { products, total } = await getProducts({ page, perPage });
+  const { products, total } = await getProducts({ status, page, perPage });
 
   return (
     <>
@@ -46,7 +49,11 @@ export default async function Page(props: { searchParams?: SearchParams }) {
         </div>
       </section>
 
-      <section className="mt-8 space-y-2 px-4 md:px-8">
+      <section className="mt-4 px-4 md:px-8">
+        <ProductNav />
+      </section>
+
+      <section className="mt-4 space-y-2 px-4 md:px-8">
         <Products initialProducts={products} />
       </section>
     </>
