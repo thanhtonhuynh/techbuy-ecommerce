@@ -13,7 +13,7 @@ export async function uploadFileToS3(file: File) {
   const buffer = Buffer.from(await file.arrayBuffer());
   const params = {
     Bucket: process.env.AWS_S3_BUCKET_NAME,
-    Key: `${file.name}-${Date.now()}`,
+    Key: `${file.name}`,
     Body: buffer,
     ContentType: file.type,
   };
