@@ -5,15 +5,23 @@ import { hasAccess } from "@/utils/access-control";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { PaginationControls } from "./PaginationControls";
 import { ProductsTable } from "./ProductsTable";
 
-export default async function Page() {
+type SearchParams = Promise<{ [key: string]: string | undefined }>;
+
+export default async function Page(props: { searchParams?: SearchParams }) {
   const { session, user } = await getCurrentSession();
   if (!session) redirect("/login");
   if (user.accountStatus !== "active") return notFound();
   if (!hasAccess(user.role, "/admin")) return notFound();
 
-  const products = await getProducts({});
+  const searchParams = await props.searchParams;
+  const page = searchParams?.page ? parseInt(searchParams.page) : 1;
+  const perPage = searchParams?.perPage ? parseInt(searchParams.perPage) : 10;
+  if (page < 1 || perPage < 1) return notFound();
+
+  const { products, total } = await getProducts({ page, perPage });
 
   return (
     <>
@@ -30,8 +38,12 @@ export default async function Page() {
         </Button>
       </section>
 
-      <section className="mt-4 px-4 md:px-8">
+      <section className="mt-4 flex justify-between px-4 md:px-8">
         <BreadcrumbNav />
+
+        <div className="w-fit">
+          <PaginationControls total={total} page={page} perPage={perPage} />
+        </div>
       </section>
 
       <section className="mt-8 space-y-2 px-4 md:px-8">
