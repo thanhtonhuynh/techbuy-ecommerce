@@ -1,5 +1,3 @@
-"use client";
-
 import { LoadingButton } from "@/components/buttons/LoadingButton";
 import {
   Form,
@@ -11,15 +9,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { CategoryInput, CategorySchema } from "@/lib/validations/category";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition } from "react";
-
+import { Dispatch, SetStateAction, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { addCategoryAction } from "./actions";
 
-export function CategoryForm() {
+export function CategoryForm({
+  className,
+  setOpen,
+}: {
+  className?: string;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) {
   const [isPending, startTransition] = useTransition();
   const form = useForm<CategoryInput>({
     resolver: zodResolver(CategorySchema),
@@ -36,6 +40,7 @@ export function CategoryForm() {
       if (error) toast.error(error);
       else {
         form.reset();
+        setOpen(false);
         toast.success("Category added successfully");
       }
     });
@@ -43,7 +48,7 @@ export function CategoryForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto max-w-3xl space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className={cn("space-y-4", className)}>
         <FormField
           control={form.control}
           name="name"
