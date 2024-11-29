@@ -35,6 +35,10 @@ export async function updateProductStatusAction(
     throw new Error("Product not found.");
   }
 
+  if (product.status === status) {
+    throw new Error("Product already has this status.");
+  }
+
   await updateProduct(productId, { status });
 
   revalidatePath("/products");
