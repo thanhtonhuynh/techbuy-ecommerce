@@ -62,7 +62,7 @@ model Product {
   description    String
   price          Int
   image          String
-  category       String
+  categoryId     String @db.ObjectId
   purchasedCount Int    @default(0)
   status         String @default("draft")
 
@@ -71,6 +71,16 @@ model Product {
 
   cartItems  CartItem[]
   orderItems OrderItem[]
+
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+}
+
+model Category {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+  slug String @unique
+
+  products Product[]
 }
 
 model Cart {
