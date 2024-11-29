@@ -12,34 +12,38 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { CategoryInput, CategorySchema } from "@/lib/validations/category";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Category } from "@prisma/client";
 import { Dispatch, SetStateAction, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { addCategoryAction } from "./actions";
+import { addCategoryAction, updateCategoryAction } from "./actions";
 
 export function CategoryForm({
   className,
   setOpen,
+  category,
 }: {
   className?: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  category?: Category;
 }) {
   const [isPending, startTransition] = useTransition();
   const form = useForm<CategoryInput>({
     resolver: zodResolver(CategorySchema),
     defaultValues: {
-      name: "",
-      slug: "",
+      name: category?.name || "",
+      slug: category?.slug || "",
     },
   });
 
   async function onSubmit(data: CategoryInput) {
     startTransition(async () => {
-      const error = await addCategoryAction(data);
+      const error = category
+        ? await updateCategoryAction(category.id, data)
+        : await addCategoryAction(data);
 
       if (error) toast.error(error);
       else {
-        form.reset();
         setOpen(false);
         toast.success("Category added successfully");
       }

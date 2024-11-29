@@ -7,6 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getCategories } from "@/data-access/category";
+import { CategoryActions } from "./CategoryActions";
 
 export async function CategoryTable() {
   const categories = await getCategories();
@@ -38,7 +39,9 @@ export async function CategoryTable() {
 
               <TableCell>{category.slug}</TableCell>
 
-              <TableCell>{/* <CategoryActions category={category} /> */}</TableCell>
+              <TableCell>
+                <CategoryActions category={category} />
+              </TableCell>
             </TableRow>
           ))
         ) : (
