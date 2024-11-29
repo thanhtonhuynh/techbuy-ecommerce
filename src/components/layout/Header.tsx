@@ -3,6 +3,7 @@ import { Nav, NavLink } from "@/components/layout/Nav";
 import { Search } from "@/components/layout/Search";
 import { UserButton } from "@/components/layout/UserButton";
 import { Button } from "@/components/ui/button";
+import { getCategories } from "@/data-access/category";
 import { getCurrentSession } from "@/lib/auth/session";
 import { hasAccess } from "@/utils/access-control";
 import { MonitorSpeaker } from "lucide-react";
@@ -10,6 +11,7 @@ import Link from "next/link";
 
 export async function Header() {
   const { user } = await getCurrentSession();
+  const categories = await getCategories();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:border-border">
@@ -22,12 +24,11 @@ export async function Header() {
 
           <Nav className="hidden lg:block">
             <NavLink href={`/shop`}>All</NavLink>
-            <NavLink href={`/shop/mac`}>Mac</NavLink>
-            <NavLink href={`/shop/iphone`}>iPhone</NavLink>
-            <NavLink href={`/shop/ipad`}>iPad</NavLink>
-            <NavLink href={`/shop/apple-watch`}>Apple Watch</NavLink>
-            <NavLink href={`/shop/airpods`}>AirPods</NavLink>
-            <NavLink href={`/shop/accessories`}>Accessories</NavLink>
+            {categories.map((category) => (
+              <NavLink key={category.id} href={`/shop/${category.slug}`}>
+                {category.name}
+              </NavLink>
+            ))}
           </Nav>
         </div>
 

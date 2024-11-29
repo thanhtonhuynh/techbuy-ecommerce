@@ -1,11 +1,12 @@
 import prisma from "@/lib/prisma";
 import { CategoryInput } from "@/lib/validations/category";
+import { cache } from "react";
 import "server-only";
 
 // Get all categories
-export async function getCategories() {
+export const getCategories = cache(async () => {
   return await prisma.category.findMany();
-}
+});
 
 // Create a new category
 export async function createCategory(data: CategoryInput) {
@@ -25,6 +26,6 @@ export async function deleteCategory(id: string) {
 }
 
 // Get a category by slug
-export async function getCategoryBySlug(slug: string) {
+export const getCategoryBySlug = cache(async (slug: string) => {
   return await prisma.category.findUnique({ where: { slug } });
-}
+});
