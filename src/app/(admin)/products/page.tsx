@@ -44,14 +44,17 @@ export default async function Page(props: { searchParams?: SearchParams }) {
 
       <section className="mt-4 flex justify-between px-4 md:px-8">
         <BreadcrumbNav />
-
-        <div className="w-fit">
-          <PaginationControls total={total} page={page} perPage={perPage} />
-        </div>
       </section>
 
       <section className="mt-4 space-y-4 px-4 md:px-8">
-        <ProductNav />
+        <div className="flex items-center justify-between">
+          <ProductNav />
+
+          <div className="w-fit">
+            <PaginationControls total={total} page={page} perPage={perPage} />
+          </div>
+        </div>
+
         <Search />
       </section>
 

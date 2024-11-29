@@ -17,26 +17,28 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { NewProductInput, NewProductSchema } from "@/lib/validations/product";
+import { EditProductSchema, NewProductSchema, ProductInput } from "@/lib/validations/product";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Product } from "@prisma/client";
 import { ImagePlus } from "lucide-react";
 import Image from "next/image";
 import { useTransition } from "react";
 import { DropzoneOptions } from "react-dropzone";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { editProductAction } from "../[id]/edit/actions";
 import { addProductAction } from "./actions";
 
-export function ProductForm() {
+export function ProductForm({ product }: { product?: Product }) {
   const [isPending, startTransition] = useTransition();
-  const form = useForm<NewProductInput>({
-    resolver: zodResolver(NewProductSchema),
+  const form = useForm<ProductInput>({
+    resolver: zodResolver(product ? EditProductSchema : NewProductSchema),
     mode: "onBlur",
     defaultValues: {
-      name: "",
-      description: "",
-      price: 0,
-      category: "",
+      name: product?.name || "",
+      description: product?.description || "",
+      price: product?.price || 0,
+      category: product?.category || "",
       image: [],
     },
   });
@@ -52,9 +54,11 @@ export function ProductForm() {
     },
   } satisfies DropzoneOptions;
 
-  async function onSubmit(data: NewProductInput) {
+  async function onSubmit(data: ProductInput) {
     startTransition(async () => {
-      const { error } = await addProductAction(data);
+      const error = product
+        ? await editProductAction(product.id, data)
+        : await addProductAction(data);
 
       if (error) toast.error(error);
       else {
@@ -132,14 +136,28 @@ export function ProductForm() {
           control={form.control}
           name="image"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="space-y-3">
               <FormLabel>Image</FormLabel>
-              <FormControl className="border">
+
+              {product && (
+                <div className="flex items-center gap-1.5 text-sm font-medium leading-none tracking-tight">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    className="aspect-auto rounded-md object-cover"
+                    width={128}
+                    height={128}
+                  />
+                  <span>{product.image.split("/").slice(-1)[0]}</span>
+                </div>
+              )}
+
+              <FormControl>
                 <FileUploader
                   value={field.value}
                   onValueChange={field.onChange}
                   dropzoneOptions={dropZoneConfig}
-                  className="rounded-lg p-2"
+                  className="rounded-lg border p-2"
                 >
                   <FileInput>
                     <ImagePlus size={20} />
