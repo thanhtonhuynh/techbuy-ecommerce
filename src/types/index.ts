@@ -52,3 +52,8 @@ export type GetCategoryProductsOptions = {
   sortKey?: string;
   reverse?: boolean;
 };
+
+export type Product = Prisma.ProductGetPayload<{
+  include: { category: true };
+  omit: { categoryId: true };
+}>;

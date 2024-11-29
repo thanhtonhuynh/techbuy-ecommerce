@@ -16,10 +16,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { EditProductSchema, NewProductSchema, ProductInput } from "@/lib/validations/product";
+import { Product } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Product } from "@prisma/client";
+import { Category } from "@prisma/client";
 import { ImagePlus } from "lucide-react";
 import Image from "next/image";
 import { useTransition } from "react";
@@ -29,7 +37,13 @@ import { toast } from "sonner";
 import { editProductAction } from "../[id]/edit/actions";
 import { addProductAction } from "./actions";
 
-export function ProductForm({ product }: { product?: Product }) {
+export function ProductForm({
+  product,
+  categories,
+}: {
+  product?: Product;
+  categories: Category[];
+}) {
   const [isPending, startTransition] = useTransition();
   const form = useForm<ProductInput>({
     resolver: zodResolver(product ? EditProductSchema : NewProductSchema),
@@ -38,7 +52,7 @@ export function ProductForm({ product }: { product?: Product }) {
       name: product?.name || "",
       description: product?.description || "",
       price: product?.price || 0,
-      category: product?.category || "",
+      categoryId: product?.category.id || "",
       image: [],
     },
   });
@@ -101,13 +115,24 @@ export function ProductForm({ product }: { product?: Product }) {
 
         <FormField
           control={form.control}
-          name="category"
+          name="categoryId"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Category</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder="iPhone" />
-              </FormControl>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {categories.map((category) => (
+                    <SelectItem key={category.id} value={category.id}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

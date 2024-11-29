@@ -15,7 +15,7 @@ export const NewProductSchema = z.object({
     .number({ message: "Required" })
     .int("Must be an integer")
     .positive("Must be positive"),
-  category: requiredString,
+  categoryId: requiredString,
   image: imageSchema.array().min(1, "Required"),
 });
 export const EditProductSchema = NewProductSchema.extend({

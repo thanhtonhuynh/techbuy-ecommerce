@@ -1,3 +1,4 @@
+import { getCategories } from "@/data-access/category";
 import { getProductById } from "@/data-access/product";
 import { getCurrentSession } from "@/lib/auth/session";
 import { hasAccess } from "@/utils/access-control";
@@ -18,6 +19,8 @@ export default async function Page(props: { params: Params }) {
   const product = await getProductById(params.id);
   if (!product) return notFound();
 
+  const categories = await getCategories();
+
   return (
     <>
       <section className="space-y-1 border-b border-border/40 px-4 py-8 dark:border-border md:px-8 md:py-10 lg:py-12">
@@ -32,7 +35,7 @@ export default async function Page(props: { params: Params }) {
       </section>
 
       <section className="mt-8 space-y-2 px-4 md:px-8">
-        <ProductForm product={product} />
+        <ProductForm product={product} categories={categories} />
       </section>
     </>
   );

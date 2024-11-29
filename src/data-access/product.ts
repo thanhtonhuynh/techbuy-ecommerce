@@ -10,16 +10,16 @@ export async function createProduct({
   description,
   price,
   image,
-  category,
+  categoryId,
 }: {
   name: string;
   description: string;
   price: number;
   image: string;
-  category: string;
+  categoryId: string;
 }) {
   return await prisma.product.create({
-    data: { name, description, price, image, category },
+    data: { name, description, price, image, categoryId },
   });
 }
 
@@ -65,6 +65,8 @@ export const getAdminProducts = cache(
       orderBy: {
         ...(sortKey && { [sortKey]: reverse ? "desc" : "asc" }),
       },
+      include: { category: true },
+      omit: { categoryId: true },
       skip: (page - 1) * perPage,
       take: perPage,
     });
@@ -93,7 +95,11 @@ export const getCategoryProducts = cache(
 
 // Get a product by ID
 export const getProductById = cache(async (id: string) => {
-  return await prisma.product.findUnique({ where: { id } });
+  return await prisma.product.findUnique({
+    where: { id },
+    include: { category: true },
+    omit: { categoryId: true },
+  });
 });
 
 // Delete a product

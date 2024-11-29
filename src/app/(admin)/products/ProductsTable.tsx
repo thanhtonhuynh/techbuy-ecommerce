@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatPriceFull } from "@/lib/utils";
-import { Product } from "@prisma/client";
+import { Product } from "@/types";
 import moment from "moment";
 import Image from "next/image";
 import { ProductActions } from "./ProductActions";
@@ -70,7 +70,7 @@ export function ProductsTable({ products }: { products: Product[] }) {
                 <ProductStatusBadge status={product.status} />
               </TableCell>
 
-              <TableCell>{product.category}</TableCell>
+              <TableCell>{product.category.name}</TableCell>
 
               <TableCell>{product.purchasedCount}</TableCell>
 

@@ -1,3 +1,4 @@
+import { getCategories } from "@/data-access/category";
 import { getCurrentSession } from "@/lib/auth/session";
 import { hasAccess } from "@/utils/access-control";
 import { ChevronRight } from "lucide-react";
@@ -10,6 +11,8 @@ export default async function Page() {
   if (!session) redirect("/login");
   if (user.accountStatus !== "active") return notFound();
   if (!hasAccess(user.role, "/admin")) return notFound();
+
+  const categories = await getCategories();
 
   return (
     <>
@@ -26,7 +29,7 @@ export default async function Page() {
 
       <section className="mt-8 space-y-2 px-4 md:px-8">
         <p>Enter the details of the new product you want to add to your store.</p>
-        <ProductForm />
+        <ProductForm categories={categories} />
       </section>
     </>
   );

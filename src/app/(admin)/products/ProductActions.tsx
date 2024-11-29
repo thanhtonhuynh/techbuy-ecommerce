@@ -19,7 +19,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Product } from "@prisma/client";
+import { Product } from "@/types";
 import { Ellipsis } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
