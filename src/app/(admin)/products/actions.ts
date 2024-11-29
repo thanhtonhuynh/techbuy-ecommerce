@@ -23,8 +23,8 @@ export async function updateProductStatusAction(
   if (
     !(await rateLimitByKey({
       key: `${user.id}`,
-      limit: 3,
-      interval: 30000,
+      limit: 5,
+      interval: 10000,
     }))
   ) {
     throw new Error("Too many requests.");
