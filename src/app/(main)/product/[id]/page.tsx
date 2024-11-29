@@ -28,7 +28,7 @@ export default async function Page(props: { params: Params }) {
         <div className="space-y-4">
           <h1>{product.name}</h1>
 
-          <p>{product.description}</p>
+          <p className="whitespace-pre-wrap">{product.description}</p>
 
           <p className="w-fit rounded-full bg-blue-600 px-4 py-1 text-sm font-semibold text-secondary">
             {formatPrice(product.price / 100)}

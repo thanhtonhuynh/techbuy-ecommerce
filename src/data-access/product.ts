@@ -96,6 +96,11 @@ export const getProductById = cache(async (id: string) => {
   return await prisma.product.findUnique({ where: { id } });
 });
 
+// Delete a product
+export async function deleteProduct(id: string) {
+  return await prisma.product.delete({ where: { id } });
+}
+
 // Update a product
 export async function updateProduct(id: string, data: Partial<Product>) {
   return await prisma.product.update({ where: { id }, data });

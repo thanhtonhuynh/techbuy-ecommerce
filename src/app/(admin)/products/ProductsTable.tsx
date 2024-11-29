@@ -12,6 +12,7 @@ import { formatPriceFull } from "@/lib/utils";
 import { Product } from "@prisma/client";
 import moment from "moment";
 import Image from "next/image";
+import { ProductActions } from "./ProductActions";
 import { ProductStatusBadge } from "./ProductStatusBadge";
 
 export function ProductsTable({ products }: { products: Product[] }) {
@@ -34,6 +35,10 @@ export function ProductsTable({ products }: { products: Product[] }) {
           <TableHead>Total sales</TableHead>
 
           <TableHead>Created at</TableHead>
+
+          <TableHead className="w-10">
+            <span className="sr-only">Actions</span>
+          </TableHead>
         </TableRow>
       </TableHeader>
 
@@ -70,6 +75,10 @@ export function ProductsTable({ products }: { products: Product[] }) {
               <TableCell>{product.purchasedCount}</TableCell>
 
               <TableCell>{moment(product.createdAt).format("MMM DD, YYYY")}</TableCell>
+
+              <TableCell>
+                <ProductActions product={product} />
+              </TableCell>
             </TableRow>
           ))
         ) : (
