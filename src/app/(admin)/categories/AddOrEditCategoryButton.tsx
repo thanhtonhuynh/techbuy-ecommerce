@@ -20,6 +20,7 @@ import {
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { Category } from "@prisma/client";
+import { DialogClose } from "@radix-ui/react-dialog";
 import { useState } from "react";
 import { CategoryForm } from "./CategoryForm";
 
@@ -39,12 +40,16 @@ export function AddOrEditCategoryButton({ category }: { category?: Category }) {
           </Button>
         </DialogTrigger>
 
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
+        <DialogContent className="gap-2">
+          <DialogHeader className="mb-2">
             <DialogTitle>{category ? "Edit" : "Add"} category</DialogTitle>
           </DialogHeader>
 
           <CategoryForm setOpen={setOpen} category={category} />
+
+          <DialogClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
         </DialogContent>
       </Dialog>
     );

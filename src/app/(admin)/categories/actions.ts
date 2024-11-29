@@ -109,7 +109,7 @@ export async function deleteCategoryAction(id: string) {
 
     await deleteCategory(id);
 
-    // revalidatePath("/categories");
+    revalidatePath("/categories");
   } catch (error) {
     console.error(error);
     return "Delete category failed.";
