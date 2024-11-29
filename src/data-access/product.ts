@@ -79,11 +79,11 @@ export const getAdminProducts = cache(
 
 // Get products by category
 export const getCategoryProducts = cache(
-  async ({ category, status, sortKey, reverse }: GetCategoryProductsOptions) => {
+  async ({ categorySlug, status, sortKey, reverse }: GetCategoryProductsOptions) => {
     return await prisma.product.findMany({
       where: {
         status,
-        category: { contains: category, mode: "insensitive" },
+        category: { slug: categorySlug },
         ...(sortKey === "purchasedCount" && { purchasedCount: { gt: 0 } }),
       },
       orderBy: {

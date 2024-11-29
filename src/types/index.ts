@@ -47,7 +47,7 @@ export type GetProductsOptions = {
 };
 
 export type GetCategoryProductsOptions = {
-  category: string;
+  categorySlug: string;
   status?: string;
   sortKey?: string;
   reverse?: boolean;
