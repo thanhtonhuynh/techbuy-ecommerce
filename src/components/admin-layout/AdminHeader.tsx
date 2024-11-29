@@ -20,6 +20,7 @@ export async function AdminHeader() {
             <NavLink href={`/dashboard`}>Dashboard</NavLink>
             <NavLink href={`/products`}>Products</NavLink>
             <NavLink href={`/orders`}>Orders</NavLink>
+            <NavLink href={`/categories`}>Categories</NavLink>
           </Nav>
         </div>
 
