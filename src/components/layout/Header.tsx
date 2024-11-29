@@ -32,14 +32,14 @@ export async function Header() {
           </Nav>
         </div>
 
-        <div className="flex w-full items-center space-x-2 lg:w-1/3">
+        <div className="flex flex-1 items-center space-x-2">
           <div className="flex-1">
             <Search />
           </div>
 
           {user && hasAccess(user.role, "/admin") && (
             <Button asChild variant={`outline`}>
-              <Link href="/dashboard">Admin Dashboard</Link>
+              <Link href="/dashboard">Dashboard</Link>
             </Button>
           )}
 
