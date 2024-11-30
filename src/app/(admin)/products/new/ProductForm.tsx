@@ -30,6 +30,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Category } from "@prisma/client";
 import { ImagePlus } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { DropzoneOptions } from "react-dropzone";
 import { useForm } from "react-hook-form";
@@ -67,6 +68,7 @@ export function ProductForm({
       "image/webp": [],
     },
   } satisfies DropzoneOptions;
+  const router = useRouter();
 
   async function onSubmit(data: ProductInput) {
     startTransition(async () => {
@@ -76,8 +78,8 @@ export function ProductForm({
 
       if (error) toast.error(error);
       else {
-        form.reset();
-        toast.success("Product created successfully");
+        router.push("/products");
+        toast.success(product ? "Product updated successfully" : "Product added successfully");
       }
     });
   }

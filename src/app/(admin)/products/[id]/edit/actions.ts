@@ -6,7 +6,6 @@ import { deleteFileFromS3, uploadFileToS3 } from "@/lib/s3";
 import { EditProductSchema, ProductInput } from "@/lib/validations/product";
 import { hasAccess } from "@/utils/access-control";
 import { authenticatedRateLimit, rateLimitByKey } from "@/utils/rate-limiter";
-import { redirect } from "next/navigation";
 
 export async function editProductAction(id: string, data: ProductInput) {
   try {
@@ -47,6 +46,4 @@ export async function editProductAction(id: string, data: ProductInput) {
     console.error(error);
     return "Edit product failed.";
   }
-
-  redirect("/products");
 }
