@@ -19,3 +19,11 @@ export const sortFilters: SortFilterItem[] = [
   { title: "Price: Low to High", slug: "price-asc", sortKey: "price", reverse: false },
   { title: "Price: High to Low", slug: "price-desc", sortKey: "price", reverse: true },
 ];
+
+export const DELIVERY_STATUSES = [
+  "awaiting payment",
+  "pending",
+  "scheduled",
+  "shipped",
+  "delivered",
+];

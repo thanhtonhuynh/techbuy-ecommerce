@@ -61,8 +61,14 @@ export async function retrieveAndUpdateOrder(userId: string, cart: Cart) {
   return order;
 }
 
+// Get order by payment intent id
 export async function getOrderByPaymentIntentId(paymentIntentId: string) {
   return await prisma.order.findUnique({ where: { paymentIntentId } });
+}
+
+// Get order by id
+export async function getOrderById(id: string) {
+  return await prisma.order.findUnique({ where: { id } });
 }
 
 export async function updateOrder(id: string, data: Partial<PrismaOrder>) {
