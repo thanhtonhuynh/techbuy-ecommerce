@@ -6,11 +6,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getCategories } from "@/data-access/category";
+import { getCategoriesWithProductCount } from "@/data-access/category";
 import { CategoryActions } from "./CategoryActions";
 
 export async function CategoryTable() {
-  const categories = await getCategories();
+  const categories = await getCategoriesWithProductCount();
 
   return (
     <Table>
@@ -19,6 +19,8 @@ export async function CategoryTable() {
           <TableHead>Name</TableHead>
 
           <TableHead>Slug</TableHead>
+
+          <TableHead>Products</TableHead>
 
           <TableHead className="w-10">
             <span className="sr-only">Actions</span>
@@ -38,6 +40,8 @@ export async function CategoryTable() {
               </TableCell>
 
               <TableCell>{category.slug}</TableCell>
+
+              <TableCell>{category._count.products}</TableCell>
 
               <TableCell>
                 <CategoryActions category={category} />

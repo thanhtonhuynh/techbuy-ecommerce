@@ -3,6 +3,11 @@ import { CategoryInput } from "@/lib/validations/category";
 import { cache } from "react";
 import "server-only";
 
+// Get all categories with the count of products in each category
+export const getCategoriesWithProductCount = cache(async () => {
+  return await prisma.category.findMany({ include: { _count: { select: { products: true } } } });
+});
+
 // Get all categories
 export const getCategories = cache(async () => {
   return await prisma.category.findMany();
