@@ -1,8 +1,9 @@
-import "server-only";
-import { stripe } from "@/lib/stripe";
 import prisma from "@/lib/prisma";
-import { Order } from "@prisma/client";
-import { Cart } from "@/types";
+import { stripe } from "@/lib/stripe";
+import { Cart, Order, OrderWithProducts } from "@/types";
+import { Order as PrismaOrder } from "@prisma/client";
+import { cache } from "react";
+import "server-only";
 
 export async function createOrder(userId: string, cart: Cart) {
   const paymentIntent = await stripe.paymentIntents.create({
@@ -61,18 +62,58 @@ export async function retrieveAndUpdateOrder(userId: string, cart: Cart) {
 }
 
 export async function getOrderByPaymentIntentId(paymentIntentId: string) {
-  return prisma.order.findUnique({ where: { paymentIntentId } });
+  return await prisma.order.findUnique({ where: { paymentIntentId } });
 }
 
-export async function updateOrder(id: string, data: Partial<Order>) {
-  return prisma.order.update({
+export async function updateOrder(id: string, data: Partial<PrismaOrder>) {
+  return await prisma.order.update({
     where: { id },
     data,
   });
 }
 
 export async function getUserPendingOrder(userId: string) {
-  return prisma.order.findFirst({
+  return await prisma.order.findFirst({
     where: { userId, paymentStatus: "pending" },
   });
 }
+
+function reshapeOrders(orders: OrderWithProducts[]): Order[] {
+  return orders.map((order) => ({
+    ...order,
+    items: order.items.map((item) => ({
+      ...item,
+      totalAmount: item.quantity * item.unitPrice,
+    })),
+    totalQuantity: order.items.reduce((acc, item) => acc + item.quantity, 0),
+    totalAmount: order.items.reduce((acc, item) => acc + item.quantity * item.unitPrice, 0),
+  }));
+}
+
+// Get all orders
+export const getOrders = cache(async () => {
+  const orders = await prisma.order.findMany({
+    orderBy: { updatedAt: "desc" },
+    select: {
+      items: {
+        select: {
+          product: {
+            select: { id: true, name: true, image: true },
+          },
+          id: true,
+          quantity: true,
+          unitPrice: true,
+        },
+      },
+      id: true,
+      user: { select: { id: true, name: true, email: true } },
+      paymentIntentId: true,
+      paymentStatus: true,
+      deliveryStatus: true,
+      updatedAt: true,
+      address: true,
+    },
+  });
+
+  return reshapeOrders(orders);
+});

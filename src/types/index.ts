@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Address, Prisma } from "@prisma/client";
 
 export type CartWithProducts = Prisma.CartGetPayload<{
   select: {
@@ -56,4 +56,51 @@ export type GetCategoryProductsOptions = {
 export type Product = Prisma.ProductGetPayload<{
   include: { category: true };
   omit: { categoryId: true };
+}>;
+
+export type OrderItem = {
+  id: string;
+  quantity: number;
+  unitPrice: number;
+  totalAmount: number;
+  product: {
+    id: string;
+    name: string;
+    image: string;
+  };
+};
+
+export type Order = {
+  id: string;
+  items: OrderItem[];
+  user: { id: string; name: string; email: string };
+  paymentIntentId: string;
+  paymentStatus: string;
+  deliveryStatus: string;
+  updatedAt: Date;
+  address: Address | null;
+  totalQuantity: number;
+  totalAmount: number;
+};
+
+export type OrderWithProducts = Prisma.OrderGetPayload<{
+  select: {
+    items: {
+      select: {
+        product: {
+          select: { id: true; name: true; image: true };
+        };
+        id: true;
+        quantity: true;
+        unitPrice: true;
+      };
+    };
+    id: true;
+    user: { select: { id: true; name: true; email: true } };
+    paymentIntentId: true;
+    paymentStatus: true;
+    deliveryStatus: true;
+    updatedAt: true;
+    address: true;
+  };
 }>;
