@@ -59,7 +59,7 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
 
               <TableCell>{order.deliveryStatus}</TableCell>
 
-              <TableCell>{moment(order.updatedAt).format("MMM DD, YYYY hh:mm")}</TableCell>
+              <TableCell>{moment(order.updatedAt).format("MMM DD, YYYY HH:mm")}</TableCell>
 
               <TableCell>
                 <OrderActions order={order} />
