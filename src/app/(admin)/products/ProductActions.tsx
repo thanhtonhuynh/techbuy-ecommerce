@@ -1,17 +1,16 @@
 "use client";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,34 +26,39 @@ import { deleteProductAction, updateProductStatusAction } from "./actions";
 
 export function ProductActions({ product }: { product: Product }) {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button aria-haspopup="true" size="icon" variant="ghost">
-          <Ellipsis className="size-4" />
-          <span className="sr-only">Toggle menu</span>
-        </Button>
-      </DropdownMenuTrigger>
+    <Dialog>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button aria-haspopup="true" size="icon" variant="ghost">
+            <Ellipsis className="size-4" />
+            <span className="sr-only">Toggle menu</span>
+          </Button>
+        </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem asChild>
-          <Link href={`/products/${product.id}/edit`} className="cursor-pointer font-medium">
-            Edit
-          </Link>
-        </DropdownMenuItem>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem asChild>
+            <Link href={`/products/${product.id}/edit`} className="cursor-pointer font-medium">
+              Edit
+            </Link>
+          </DropdownMenuItem>
 
-        <ActivateDropdownItem productId={product.id} />
+          <ActivateDropdownItem productId={product.id} />
 
-        <DeactivateDropdownItem productId={product.id} />
+          <DeactivateDropdownItem productId={product.id} />
 
-        <DraftDropdownItem productId={product.id} />
+          <DraftDropdownItem productId={product.id} />
 
-        <ArchiveDropdownItem productId={product.id} />
+          <ArchiveDropdownItem productId={product.id} />
 
-        <DropdownMenuSeparator />
+          <DropdownMenuSeparator />
 
-        <DeleteDropdownItem productId={product.id} />
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <DeleteDropdownItem />
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {/* Put the dialog here so that when the Delete button is clicked, it wont close the dialog */}
+      <DeleteDialogContent productId={product.id} />
+    </Dialog>
   );
 }
 
@@ -138,43 +142,52 @@ function ArchiveDropdownItem({ productId }: { productId: string }) {
   );
 }
 
-function DeleteDropdownItem({ productId }: { productId: string }) {
+function DeleteDropdownItem() {
   return (
     <DropdownMenuItem asChild>
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button
-            variant={"ghost"}
-            className="w-full cursor-pointer justify-start px-2 py-1 text-destructive hover:text-destructive focus-visible:text-destructive focus-visible:ring-0"
-          >
-            Delete
-          </Button>
-        </AlertDialogTrigger>
-
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the product.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              variant={`destructive`}
-              onClick={async () => {
-                toast.promise(deleteProductAction(productId), {
-                  loading: "Deleting product...",
-                  success: "Product deleted",
-                  error: (error) => error.message,
-                });
-              }}
-            >
-              Yes, delete product
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <DialogTrigger asChild>
+        <Button
+          variant={"ghost"}
+          className="w-full cursor-pointer justify-start px-2 py-1 text-destructive hover:text-destructive focus-visible:text-destructive focus-visible:ring-0"
+        >
+          Delete
+        </Button>
+      </DialogTrigger>
     </DropdownMenuItem>
+  );
+}
+
+function DeleteDialogContent({ productId }: { productId: string }) {
+  return (
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Are you absolutely sure?</DialogTitle>
+
+        <DialogDescription>
+          This action cannot be undone. This will permanently delete the product.
+        </DialogDescription>
+      </DialogHeader>
+
+      <DialogFooter>
+        <DialogClose asChild>
+          <Button variant={`outline`}>Cancel</Button>
+        </DialogClose>
+
+        <DialogClose asChild>
+          <Button
+            variant={`destructive`}
+            onClick={async () => {
+              toast.promise(deleteProductAction(productId), {
+                loading: "Deleting product...",
+                success: "Product deleted",
+                error: (error) => error.message,
+              });
+            }}
+          >
+            Yes, delete product
+          </Button>
+        </DialogClose>
+      </DialogFooter>
+    </DialogContent>
   );
 }
