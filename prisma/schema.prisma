@@ -112,7 +112,7 @@ model Order {
   userId          String      @db.ObjectId
   paymentIntentId String      @unique
   paymentStatus   String      @default("pending")
-  deliveryStatus  String      @default("awaiting-payment")
+  deliveryStatus  String      @default("awaiting payment")
   address         Address?
 
   createdAt DateTime @default(now())

@@ -12,6 +12,7 @@ import { formatPriceFull } from "@/lib/utils";
 import { Order } from "@/types";
 import moment from "moment";
 import { OrderActions } from "./OrderActions";
+import { DeliveryStatusBadge, PaymentStatusBadge } from "./StatusBadge";
 
 export function OrdersTable({ orders }: { orders: Order[] }) {
   return (
@@ -21,8 +22,6 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
           <TableHead>Order #</TableHead>
 
           <TableHead>Customer</TableHead>
-
-          <TableHead>Payment ID</TableHead>
 
           <TableHead>Price Paid</TableHead>
 
@@ -42,7 +41,7 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
         {orders.length ? (
           orders.map((order) => (
             <TableRow key={order.id}>
-              <TableCell>{order.id}</TableCell>
+              <TableCell className="tracking-tighter">{order.id}</TableCell>
 
               <TableCell>
                 <div className="flex flex-col">
@@ -51,13 +50,15 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
                 </div>
               </TableCell>
 
-              <TableCell>{order.paymentIntentId}</TableCell>
-
               <TableCell>{formatPriceFull(order.totalAmount / 100)}</TableCell>
 
-              <TableCell>{order.paymentStatus}</TableCell>
+              <TableCell>
+                <PaymentStatusBadge status={order.paymentStatus} />
+              </TableCell>
 
-              <TableCell>{order.deliveryStatus}</TableCell>
+              <TableCell>
+                <DeliveryStatusBadge status={order.deliveryStatus} />
+              </TableCell>
 
               <TableCell>{moment(order.updatedAt).format("MMM DD, YYYY HH:mm")}</TableCell>
 
