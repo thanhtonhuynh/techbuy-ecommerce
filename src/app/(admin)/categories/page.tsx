@@ -3,7 +3,7 @@ import { hasAccess } from "@/utils/access-control";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { AddOrEditCategoryButton } from "./AddOrEditCategoryButton";
+import { AddCategoryButton } from "./AddCategoryButton";
 import { CategoryTable } from "./CategoryTable";
 
 export default async function Page() {
@@ -23,7 +23,7 @@ export default async function Page() {
       </section>
 
       <section className="mt-8 space-y-2 px-4 md:px-8">
-        <AddOrEditCategoryButton />
+        <AddCategoryButton />
 
         <CategoryTable />
       </section>

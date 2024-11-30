@@ -60,7 +60,11 @@ export function CategoryForm({
             <FormItem>
               <FormLabel>Category name</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Example: iPhone" />
+                <Input
+                  {...field}
+                  placeholder="Example: iPhone"
+                  onFocus={(e) => e.target.select()}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -75,7 +79,11 @@ export function CategoryForm({
               <FormLabel>Slug</FormLabel>
               <FormDescription>Unique identifier for the category</FormDescription>
               <FormControl>
-                <Input {...field} placeholder="Example: iphone" />
+                <Input
+                  {...field}
+                  placeholder="Example: iphone"
+                  onFocus={(e) => e.target.select()}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

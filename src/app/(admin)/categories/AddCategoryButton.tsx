@@ -18,13 +18,11 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { cn } from "@/lib/utils";
-import { Category } from "@prisma/client";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useState } from "react";
 import { CategoryForm } from "./CategoryForm";
 
-export function AddOrEditCategoryButton({ category }: { category?: Category }) {
+export function AddCategoryButton() {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)"); // <768px is sm
 
@@ -32,20 +30,15 @@ export function AddOrEditCategoryButton({ category }: { category?: Category }) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button
-            variant={category ? "ghost" : "outline"}
-            className={cn(category && "w-full justify-start px-2")}
-          >
-            {category ? "Edit" : "Add Category"}
-          </Button>
+          <Button variant={"outline"}>Add Category</Button>
         </DialogTrigger>
 
         <DialogContent className="gap-2">
           <DialogHeader className="mb-2">
-            <DialogTitle>{category ? "Edit" : "Add"} category</DialogTitle>
+            <DialogTitle>Add category</DialogTitle>
           </DialogHeader>
 
-          <CategoryForm setOpen={setOpen} category={category} />
+          <CategoryForm setOpen={setOpen} />
 
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
@@ -58,20 +51,15 @@ export function AddOrEditCategoryButton({ category }: { category?: Category }) {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button
-          variant={category ? "ghost" : "outline"}
-          className={cn(category && "w-full justify-start px-2")}
-        >
-          {category ? "Edit" : "Add Category"}
-        </Button>
+        <Button variant={"outline"}>Add Category</Button>
       </DrawerTrigger>
 
       <DrawerContent>
         <DrawerHeader className="text-left">
-          <DrawerTitle>{category ? "Edit" : "Add"} category</DrawerTitle>
+          <DrawerTitle>Add category</DrawerTitle>
         </DrawerHeader>
 
-        <CategoryForm className="px-4" setOpen={setOpen} category={category} />
+        <CategoryForm className="px-4" setOpen={setOpen} />
 
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
