@@ -21,7 +21,7 @@ export function DeliveryStatusBadge({ status }: { status: string }) {
     <Badge
       variant={`outline`}
       className={cn(
-        "capitalize",
+        "text-nowrap capitalize",
         status === "awaiting payment" && "text-muted-foreground",
         status === "pending" && "text-orange-500",
         status === "scheduled" && "text-teal-500",
