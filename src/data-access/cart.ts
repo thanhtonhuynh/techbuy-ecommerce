@@ -1,12 +1,12 @@
-import "server-only";
 import { getCurrentSession } from "@/lib/auth/session";
 import prisma from "@/lib/prisma";
 import { Cart, CartWithProducts } from "@/types";
+import { deleteCartTokenCookie, generateCartToken, setCartTokenCookie } from "@/utils/cart";
+import { sha256 } from "@oslojs/crypto/sha2";
+import { encodeHexLowerCase } from "@oslojs/encoding";
 import { cookies } from "next/headers";
 import { cache } from "react";
-import { deleteCartTokenCookie, generateCartToken, setCartTokenCookie } from "@/utils/cart";
-import { encodeHexLowerCase } from "@oslojs/encoding";
-import { sha256 } from "@oslojs/crypto/sha2";
+import "server-only";
 
 export async function addItem(cartId: string, productId: string) {
   return await prisma.cartItem.create({
