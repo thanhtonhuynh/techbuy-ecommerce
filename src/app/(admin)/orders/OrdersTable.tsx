@@ -29,7 +29,9 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
 
           <TableHead>Delivery Status</TableHead>
 
-          <TableHead>Date</TableHead>
+          <TableHead>Placed at</TableHead>
+
+          <TableHead>Last Updated</TableHead>
 
           <TableHead className="w-10">
             <span className="sr-only">Actions</span>
@@ -60,7 +62,9 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
                 <DeliveryStatusBadge status={order.deliveryStatus} />
               </TableCell>
 
-              <TableCell>{moment(order.updatedAt).format("MMM DD, YYYY HH:mm")}</TableCell>
+              <TableCell>{moment(order.createdAt).format("MMM DD, YYYY HH:mm:ss")}</TableCell>
+
+              <TableCell>{moment(order.updatedAt).format("MMM DD, YYYY HH:mm:ss")}</TableCell>
 
               <TableCell>
                 <OrderActions order={order} />

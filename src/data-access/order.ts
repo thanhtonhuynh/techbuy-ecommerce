@@ -99,7 +99,7 @@ function reshapeOrders(orders: OrderWithProducts[]): Order[] {
 // Get all orders
 export const getOrders = cache(async () => {
   const orders = await prisma.order.findMany({
-    orderBy: { updatedAt: "desc" },
+    orderBy: { createdAt: "desc" },
     select: {
       items: {
         select: {
@@ -116,6 +116,7 @@ export const getOrders = cache(async () => {
       paymentIntentId: true,
       paymentStatus: true,
       deliveryStatus: true,
+      createdAt: true,
       updatedAt: true,
       address: true,
     },

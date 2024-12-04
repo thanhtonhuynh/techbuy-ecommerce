@@ -77,6 +77,7 @@ export type Order = {
   paymentIntentId: string;
   paymentStatus: string;
   deliveryStatus: string;
+  createdAt: Date;
   updatedAt: Date;
   address: Address | null;
   totalQuantity: number;
@@ -100,6 +101,7 @@ export type OrderWithProducts = Prisma.OrderGetPayload<{
     paymentIntentId: true;
     paymentStatus: true;
     deliveryStatus: true;
+    createdAt: true;
     updatedAt: true;
     address: true;
   };

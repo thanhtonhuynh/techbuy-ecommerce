@@ -63,7 +63,12 @@ export function DeliveryStatusForm({ order, setOpen, className }: DeliveryStatus
                   {DELIVERY_STATUSES.map((status) => (
                     <FormItem key={status} className="flex items-center space-x-3 space-y-0">
                       <FormControl>
-                        <RadioGroupItem value={status} />
+                        <RadioGroupItem
+                          value={status}
+                          disabled={
+                            order.paymentStatus === "succeeded" && status === "awaiting payment"
+                          }
+                        />
                       </FormControl>
                       <FormLabel className="font-normal capitalize">{status}</FormLabel>
                     </FormItem>

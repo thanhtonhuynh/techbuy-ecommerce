@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
       updateOrder(charge.metadata.orderId, {
         paymentStatus: "succeeded",
         deliveryStatus: "pending",
+        createdAt: new Date(Date.now()),
       }),
       updateProductsPurchasedCount(charge.metadata.orderId),
       deleteCart(charge.metadata.cartId),

@@ -44,6 +44,14 @@ export async function updateDeliveryStatusAction(orderId: string, data: Delivery
       return "Status is already set to this value";
     }
 
+    if (order.paymentStatus !== "succeeded") {
+      return "Order payment status is not succeeded";
+    }
+
+    if (order.paymentStatus === "succeeded" && parsedData.status === "awaiting payment") {
+      return "Invalid status";
+    }
+
     await updateOrder(orderId, { deliveryStatus: parsedData.status });
 
     revalidatePath("/orders");
