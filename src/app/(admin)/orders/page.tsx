@@ -47,7 +47,7 @@ export default async function Page(props: { searchParams?: SearchParams }) {
           <p className="flex gap-1 text-xs text-muted-foreground">
             Showing
             <span className="font-semibold">
-              {page === 1 ? 1 : (page - 1) * perPage + 1}-{Math.min(page * perPage, total)}
+              {(page - 1) * perPage + 1}-{Math.min(page * perPage, total)}
             </span>
             of <span className="font-semibold">{total}</span> orders{" "}
             {searchValue && (
