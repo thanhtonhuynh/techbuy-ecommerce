@@ -57,7 +57,7 @@ export const getAdminProducts = cache(
     const whereConditions = Prisma.validator<Prisma.ProductWhereInput>()({
       status,
       name: { contains: query, mode: "insensitive" },
-      ...(sortKey === "purchasedCount" && { purchasedCount: { gt: 0 } }),
+      // ...(sortKey === "purchasedCount" && { purchasedCount: { gt: 0 } }),
     });
 
     const products = await prisma.product.findMany({

@@ -57,21 +57,26 @@ export default async function Page(props: { searchParams?: SearchParams }) {
       </section>
 
       <section className="mt-4 space-y-4 px-4 md:px-8">
-        <div className="flex items-center justify-between text-sm">
-          <ProductNav />
+        <ProductNav />
 
-          <div className="rounded-md border p-3 text-muted-foreground">
-            <FilterList list={sortFilters.slice(1)} />
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex-1 space-y-1">
+            <p className="pl-1 text-xs text-muted-foreground">Search for products by name</p>
+            <Search />
           </div>
-        </div>
 
-        <div className="space-y-1">
-          <p className="pl-1 text-xs text-muted-foreground">Search for products by name.</p>
-          <Search />
+          <div className="space-y-1">
+            <p className="pl-1 text-xs text-muted-foreground">Sort by</p>
+            <div className="flex h-9 items-center rounded-md border px-3 py-1 text-sm text-muted-foreground">
+              <FilterList list={sortFilters.slice(1)} />
+            </div>
+          </div>
         </div>
       </section>
 
       <section className="mt-4 space-y-2 px-4 md:px-8">
+        <ProductsTable products={products} />
+
         <div className="flex items-center justify-between">
           <p className="flex gap-1 text-xs text-muted-foreground">
             Showing
@@ -90,8 +95,6 @@ export default async function Page(props: { searchParams?: SearchParams }) {
             <PaginationControls total={total} page={page} perPage={perPage} />
           </div>
         </div>
-
-        <ProductsTable products={products} />
       </section>
     </>
   );

@@ -39,6 +39,22 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
       perPage: `${perPage}`,
     }),
   );
+  const firstHref = createUrl(
+    pathname,
+    new URLSearchParams({
+      ...Object.fromEntries(searchParams),
+      page: `1`,
+      perPage: `${perPage}`,
+    }),
+  );
+  const lastHref = createUrl(
+    pathname,
+    new URLSearchParams({
+      ...Object.fromEntries(searchParams),
+      page: `${totalPages}`,
+      perPage: `${perPage}`,
+    }),
+  );
 
   return (
     <Pagination>
@@ -49,7 +65,15 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
               <PaginationPrevious size={`sm`} href={prevHref} />
             </PaginationItem>
 
-            {page > 2 && (
+            {page > 2 && totalPages > 2 && (
+              <PaginationItem>
+                <PaginationLink size={`sm`} href={firstHref}>
+                  1
+                </PaginationLink>
+              </PaginationItem>
+            )}
+
+            {page > 3 && totalPages > 3 && (
               <PaginationItem>
                 <PaginationEllipsis />
               </PaginationItem>
@@ -76,15 +100,25 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
 
         {page < totalPages && (
           <>
-            <PaginationItem>
-              <PaginationLink size={`sm`} href={nextHref}>
-                {page + 1}
-              </PaginationLink>
-            </PaginationItem>
-
             {page < totalPages - 1 && (
               <PaginationItem>
+                <PaginationLink size={`sm`} href={nextHref}>
+                  {page + 1}
+                </PaginationLink>
+              </PaginationItem>
+            )}
+
+            {page < totalPages - 2 && totalPages > 3 && (
+              <PaginationItem>
                 <PaginationEllipsis />
+              </PaginationItem>
+            )}
+
+            {totalPages >= 2 && (
+              <PaginationItem>
+                <PaginationLink size={`sm`} href={lastHref}>
+                  {totalPages}
+                </PaginationLink>
               </PaginationItem>
             )}
 

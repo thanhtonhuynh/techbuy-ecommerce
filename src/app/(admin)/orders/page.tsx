@@ -37,12 +37,14 @@ export default async function Page(props: { searchParams?: SearchParams }) {
 
       <section className="mt-4 space-y-1 px-4 md:px-8">
         <p className="pl-1 text-xs text-muted-foreground">
-          Search for orders by payment intent ID, customer name, or email address.
+          Search for orders by payment intent ID, customer name, or email address
         </p>
         <Search />
       </section>
 
       <section className="mt-4 space-y-2 px-4 md:px-8">
+        <OrdersTable orders={orders} />
+
         <div className="flex items-center justify-between">
           <p className="flex gap-1 text-xs text-muted-foreground">
             Showing
@@ -61,8 +63,6 @@ export default async function Page(props: { searchParams?: SearchParams }) {
             <PaginationControls total={total} page={page} perPage={perPage} />
           </div>
         </div>
-
-        <OrdersTable orders={orders} />
       </section>
     </>
   );
