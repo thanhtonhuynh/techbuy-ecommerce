@@ -37,7 +37,13 @@ export function ProductActions({ product }: { product: Product }) {
 
         <DropdownMenuContent align="end">
           <DropdownMenuItem asChild>
-            <Link href={`/products/${product.id}/edit`} className="cursor-pointer font-medium">
+            <Link href={`/product/${product.slug}`} className="cursor-pointer font-medium">
+              View
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem asChild>
+            <Link href={`/products/${product.slug}/edit`} className="cursor-pointer font-medium">
               Edit
             </Link>
           </DropdownMenuItem>

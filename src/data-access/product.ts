@@ -3,6 +3,7 @@ import { GetCategoryProductsOptions, GetProductsOptions } from "@/types";
 import { Prisma, Product } from "@prisma/client";
 import { cache } from "react";
 import "server-only";
+import slugify from "slugify";
 
 // Create a new product
 export async function createProduct({
@@ -18,8 +19,14 @@ export async function createProduct({
   image: string;
   categoryId: string;
 }) {
+  let slug = slugify(name, { lower: true, strict: true });
+  const existingSlug = await prisma.product.findUnique({ where: { slug } });
+  if (existingSlug) {
+    slug = `${slug}-${Date.now()}`;
+  }
+
   return await prisma.product.create({
-    data: { name, description, price, image, categoryId },
+    data: { name, description, price, image, categoryId, slug },
   });
 }
 
@@ -101,6 +108,15 @@ export const getCategoryProducts = cache(
 export const getProductById = cache(async (id: string) => {
   return await prisma.product.findUnique({
     where: { id },
+    include: { category: true },
+    omit: { categoryId: true },
+  });
+});
+
+// Get a product by slug
+export const getProductBySlug = cache(async (slug: string) => {
+  return await prisma.product.findUnique({
+    where: { slug },
     include: { category: true },
     omit: { categoryId: true },
   });

@@ -1,11 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
-import { addToCartAction } from "./actions";
-import { toast } from "sonner";
 import { useCart } from "@/providers/CartProvider";
-import { Product } from "@prisma/client";
+import { Product } from "@/types";
+import { ShoppingCart } from "lucide-react";
+import { toast } from "sonner";
+import { addToCartAction } from "./actions";
 
 type AddToCartButtonProps = {
   product: Product;

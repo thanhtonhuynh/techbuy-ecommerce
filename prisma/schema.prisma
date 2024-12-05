@@ -58,6 +58,7 @@ model PasswordResetToken {
 
 model Product {
   id             String @id @default(auto()) @map("_id") @db.ObjectId
+  slug           String @unique
   name           String
   description    String
   price          Int

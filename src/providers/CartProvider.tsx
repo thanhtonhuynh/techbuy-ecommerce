@@ -1,7 +1,6 @@
 "use client";
 
-import { Cart, CartItem } from "@/types";
-import { Product } from "@prisma/client";
+import { Cart, CartItem, Product } from "@/types";
 import { createContext, use, useContext, useMemo, useOptimistic } from "react";
 
 type UpdateType = "plus" | "minus" | "delete";

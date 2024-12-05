@@ -35,7 +35,7 @@ import { useTransition } from "react";
 import { DropzoneOptions } from "react-dropzone";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { editProductAction } from "../[id]/edit/actions";
+import { editProductAction } from "../[slug]/edit/actions";
 import { addProductAction } from "./actions";
 
 export function ProductForm({

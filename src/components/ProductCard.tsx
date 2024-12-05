@@ -10,7 +10,7 @@ type ProductCardProps = {
 export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
-      href={`/product/${product.id}`}
+      href={`/product/${product.slug}`}
       className="flex cursor-pointer flex-col items-center rounded-md text-center shadow-[0_0_10px_0_rgba(0,0,0,0.2)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_0_10px_0_rgba(0,0,0,0.3)]"
     >
       <Image

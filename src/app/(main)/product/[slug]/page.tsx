@@ -1,17 +1,18 @@
-import { getProductById } from "@/data-access/product";
+import { getProductBySlug } from "@/data-access/product";
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { AddToCartButton } from "./AddToCart";
 
-type Params = Promise<{ id: string }>;
+type Params = Promise<{ slug: string }>;
 
 // TODO: metadata
 
 export default async function Page(props: { params: Params }) {
   const params = await props.params;
-  const product = await getProductById(params.id);
+  const product = await getProductBySlug(params.slug);
   if (!product) return notFound();
+  if (product.status !== "active") return notFound();
 
   return (
     <>

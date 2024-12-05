@@ -1,5 +1,5 @@
 import { getCategories } from "@/data-access/category";
-import { getProductById } from "@/data-access/product";
+import { getProductBySlug } from "@/data-access/product";
 import { getCurrentSession } from "@/lib/auth/session";
 import { hasAccess } from "@/utils/access-control";
 import { ChevronRight } from "lucide-react";
@@ -7,7 +7,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ProductForm } from "../../new/ProductForm";
 
-type Params = Promise<{ id: string }>;
+type Params = Promise<{ slug: string }>;
 
 export default async function Page(props: { params: Params }) {
   const { session, user } = await getCurrentSession();
@@ -16,7 +16,7 @@ export default async function Page(props: { params: Params }) {
   if (!hasAccess(user.role, "/admin")) return notFound();
 
   const params = await props.params;
-  const product = await getProductById(params.id);
+  const product = await getProductBySlug(params.slug);
   if (!product) return notFound();
 
   const categories = await getCategories();
