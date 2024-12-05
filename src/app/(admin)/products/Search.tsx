@@ -18,6 +18,7 @@ export function Search() {
 
     const newSearchParams = new URLSearchParams(searchParams.toString());
     newSearchParams.delete("page");
+    newSearchParams.delete("q");
 
     const url = createUrl(
       pathname,

@@ -65,7 +65,7 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
               <PaginationPrevious size={`sm`} href={prevHref} />
             </PaginationItem>
 
-            {page > 2 && totalPages > 2 && (
+            {page > 2 && (
               <PaginationItem>
                 <PaginationLink size={`sm`} href={firstHref}>
                   1
@@ -73,7 +73,7 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
               </PaginationItem>
             )}
 
-            {page > 3 && totalPages > 3 && (
+            {page > 3 && (
               <PaginationItem>
                 <PaginationEllipsis />
               </PaginationItem>
@@ -100,7 +100,8 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
 
         {page < totalPages && (
           <>
-            {page < totalPages - 1 && (
+            {/* If the current page is at least 2 pages from the last page, show the next page number */}
+            {page + 1 < totalPages && (
               <PaginationItem>
                 <PaginationLink size={`sm`} href={nextHref}>
                   {page + 1}
@@ -108,12 +109,14 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
               </PaginationItem>
             )}
 
-            {page < totalPages - 2 && totalPages > 3 && (
+            {/* If the current page is at least 3 pages from the last page, show an ellipsis */}
+            {page + 2 < totalPages && (
               <PaginationItem>
                 <PaginationEllipsis />
               </PaginationItem>
             )}
 
+            {/* If there are at least 2 pages, show the last page number */}
             {totalPages >= 2 && (
               <PaginationItem>
                 <PaginationLink size={`sm`} href={lastHref}>
