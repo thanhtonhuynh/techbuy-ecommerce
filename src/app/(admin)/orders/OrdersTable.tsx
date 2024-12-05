@@ -11,10 +11,13 @@ import {
 import { formatPriceFull } from "@/lib/utils";
 import { Order } from "@/types";
 import moment from "moment";
+import { useRouter } from "next/navigation";
 import { OrderActions } from "./OrderActions";
 import { DeliveryStatusBadge, PaymentStatusBadge } from "./StatusBadge";
 
 export function OrdersTable({ orders }: { orders: Order[] }) {
+  const router = useRouter();
+
   return (
     <Table>
       <TableHeader>
@@ -40,7 +43,13 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
       <TableBody>
         {orders.length ? (
           orders.map((order) => (
-            <TableRow key={order.id}>
+            <TableRow
+              key={order.id}
+              className="cursor-pointer"
+              onClick={() => {
+                router.push(`/orders/${order.id}`);
+              }}
+            >
               <TableCell className="tracking-tighter">{order.paymentIntentId.slice(3)}</TableCell>
 
               <TableCell>
