@@ -56,6 +56,12 @@ export default async function Page(props: { searchParams: SearchParams }) {
                 <span className="font-semibold">Amount Paid</span>
                 <span>{formatPriceFull(paymentIntent.amount / 100)}</span>
               </p>
+
+              <p className="flex justify-between">
+                <span className="font-semibold">Reference number</span>
+                <span>{paymentIntent.id}</span>
+              </p>
+
               <p className="flex justify-between">
                 <span className="font-semibold">Order number</span>
                 <span>{paymentIntent.metadata.orderId}</span>
@@ -66,7 +72,7 @@ export default async function Page(props: { searchParams: SearchParams }) {
 
         <Button className="w-fit self-end" asChild>
           {isSuccess ? (
-            <Link href={`/orders`}>View Order History</Link>
+            <Link href={`/my-orders`}>View Order History</Link>
           ) : (
             <Link href={`/checkout`}>Try Again</Link>
           )}
