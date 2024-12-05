@@ -47,18 +47,27 @@ export default async function Page(props: { searchParams?: SearchParams }) {
       </section>
 
       <section className="mt-4 space-y-4 px-4 md:px-8">
+        <ProductNav />
+
+        <Search />
+      </section>
+
+      <section className="mt-4 space-y-2 px-4 md:px-8">
         <div className="flex items-center justify-between">
-          <ProductNav />
+          <p className="flex gap-1 text-xs text-muted-foreground">
+            Showing
+            <span className="font-semibold">
+              {page === 1 ? 1 : (page - 1) * perPage + 1}-
+              {page * perPage > total ? total : page * perPage}
+            </span>
+            of <span className="font-semibold">{total}</span> products
+          </p>
 
           <div className="w-fit">
             <PaginationControls total={total} page={page} perPage={perPage} />
           </div>
         </div>
 
-        <Search />
-      </section>
-
-      <section className="mt-4 space-y-2 px-4 md:px-8">
         <ProductsTable products={products} />
       </section>
     </>

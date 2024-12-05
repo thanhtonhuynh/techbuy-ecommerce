@@ -1,3 +1,4 @@
+import { buttonVariants } from "@/components/ui/button";
 import {
   Pagination,
   PaginationContent,
@@ -7,6 +8,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { cn } from "@/lib/utils";
 
 type PaginationControlsProps = {
   total: number;
@@ -23,7 +25,7 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
         {page > 1 && (
           <>
             <PaginationItem>
-              <PaginationPrevious href={`?page=${page - 1}&perPage=${perPage}`} />
+              <PaginationPrevious size={`sm`} href={`?page=${page - 1}&perPage=${perPage}`} />
             </PaginationItem>
 
             {page > 2 && (
@@ -33,7 +35,7 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
             )}
 
             <PaginationItem>
-              <PaginationLink href={`?page=${page - 1}&perPage=${perPage}`}>
+              <PaginationLink size={`sm`} href={`?page=${page - 1}&perPage=${perPage}`}>
                 {page - 1}
               </PaginationLink>
             </PaginationItem>
@@ -41,15 +43,20 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
         )}
 
         <PaginationItem>
-          <PaginationLink isActive={true} href={`?page=${page}&perPage=${perPage}`}>
+          <span
+            className={cn(
+              buttonVariants({ variant: "outline", size: "sm" }),
+              "hover:bg-background",
+            )}
+          >
             {page}
-          </PaginationLink>
+          </span>
         </PaginationItem>
 
         {page < totalPages && (
           <>
             <PaginationItem>
-              <PaginationLink href={`?page=${page + 1}&perPage=${perPage}`}>
+              <PaginationLink size={`sm`} href={`?page=${page + 1}&perPage=${perPage}`}>
                 {page + 1}
               </PaginationLink>
             </PaginationItem>
@@ -61,7 +68,7 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
             )}
 
             <PaginationItem>
-              <PaginationNext href={`?page=${page + 1}&perPage=${perPage}`} />
+              <PaginationNext size={`sm`} href={`?page=${page + 1}&perPage=${perPage}`} />
             </PaginationItem>
           </>
         )}

@@ -6,11 +6,15 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { OrdersTable } from "./OrdersTable";
 
-export default async function Page() {
+type SearchParams = Promise<{ [key: string]: string | undefined }>;
+
+export default async function Page(props: { searchParams?: SearchParams }) {
   const { session, user } = await getCurrentSession();
   if (!session) redirect("/login");
   if (user.accountStatus !== "active") return notFound();
   if (!hasAccess(user.role, "/admin")) return notFound();
+
+  const searchParams = await props.searchParams;
 
   const orders = await getOrders();
 
