@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createUrl } from "@/lib/utils";
 import { SearchIcon } from "lucide-react";
@@ -47,6 +48,20 @@ export function Search() {
         autoComplete="off"
         defaultValue={searchParams.get("q") || ""}
       />
+
+      <Button
+        type="button"
+        size={`sm`}
+        variant={`link`}
+        className="absolute right-0 top-1/2 -translate-y-1/2"
+        onClick={() => {
+          const newSearchParams = new URLSearchParams(searchParams.toString());
+          newSearchParams.delete("q");
+          router.push(createUrl(pathname, newSearchParams), { scroll: false });
+        }}
+      >
+        Clear
+      </Button>
     </form>
   );
 }
