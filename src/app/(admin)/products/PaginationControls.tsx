@@ -46,7 +46,7 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
           <span
             className={cn(
               buttonVariants({ variant: "outline", size: "sm" }),
-              "hover:bg-background",
+              "select-none hover:bg-background",
             )}
           >
             {page}
