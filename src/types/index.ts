@@ -53,6 +53,12 @@ export type GetCategoryProductsOptions = {
   reverse?: boolean;
 };
 
+export type GetOrdersOptions = {
+  query?: string;
+  page?: number;
+  perPage?: number;
+};
+
 export type Product = Prisma.ProductGetPayload<{
   include: { category: true };
   omit: { categoryId: true };

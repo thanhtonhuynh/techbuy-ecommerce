@@ -19,7 +19,7 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Order #</TableHead>
+          <TableHead>Payment Intent #</TableHead>
 
           <TableHead>Customer</TableHead>
 
@@ -41,7 +41,7 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
         {orders.length ? (
           orders.map((order) => (
             <TableRow key={order.id}>
-              <TableCell className="tracking-tighter">{order.id}</TableCell>
+              <TableCell className="tracking-tighter">{order.paymentIntentId.slice(3)}</TableCell>
 
               <TableCell>
                 <div className="flex flex-col">

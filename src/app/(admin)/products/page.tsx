@@ -1,3 +1,4 @@
+import { PaginationControls } from "@/components/PaginationControls";
 import { Button } from "@/components/ui/button";
 import { getAdminProducts } from "@/data-access/product";
 import { getCurrentSession } from "@/lib/auth/session";
@@ -5,7 +6,6 @@ import { hasAccess } from "@/utils/access-control";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { PaginationControls } from "./PaginationControls";
 import { ProductNav } from "./ProductNav";
 import { ProductsTable } from "./ProductsTable";
 import { Search } from "./Search";
@@ -49,7 +49,10 @@ export default async function Page(props: { searchParams?: SearchParams }) {
       <section className="mt-4 space-y-4 px-4 md:px-8">
         <ProductNav />
 
-        <Search />
+        <div className="space-y-1">
+          <p className="pl-1 text-xs text-muted-foreground">Search for products by name.</p>
+          <Search />
+        </div>
       </section>
 
       <section className="mt-4 space-y-2 px-4 md:px-8">
@@ -57,10 +60,14 @@ export default async function Page(props: { searchParams?: SearchParams }) {
           <p className="flex gap-1 text-xs text-muted-foreground">
             Showing
             <span className="font-semibold">
-              {page === 1 ? 1 : (page - 1) * perPage + 1}-
-              {page * perPage > total ? total : page * perPage}
+              {page === 1 ? 1 : (page - 1) * perPage + 1}-{Math.min(page * perPage, total)}
             </span>
-            of <span className="font-semibold">{total}</span> products
+            of <span className="font-semibold">{total}</span> products{" "}
+            {searchValue && (
+              <>
+                for <span className="font-bold">&quot;{searchValue}&quot;</span>
+              </>
+            )}
           </p>
 
           <div className="w-fit">

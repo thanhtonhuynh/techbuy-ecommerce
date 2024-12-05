@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
-import { Cart, Order, OrderWithProducts } from "@/types";
-import { Order as PrismaOrder } from "@prisma/client";
+import { Cart, GetOrdersOptions, Order, OrderWithProducts } from "@/types";
+import { Prisma, Order as PrismaOrder } from "@prisma/client";
 import { cache } from "react";
 import "server-only";
 
@@ -127,8 +127,17 @@ function reshapeOrders(orders: OrderWithProducts[]): Order[] {
 }
 
 // Get all orders
-export const getOrders = cache(async () => {
+export const getOrders = cache(async ({ query = "", page = 1, perPage = 10 }: GetOrdersOptions) => {
+  const whereConditions = Prisma.validator<Prisma.OrderWhereInput>()({
+    OR: [
+      { paymentIntentId: { contains: query, mode: "insensitive" } },
+      { user: { name: { contains: query, mode: "insensitive" } } },
+      { user: { email: { contains: query, mode: "insensitive" } } },
+    ],
+  });
+
   const orders = await prisma.order.findMany({
+    where: whereConditions,
     orderBy: { createdAt: "desc" },
     select: {
       items: {
@@ -151,7 +160,11 @@ export const getOrders = cache(async () => {
       shipping: true,
       phone: true,
     },
+    skip: (page - 1) * perPage,
+    take: perPage,
   });
 
-  return reshapeOrders(orders);
+  const total = await prisma.order.count({ where: whereConditions });
+
+  return { orders: reshapeOrders(orders), total };
 });
