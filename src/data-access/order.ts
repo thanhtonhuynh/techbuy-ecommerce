@@ -71,10 +71,10 @@ export const getOrderById = cache(async (id: string) => {
   return await prisma.order.findUnique({ where: { id } });
 });
 
-// Get detailed order by id
-export const getDetailedOrderById = cache(async (id: string) => {
+// Get detailed order by payment intent id
+export const getDetailedOrderByPaymentIntentId = cache(async (paymentIntentId: string) => {
   const order = await prisma.order.findUnique({
-    where: { id },
+    where: { paymentIntentId },
     select: {
       items: {
         select: {

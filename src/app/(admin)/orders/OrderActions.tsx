@@ -46,7 +46,7 @@ export function OrderActions({ order }: { order: Order }) {
 
         <DropdownMenuContent align="end">
           <DropdownMenuItem asChild>
-            <Link href={`/orders/${order.id}`} className="cursor-pointer font-medium">
+            <Link href={`/orders/${order.paymentIntentId}`} className="cursor-pointer font-medium">
               View order details
             </Link>
           </DropdownMenuItem>

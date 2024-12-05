@@ -47,10 +47,10 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
               key={order.id}
               className="cursor-pointer"
               onClick={() => {
-                router.push(`/orders/${order.id}`);
+                router.push(`/orders/${order.paymentIntentId}`);
               }}
             >
-              <TableCell className="tracking-tighter">{order.paymentIntentId.slice(3)}</TableCell>
+              <TableCell className="tracking-tighter">{order.paymentIntentId}</TableCell>
 
               <TableCell>
                 <div className="flex flex-col">

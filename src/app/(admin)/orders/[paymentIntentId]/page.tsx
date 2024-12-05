@@ -1,4 +1,4 @@
-import { getDetailedOrderById } from "@/data-access/order";
+import { getDetailedOrderByPaymentIntentId } from "@/data-access/order";
 import { getCurrentSession } from "@/lib/auth/session";
 import { hasAccess } from "@/utils/access-control";
 import { ChevronRight } from "lucide-react";
@@ -6,7 +6,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { OrderDetails } from "./OrderDetails";
 
-type Params = Promise<{ id: string }>;
+type Params = Promise<{ paymentIntentId: string }>;
 
 export default async function Page(props: { params: Params }) {
   const { session, user } = await getCurrentSession();
@@ -15,7 +15,7 @@ export default async function Page(props: { params: Params }) {
   if (!hasAccess(user.role, "/admin")) return notFound();
 
   const params = await props.params;
-  const order = await getDetailedOrderById(params.id);
+  const order = await getDetailedOrderByPaymentIntentId(params.paymentIntentId);
   if (!order) return notFound();
 
   return (
@@ -25,7 +25,7 @@ export default async function Page(props: { params: Params }) {
       </section>
 
       <section className="mt-4 px-4 md:px-8">
-        <BreadcrumbNav orderId={params.id} />
+        <BreadcrumbNav paymentIntentId={params.paymentIntentId} />
       </section>
 
       <section className="mt-8 space-y-8 px-4 md:px-8">
@@ -35,7 +35,7 @@ export default async function Page(props: { params: Params }) {
   );
 }
 
-function BreadcrumbNav({ orderId }: { orderId: string }) {
+function BreadcrumbNav({ paymentIntentId }: { paymentIntentId: string }) {
   return (
     <ul className="flex items-center gap-2 text-sm text-muted-foreground">
       <li>
@@ -50,7 +50,7 @@ function BreadcrumbNav({ orderId }: { orderId: string }) {
 
       <ChevronRight size={14} />
 
-      <li className="text-primary">{orderId}</li>
+      <li className="text-primary">{paymentIntentId}</li>
     </ul>
   );
 }
