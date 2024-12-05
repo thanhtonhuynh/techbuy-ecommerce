@@ -67,9 +67,39 @@ export async function getOrderByPaymentIntentId(paymentIntentId: string) {
 }
 
 // Get order by id
-export async function getOrderById(id: string) {
+export const getOrderById = cache(async (id: string) => {
   return await prisma.order.findUnique({ where: { id } });
-}
+});
+
+// Get detailed order by id
+export const getDetailedOrderById = cache(async (id: string) => {
+  const order = await prisma.order.findUnique({
+    where: { id },
+    select: {
+      items: {
+        select: {
+          product: {
+            select: { id: true, name: true, image: true },
+          },
+          id: true,
+          quantity: true,
+          unitPrice: true,
+        },
+      },
+      id: true,
+      user: { select: { id: true, name: true, email: true } },
+      paymentIntentId: true,
+      paymentStatus: true,
+      deliveryStatus: true,
+      createdAt: true,
+      updatedAt: true,
+      shipping: true,
+      phone: true,
+    },
+  });
+
+  return order && reshapeOrders([order])[0];
+});
 
 export async function updateOrder(id: string, data: Partial<PrismaOrder>) {
   return await prisma.order.update({
@@ -118,7 +148,8 @@ export const getOrders = cache(async () => {
       deliveryStatus: true,
       createdAt: true,
       updatedAt: true,
-      address: true,
+      shipping: true,
+      phone: true,
     },
   });
 

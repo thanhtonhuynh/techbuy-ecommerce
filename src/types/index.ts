@@ -1,4 +1,4 @@
-import { Address, Prisma } from "@prisma/client";
+import { Prisma, Shipping } from "@prisma/client";
 
 export type CartWithProducts = Prisma.CartGetPayload<{
   select: {
@@ -79,7 +79,8 @@ export type Order = {
   deliveryStatus: string;
   createdAt: Date;
   updatedAt: Date;
-  address: Address | null;
+  shipping: Shipping | null;
+  phone: string | null;
   totalQuantity: number;
   totalAmount: number;
 };
@@ -103,6 +104,7 @@ export type OrderWithProducts = Prisma.OrderGetPayload<{
     deliveryStatus: true;
     createdAt: true;
     updatedAt: true;
-    address: true;
+    shipping: true;
+    phone: true;
   };
 }>;

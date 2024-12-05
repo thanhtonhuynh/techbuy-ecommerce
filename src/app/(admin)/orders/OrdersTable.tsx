@@ -31,8 +31,6 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
 
           <TableHead>Placed at</TableHead>
 
-          <TableHead>Last Updated</TableHead>
-
           <TableHead className="w-10">
             <span className="sr-only">Actions</span>
           </TableHead>
@@ -52,7 +50,7 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
                 </div>
               </TableCell>
 
-              <TableCell>{formatPriceFull(order.totalAmount / 100)}</TableCell>
+              <TableCell>{formatPriceFull((order.totalAmount * 1.12) / 100)}</TableCell>
 
               <TableCell>
                 <PaymentStatusBadge status={order.paymentStatus} />
@@ -63,8 +61,6 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
               </TableCell>
 
               <TableCell>{moment(order.createdAt).format("MMM DD, YYYY HH:mm:ss")}</TableCell>
-
-              <TableCell>{moment(order.updatedAt).format("MMM DD, YYYY HH:mm:ss")}</TableCell>
 
               <TableCell>
                 <OrderActions order={order} />

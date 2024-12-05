@@ -2,7 +2,13 @@
 
 import { LoadingButton } from "@/components/buttons/LoadingButton";
 import { getStripe } from "@/utils/get-stripejs";
-import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import {
+  AddressElement,
+  Elements,
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
@@ -49,13 +55,29 @@ export function Form() {
   }
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
+    <form className="space-y-8" onSubmit={handleSubmit}>
       <div>
         <h2>Payment</h2>
         <p className="text-muted-foreground">All transactions are secure and encrypted.</p>
       </div>
 
-      <PaymentElement />
+      <div className="space-y-2">
+        <h3>Shipping Information</h3>
+        <AddressElement
+          options={{
+            mode: "shipping",
+            fields: { phone: "always" },
+            display: { name: "split" },
+            allowedCountries: ["CA"],
+            validation: { phone: { required: "always" } },
+          }}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <h3>Payment Information</h3>
+        <PaymentElement />
+      </div>
 
       <LoadingButton
         className="w-full"
