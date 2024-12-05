@@ -3,20 +3,20 @@ import { Order } from "@/types";
 export function CustomerInfo({ order }: { order: Order }) {
   return (
     <>
-      <div className="flex justify-between">
-        <span className="font-medium">User ID</span>
+      <p className="flex justify-between">
+        <span>User ID</span>
         <span>{order.user.id}</span>
-      </div>
+      </p>
 
-      <div className="flex justify-between">
-        <span className="font-medium">Name</span>
+      <p className="flex justify-between">
+        <span>Name</span>
         <span>{order.user.name}</span>
-      </div>
+      </p>
 
-      <div className="flex justify-between">
-        <span className="font-medium">Email</span>
+      <p className="flex justify-between">
+        <span>Email</span>
         <span>{order.user.email}</span>
-      </div>
+      </p>
     </>
   );
 }
