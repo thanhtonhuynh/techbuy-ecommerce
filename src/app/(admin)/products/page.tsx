@@ -57,7 +57,10 @@ export default async function Page(props: { searchParams?: SearchParams }) {
       </section>
 
       <section className="mt-4 space-y-4 px-4 md:px-8">
-        <ProductNav />
+        <div className="space-y-1">
+          <p className="pl-1 text-xs text-muted-foreground">Browse products by status</p>
+          <ProductNav />
+        </div>
 
         <div className="flex items-center justify-between gap-2">
           <div className="flex-1 space-y-1">

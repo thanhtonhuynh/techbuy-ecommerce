@@ -1,11 +1,13 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
+import { createUrl } from "@/lib/utils";
 import { SearchIcon } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FormEvent } from "react";
 
 export function Search() {
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -13,20 +15,20 @@ export function Search() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const query = formData.get("q") as string;
-    const status = searchParams.get("status");
 
-    // Get the current search parameters
-    const params = new URLSearchParams({ ...(status && { status }) });
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.delete("page");
+    newSearchParams.delete("q");
 
-    // Update the search parameters
-    if (query) {
-      params.set("q", query);
-    } else {
-      params.delete("q");
-    }
+    const url = createUrl(
+      pathname,
+      new URLSearchParams({
+        ...Object.fromEntries(newSearchParams),
+        ...(query && { q: query.trim() }),
+      }),
+    );
 
-    // Navigate to the new URL
-    router.push(`/orders?${params.toString()}`);
+    router.push(url);
   }
 
   return (
@@ -40,7 +42,7 @@ export function Search() {
         key={searchParams.get("q")}
         type="text"
         name="q"
-        placeholder="Search for orders..."
+        placeholder="Search orders..."
         className="pl-9"
         autoComplete="off"
         defaultValue={searchParams.get("q") || ""}

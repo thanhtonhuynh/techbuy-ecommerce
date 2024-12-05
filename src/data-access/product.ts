@@ -54,10 +54,14 @@ export const getProducts = cache(
 // Get Admin Products
 export const getAdminProducts = cache(
   async ({ status, sortKey, reverse, query = "", page = 1, perPage = 10 }: GetProductsOptions) => {
+    const queryWords = query.split(" ").filter(Boolean);
+    const nameConditions = queryWords.map((word) => ({
+      name: { contains: word, mode: Prisma.QueryMode.insensitive },
+    }));
+
     const whereConditions = Prisma.validator<Prisma.ProductWhereInput>()({
       status,
-      name: { contains: query, mode: "insensitive" },
-      // ...(sortKey === "purchasedCount" && { purchasedCount: { gt: 0 } }),
+      AND: nameConditions,
     });
 
     const products = await prisma.product.findMany({

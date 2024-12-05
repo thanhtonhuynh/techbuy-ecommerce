@@ -24,7 +24,7 @@ export function Search() {
       pathname,
       new URLSearchParams({
         ...Object.fromEntries(newSearchParams),
-        ...(query && { q: query }),
+        ...(query && { q: query.trim() }),
       }),
     );
 
@@ -42,7 +42,7 @@ export function Search() {
         key={searchParams.get("q")}
         type="text"
         name="q"
-        placeholder="Search for products..."
+        placeholder="Search products..."
         className="pl-9"
         autoComplete="off"
         defaultValue={searchParams.get("q") || ""}
