@@ -79,7 +79,7 @@ export const getDetailedOrderByPaymentIntentId = cache(async (paymentIntentId: s
       items: {
         select: {
           product: {
-            select: { id: true, name: true, image: true },
+            select: { id: true, name: true, image: true, slug: true },
           },
           id: true,
           quantity: true,
@@ -143,7 +143,7 @@ export const getOrders = cache(async ({ query = "", page = 1, perPage = 10 }: Ge
       items: {
         select: {
           product: {
-            select: { id: true, name: true, image: true },
+            select: { id: true, name: true, image: true, slug: true },
           },
           id: true,
           quantity: true,
@@ -167,4 +167,35 @@ export const getOrders = cache(async ({ query = "", page = 1, perPage = 10 }: Ge
   const total = await prisma.order.count({ where: whereConditions });
 
   return { orders: reshapeOrders(orders), total };
+});
+
+// Get orders by user id
+export const getOrdersByUserId = cache(async (userId: string) => {
+  const orders = await prisma.order.findMany({
+    where: { userId },
+    orderBy: { createdAt: "desc" },
+    select: {
+      items: {
+        select: {
+          product: {
+            select: { id: true, name: true, image: true, slug: true },
+          },
+          id: true,
+          quantity: true,
+          unitPrice: true,
+        },
+      },
+      id: true,
+      user: { select: { id: true, name: true, email: true } },
+      paymentIntentId: true,
+      paymentStatus: true,
+      deliveryStatus: true,
+      createdAt: true,
+      updatedAt: true,
+      shipping: true,
+      phone: true,
+    },
+  });
+
+  return reshapeOrders(orders);
 });

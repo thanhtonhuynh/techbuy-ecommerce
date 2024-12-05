@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { User } from "@/lib/auth/session";
 import { hasAccess } from "@/utils/access-control";
-import { Lock, LogOut, Settings, UserRound } from "lucide-react";
+import { Lock, LogOut, Logs, Settings, UserRound } from "lucide-react";
 import Link from "next/link";
 
 interface UserButtonProps {
@@ -47,6 +47,13 @@ export function UserButton({ user }: UserButtonProps) {
                   </Link>
                 </DropdownMenuItem>
               )}
+
+              <DropdownMenuItem asChild>
+                <Link href="/my-orders" className="cursor-pointer">
+                  <Logs className="size-4" />
+                  <span>My orders</span>
+                </Link>
+              </DropdownMenuItem>
 
               <DropdownMenuItem asChild>
                 <Link href="/settings" className="cursor-pointer">

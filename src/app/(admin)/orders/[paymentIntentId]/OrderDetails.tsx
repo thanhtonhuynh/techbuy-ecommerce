@@ -1,7 +1,7 @@
+import { OrderItemList } from "@/components/OrderItemList";
 import { formatPriceFull } from "@/lib/utils";
 import { Order } from "@/types";
 import { CustomerInfo } from "./CustomerInfo";
-import { ItemList } from "./ItemList";
 import { OrderInfo } from "./OrderInfo";
 import { ShippingInfo } from "./ShippingInfo";
 
@@ -35,7 +35,7 @@ export function OrderDetails({ order }: { order: Order }) {
       <section>
         <h2>Order Summary</h2>
 
-        <ItemList list={order.items} />
+        <OrderItemList list={order.items} />
 
         <div className="space-y-1 py-4">
           <p className="flex justify-between">

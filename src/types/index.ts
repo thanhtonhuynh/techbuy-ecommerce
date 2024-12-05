@@ -73,6 +73,7 @@ export type OrderItem = {
     id: string;
     name: string;
     image: string;
+    slug: string;
   };
 };
 
@@ -96,7 +97,7 @@ export type OrderWithProducts = Prisma.OrderGetPayload<{
     items: {
       select: {
         product: {
-          select: { id: true; name: true; image: true };
+          select: { id: true; name: true; image: true; slug: true };
         };
         id: true;
         quantity: true;
