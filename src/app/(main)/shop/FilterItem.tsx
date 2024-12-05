@@ -9,11 +9,14 @@ export function FilterItem({ item }: { item: SortFilterItem }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const active = searchParams.get("sort") === item.slug;
-  const q = searchParams.get("q");
+
+  const newSearchParams = new URLSearchParams(searchParams.toString());
+  newSearchParams.delete("page");
+
   const href = createUrl(
     pathname,
     new URLSearchParams({
-      ...(q && { q }),
+      ...Object.fromEntries(newSearchParams),
       ...(item.slug && item.slug.length && { sort: item.slug }),
     }),
   );
@@ -24,7 +27,10 @@ export function FilterItem({ item }: { item: SortFilterItem }) {
       <DynamicTag
         href={href}
         prefetch={!active ? false : undefined}
-        className={cn("select-none underline-offset-4 hover:underline", active && "underline")}
+        className={cn(
+          "select-none text-muted-foreground underline-offset-4 hover:underline",
+          active && "font-semibold text-primary hover:no-underline",
+        )}
       >
         {item.title}
       </DynamicTag>

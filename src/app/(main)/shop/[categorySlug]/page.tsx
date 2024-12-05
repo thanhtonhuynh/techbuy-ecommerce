@@ -31,7 +31,11 @@ export default async function Page(props: { params: Params; searchParams?: Searc
         <h1 className="gradient-text w-fit">Shop {existingCategory.name}</h1>
       </section>
 
-      <FilterList list={sortFilters.slice(1)} />
+      <section className="space-y-1 border-b border-border/40 px-4 py-8 dark:border-border md:px-8">
+        <h3 className="text-sm font-normal text-muted-foreground">Sort by</h3>
+
+        <FilterList list={sortFilters.slice(1)} />
+      </section>
 
       <section className="px-4 py-8 md:px-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

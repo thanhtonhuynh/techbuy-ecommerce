@@ -1,3 +1,5 @@
+"use client";
+
 import { buttonVariants } from "@/components/ui/button";
 import {
   Pagination,
@@ -8,7 +10,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { cn } from "@/lib/utils";
+import { cn, createUrl } from "@/lib/utils";
+import { usePathname, useSearchParams } from "next/navigation";
 
 type PaginationControlsProps = {
   total: number;
@@ -18,6 +21,24 @@ type PaginationControlsProps = {
 
 export function PaginationControls({ total, page, perPage }: PaginationControlsProps) {
   const totalPages = Math.ceil(total / perPage);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const nextHref = createUrl(
+    pathname,
+    new URLSearchParams({
+      ...Object.fromEntries(searchParams),
+      page: `${page + 1}`,
+      perPage: `${perPage}`,
+    }),
+  );
+  const prevHref = createUrl(
+    pathname,
+    new URLSearchParams({
+      ...Object.fromEntries(searchParams),
+      page: `${page - 1}`,
+      perPage: `${perPage}`,
+    }),
+  );
 
   return (
     <Pagination>
@@ -25,7 +46,7 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
         {page > 1 && (
           <>
             <PaginationItem>
-              <PaginationPrevious size={`sm`} href={`?page=${page - 1}&perPage=${perPage}`} />
+              <PaginationPrevious size={`sm`} href={prevHref} />
             </PaginationItem>
 
             {page > 2 && (
@@ -35,7 +56,7 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
             )}
 
             <PaginationItem>
-              <PaginationLink size={`sm`} href={`?page=${page - 1}&perPage=${perPage}`}>
+              <PaginationLink size={`sm`} href={prevHref}>
                 {page - 1}
               </PaginationLink>
             </PaginationItem>
@@ -56,7 +77,7 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
         {page < totalPages && (
           <>
             <PaginationItem>
-              <PaginationLink size={`sm`} href={`?page=${page + 1}&perPage=${perPage}`}>
+              <PaginationLink size={`sm`} href={nextHref}>
                 {page + 1}
               </PaginationLink>
             </PaginationItem>
@@ -68,7 +89,7 @@ export function PaginationControls({ total, page, perPage }: PaginationControlsP
             )}
 
             <PaginationItem>
-              <PaginationNext size={`sm`} href={`?page=${page + 1}&perPage=${perPage}`} />
+              <PaginationNext size={`sm`} href={nextHref} />
             </PaginationItem>
           </>
         )}

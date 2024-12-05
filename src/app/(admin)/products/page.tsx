@@ -1,5 +1,7 @@
+import { FilterList } from "@/app/(main)/shop/FilterList";
 import { PaginationControls } from "@/components/PaginationControls";
 import { Button } from "@/components/ui/button";
+import { defaultSort, sortFilters } from "@/constants";
 import { getAdminProducts } from "@/data-access/product";
 import { getCurrentSession } from "@/lib/auth/session";
 import { hasAccess } from "@/utils/access-control";
@@ -21,11 +23,19 @@ export default async function Page(props: { searchParams?: SearchParams }) {
   const searchParams = await props.searchParams;
   const page = searchParams?.page ? parseInt(searchParams.page) : 1;
   const perPage = searchParams?.perPage ? parseInt(searchParams.perPage) : 10;
-  const { status, q: searchValue } = searchParams as { [key: string]: string };
+  const { sort, status, q: searchValue } = searchParams as { [key: string]: string };
+  const { sortKey, reverse } = sortFilters.find((filter) => filter.slug === sort) || defaultSort;
 
   if (page < 1 || perPage < 1) return notFound();
 
-  const { products, total } = await getAdminProducts({ status, query: searchValue, page, perPage });
+  const { products, total } = await getAdminProducts({
+    status,
+    sortKey,
+    reverse,
+    query: searchValue, // name
+    page,
+    perPage,
+  });
 
   return (
     <>
@@ -47,7 +57,13 @@ export default async function Page(props: { searchParams?: SearchParams }) {
       </section>
 
       <section className="mt-4 space-y-4 px-4 md:px-8">
-        <ProductNav />
+        <div className="flex items-center justify-between text-sm">
+          <ProductNav />
+
+          <div className="rounded-md border p-3 text-muted-foreground">
+            <FilterList list={sortFilters.slice(1)} />
+          </div>
+        </div>
 
         <div className="space-y-1">
           <p className="pl-1 text-xs text-muted-foreground">Search for products by name.</p>
