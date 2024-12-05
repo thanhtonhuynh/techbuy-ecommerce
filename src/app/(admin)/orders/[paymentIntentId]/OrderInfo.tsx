@@ -6,12 +6,12 @@ export function OrderInfo({ order }: { order: Order }) {
   return (
     <>
       <p className="flex justify-between">
-        <span>Payment intent ID</span>
+        <span>Reference number</span>
         <span>{order.paymentIntentId}</span>
       </p>
 
       <p className="flex justify-between">
-        <span>Order ID</span>
+        <span>Order number</span>
         <span>{order.id}</span>
       </p>
 

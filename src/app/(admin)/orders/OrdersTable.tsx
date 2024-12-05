@@ -22,15 +22,15 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Payment Intent #</TableHead>
+          <TableHead>Reference number</TableHead>
 
           <TableHead>Customer</TableHead>
 
-          <TableHead>Price Paid</TableHead>
+          <TableHead>Price paid</TableHead>
 
-          <TableHead>Payment Status</TableHead>
+          <TableHead>Payment status</TableHead>
 
-          <TableHead>Delivery Status</TableHead>
+          <TableHead>Delivery status</TableHead>
 
           <TableHead>Placed at</TableHead>
 
