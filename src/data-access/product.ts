@@ -90,6 +90,32 @@ export const getAdminProducts = cache(
   },
 );
 
+// Get related products
+export const getRelatedProducts = cache(
+  async ({ productId, limit }: { productId: string; limit: number }) => {
+    const product = await prisma.product.findUnique({
+      where: { id: productId },
+      include: { category: true },
+      omit: { categoryId: true },
+    });
+
+    if (!product) return [];
+
+    const splitProductName = product.name.split(" ");
+    const nameConditions = splitProductName.map((word) => ({
+      name: { contains: word, mode: Prisma.QueryMode.insensitive },
+    }));
+
+    return await prisma.product.findMany({
+      where: {
+        OR: nameConditions,
+        id: { not: productId },
+      },
+      take: limit,
+    });
+  },
+);
+
 // Get products by category
 export const getCategoryProducts = cache(
   async ({ categorySlug, status, sortKey, reverse }: GetCategoryProductsOptions) => {
