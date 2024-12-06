@@ -26,7 +26,7 @@ export default async function Page(props: { params: Params }) {
         <BreadcrumbNav />
       </section>
 
-      <section className="mt-8 space-y-8 px-4 pb-8 md:px-8">
+      <section className="mt-8 space-y-8 px-4 pb-8 duration-300 animate-in zoom-in-75 md:px-8">
         <OrderDetails order={order} />
       </section>
     </>

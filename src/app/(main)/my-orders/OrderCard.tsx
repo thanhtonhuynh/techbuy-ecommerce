@@ -1,4 +1,5 @@
 import { OrderItemList } from "@/components/order/OrderItemList";
+import { DeliveryStatusBadge } from "@/components/order/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { formatPriceFull } from "@/lib/utils";
@@ -10,7 +11,7 @@ export function OrderCard({ order }: { order: Order }) {
   return (
     <Card>
       <CardHeader className="flex-row justify-between gap-4 space-y-0 rounded-t-xl bg-muted text-sm">
-        <div className="flex gap-8">
+        <div className="flex items-center gap-8">
           <div>
             <p>Order placed</p>
             <p className="font-semibold">{moment(order.createdAt).format("MMM DD, YYYY")}</p>
@@ -25,6 +26,8 @@ export function OrderCard({ order }: { order: Order }) {
             <p>Ship to</p>
             <p className="font-semibold">{order.shipping?.name}</p>
           </div>
+
+          <DeliveryStatusBadge status={order.deliveryStatus} />
         </div>
 
         <div>
