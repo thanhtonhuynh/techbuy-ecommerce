@@ -7,7 +7,7 @@ type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 export default async function Page(props: { searchParams?: SearchParams }) {
   const searchParams = await props.searchParams;
-  const { sort, q: searchValue } = searchParams as { [key: string]: string };
+  const { sort, shop_q: searchValue } = searchParams as { [key: string]: string };
   const { sortKey, reverse } = sortFilters.find((filter) => filter.slug === sort) || defaultSort;
 
   const { products } = await getProducts({

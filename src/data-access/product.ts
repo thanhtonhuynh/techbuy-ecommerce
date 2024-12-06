@@ -33,12 +33,14 @@ export async function createProduct({
 // Get products
 export const getProducts = cache(
   async ({ status, sortKey, reverse, query = "", page = 1, perPage = 10 }: GetProductsOptions) => {
+    const queryWords = query.split(" ").filter(Boolean);
+    const nameConditions = queryWords.map((word) => ({
+      name: { contains: word, mode: Prisma.QueryMode.insensitive },
+    }));
+
     const whereConditions = Prisma.validator<Prisma.ProductWhereInput>()({
       status,
-      OR: [
-        { name: { contains: query, mode: "insensitive" } },
-        { description: { contains: query, mode: "insensitive" } },
-      ],
+      AND: nameConditions,
       ...(sortKey === "purchasedCount" && { purchasedCount: { gt: 0 } }),
     });
 

@@ -1,9 +1,9 @@
 "use client";
 
-import Form from "next/form";
-import { Input } from "../ui/input";
 import { SearchIcon } from "lucide-react";
+import Form from "next/form";
 import { useSearchParams } from "next/navigation";
+import { Input } from "../ui/input";
 
 export function Search() {
   const searchParams = useSearchParams();
@@ -16,13 +16,13 @@ export function Search() {
       />
 
       <Input
-        key={searchParams.get("q")}
+        key={searchParams.get("shop_q")}
         type="text"
-        name="q"
+        name="shop_q"
         placeholder="Search for products..."
         className="pl-9"
         autoComplete="off"
-        defaultValue={searchParams.get("q") || ""}
+        defaultValue={searchParams.get("shop_q") || ""}
       />
     </Form>
   );

@@ -12,6 +12,7 @@ export function FilterItem({ item }: { item: SortFilterItem }) {
 
   const newSearchParams = new URLSearchParams(searchParams.toString());
   newSearchParams.delete("page");
+  newSearchParams.delete("sort");
 
   const href = createUrl(
     pathname,

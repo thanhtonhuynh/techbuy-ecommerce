@@ -37,7 +37,7 @@ function BreadcrumbNav() {
   return (
     <ul className="flex items-center gap-2 text-sm text-muted-foreground">
       <li>
-        <Link href="/my-orders">Orders</Link>
+        <Link href="/my-orders">My Orders</Link>
       </li>
 
       <ChevronRight size={14} />

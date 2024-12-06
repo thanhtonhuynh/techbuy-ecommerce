@@ -55,7 +55,10 @@ export function OrderActions({ order }: { order: Order }) {
             <Button
               variant={"ghost"}
               className={"w-full cursor-pointer justify-start focus-visible:ring-0"}
-              onClick={() => setOpen(true)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpen(true);
+              }}
             >
               Update delivery status
             </Button>
@@ -81,7 +84,7 @@ function UpdateDeliveryStatusContent({
 
   if (isDesktop) {
     return (
-      <DialogContent className="gap-2">
+      <DialogContent className="gap-2" onClick={(e) => e.stopPropagation()}>
         <DialogHeader className="mb-2">
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
@@ -96,7 +99,7 @@ function UpdateDeliveryStatusContent({
   }
 
   return (
-    <DrawerContent>
+    <DrawerContent onClick={(e) => e.stopPropagation()}>
       <DrawerHeader className="text-left">
         <DrawerTitle>{title}</DrawerTitle>
       </DrawerHeader>

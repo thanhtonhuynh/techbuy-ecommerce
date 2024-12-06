@@ -4,12 +4,17 @@ import { notFound, redirect } from "next/navigation";
 import { OrderCard } from "./OrderCard";
 import { Search } from "./Search";
 
-export default async function Page() {
+type SearchParams = Promise<{ [key: string]: string | undefined }>;
+
+export default async function Page(props: { searchParams?: SearchParams }) {
   const { session, user } = await getCurrentSession();
   if (!session) redirect("/login");
   if (user.accountStatus !== "active") return notFound();
 
-  const orders = await getOrdersByUserId(user.id);
+  const searchParams = await props.searchParams;
+  const { q: searchValue } = searchParams as { [key: string]: string };
+
+  const orders = await getOrdersByUserId(user.id, { query: searchValue });
 
   return (
     <>
@@ -27,6 +32,10 @@ export default async function Page() {
       <section className="mt-4 space-y-4 px-4 pb-8 md:px-8">
         {orders.length ? (
           orders.map((order) => <OrderCard key={order.id} order={order} />)
+        ) : searchValue ? (
+          <p className="rounded-md bg-muted p-4 text-center">
+            No orders found for <span className="font-semibold">&quot;{searchValue}&quot;</span>
+          </p>
         ) : (
           <p className="rounded-md bg-muted p-4 text-center">You haven't placed any orders yet.</p>
         )}

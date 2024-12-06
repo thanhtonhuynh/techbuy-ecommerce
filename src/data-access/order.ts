@@ -170,9 +170,21 @@ export const getOrders = cache(async ({ query = "", page = 1, perPage = 10 }: Ge
 });
 
 // Get orders by user id
-export const getOrdersByUserId = cache(async (userId: string) => {
+export const getOrdersByUserId = cache(async (userId: string, { query = "" }: GetOrdersOptions) => {
+  const queryWords = query.split(" ").filter(Boolean);
+  const productNameConditions = queryWords.map((word) => ({
+    product: { name: { contains: word, mode: Prisma.QueryMode.insensitive } },
+  }));
+  const whereConditions = Prisma.validator<Prisma.OrderWhereInput>()({
+    userId,
+    OR: [
+      { paymentIntentId: { contains: query, mode: "insensitive" } },
+      { items: { some: { AND: productNameConditions } } },
+    ],
+  });
+
   const orders = await prisma.order.findMany({
-    where: { userId },
+    where: whereConditions,
     orderBy: { createdAt: "desc" },
     select: {
       items: {
