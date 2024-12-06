@@ -1,3 +1,4 @@
+import { PaginationControls } from "@/components/PaginationControls";
 import { getOrdersByUserId } from "@/data-access/order";
 import { getCurrentSession } from "@/lib/auth/session";
 import { notFound, redirect } from "next/navigation";
@@ -12,9 +13,13 @@ export default async function Page(props: { searchParams?: SearchParams }) {
   if (user.accountStatus !== "active") return notFound();
 
   const searchParams = await props.searchParams;
+  const page = searchParams?.page ? parseInt(searchParams.page) : 1;
+  const perPage = searchParams?.perPage ? parseInt(searchParams.perPage) : 5;
   const { q: searchValue } = searchParams as { [key: string]: string };
 
-  const orders = await getOrdersByUserId(user.id, { query: searchValue });
+  if (page < 1 || perPage < 1) return notFound();
+
+  const { orders, total } = await getOrdersByUserId(user.id, { query: searchValue, page, perPage });
 
   return (
     <>
@@ -39,6 +44,25 @@ export default async function Page(props: { searchParams?: SearchParams }) {
         ) : (
           <p className="rounded-md bg-muted p-4 text-center">You haven't placed any orders yet.</p>
         )}
+
+        <div className="flex items-center justify-between">
+          <p className="flex gap-1 text-xs text-muted-foreground">
+            Showing
+            <span className="font-semibold">
+              {Math.min((page - 1) * perPage + 1, total)}-{Math.min(page * perPage, total)}
+            </span>
+            of <span className="font-semibold">{total}</span> orders{" "}
+            {searchValue && (
+              <>
+                for <span className="font-bold">&quot;{searchValue}&quot;</span>
+              </>
+            )}
+          </p>
+
+          <div className="w-fit">
+            <PaginationControls total={total} page={page} perPage={perPage} />
+          </div>
+        </div>
       </section>
     </>
   );

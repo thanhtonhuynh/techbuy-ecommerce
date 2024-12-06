@@ -1,13 +1,13 @@
-import { formatPriceFull } from "@/lib/utils";
+import { cn, formatPriceFull } from "@/lib/utils";
 import { OrderItem } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 
 export function OrderItemList({ list }: { list: OrderItem[] }) {
   return (
-    <ul>
+    <ul className={cn("grid gap-4", list.length > 1 && "md:grid-cols-2")}>
       {list.map((item) => (
-        <li key={item.id} className="flex items-center gap-4 border-b px-1 py-4">
+        <li key={item.id} className="flex items-center gap-4 border-b px-1 pb-4">
           <div className="h-16 w-16 rounded-md">
             <Image
               src={item.product.image}

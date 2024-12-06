@@ -170,44 +170,50 @@ export const getOrders = cache(async ({ query = "", page = 1, perPage = 10 }: Ge
 });
 
 // Get orders by user id
-export const getOrdersByUserId = cache(async (userId: string, { query = "" }: GetOrdersOptions) => {
-  const queryWords = query.split(" ").filter(Boolean);
-  const productNameConditions = queryWords.map((word) => ({
-    product: { name: { contains: word, mode: Prisma.QueryMode.insensitive } },
-  }));
-  const whereConditions = Prisma.validator<Prisma.OrderWhereInput>()({
-    userId,
-    OR: [
-      { paymentIntentId: { contains: query, mode: "insensitive" } },
-      { items: { some: { AND: productNameConditions } } },
-    ],
-  });
+export const getOrdersByUserId = cache(
+  async (userId: string, { query = "", page = 1, perPage = 10 }: GetOrdersOptions) => {
+    const queryWords = query.split(" ").filter(Boolean);
+    const productNameConditions = queryWords.map((word) => ({
+      product: { name: { contains: word, mode: Prisma.QueryMode.insensitive } },
+    }));
+    const whereConditions = Prisma.validator<Prisma.OrderWhereInput>()({
+      userId,
+      OR: [
+        { paymentIntentId: { contains: query, mode: "insensitive" } },
+        { items: { some: { AND: productNameConditions } } },
+      ],
+    });
 
-  const orders = await prisma.order.findMany({
-    where: whereConditions,
-    orderBy: { createdAt: "desc" },
-    select: {
-      items: {
-        select: {
-          product: {
-            select: { id: true, name: true, image: true, slug: true },
+    const orders = await prisma.order.findMany({
+      where: whereConditions,
+      orderBy: { createdAt: "desc" },
+      select: {
+        items: {
+          select: {
+            product: {
+              select: { id: true, name: true, image: true, slug: true },
+            },
+            id: true,
+            quantity: true,
+            unitPrice: true,
           },
-          id: true,
-          quantity: true,
-          unitPrice: true,
         },
+        id: true,
+        user: { select: { id: true, name: true, email: true } },
+        paymentIntentId: true,
+        paymentStatus: true,
+        deliveryStatus: true,
+        createdAt: true,
+        updatedAt: true,
+        shipping: true,
+        phone: true,
       },
-      id: true,
-      user: { select: { id: true, name: true, email: true } },
-      paymentIntentId: true,
-      paymentStatus: true,
-      deliveryStatus: true,
-      createdAt: true,
-      updatedAt: true,
-      shipping: true,
-      phone: true,
-    },
-  });
+      skip: (page - 1) * perPage,
+      take: perPage,
+    });
 
-  return reshapeOrders(orders);
-});
+    const total = await prisma.order.count({ where: whereConditions });
+
+    return { orders: reshapeOrders(orders), total };
+  },
+);

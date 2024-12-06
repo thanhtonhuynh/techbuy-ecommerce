@@ -9,7 +9,7 @@ export function OrderItems({ order }: { order: Order }) {
         <CardTitle>Items</CardTitle>
       </CardHeader>
 
-      <CardContent className="p-4 pt-0">
+      <CardContent className="p-4">
         <OrderItemList list={order.items} />
       </CardContent>
     </Card>

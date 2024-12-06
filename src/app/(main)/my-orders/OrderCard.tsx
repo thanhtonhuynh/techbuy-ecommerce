@@ -10,8 +10,8 @@ import Link from "next/link";
 export function OrderCard({ order }: { order: Order }) {
   return (
     <Card>
-      <CardHeader className="flex-row justify-between gap-4 space-y-0 rounded-t-xl bg-muted text-sm">
-        <div className="flex items-center gap-8">
+      <CardHeader className="justify-between gap-4 space-y-0 rounded-t-xl bg-muted text-sm md:flex-row md:items-center">
+        <div className="flex items-center justify-between gap-8">
           <div>
             <p>Order placed</p>
             <p className="font-semibold">{moment(order.createdAt).format("MMM DD, YYYY")}</p>
@@ -26,17 +26,19 @@ export function OrderCard({ order }: { order: Order }) {
             <p>Ship to</p>
             <p className="font-semibold">{order.shipping?.name}</p>
           </div>
+        </div>
+
+        <div className="flex items-center justify-between gap-8">
+          <div>
+            <p>Order #</p>
+            <p className="font-semibold tracking-tighter">{order.paymentIntentId}</p>
+          </div>
 
           <DeliveryStatusBadge status={order.deliveryStatus} />
         </div>
-
-        <div>
-          <p>Order #</p>
-          <p className="font-semibold tracking-tighter">{order.paymentIntentId}</p>
-        </div>
       </CardHeader>
 
-      <CardContent className="">
+      <CardContent className="pt-4">
         <OrderItemList list={order.items} />
       </CardContent>
 
