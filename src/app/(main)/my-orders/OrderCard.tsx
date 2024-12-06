@@ -2,8 +2,10 @@ import { OrderItemList } from "@/components/order/OrderItemList";
 import { DeliveryStatusBadge } from "@/components/order/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { formatPriceFull } from "@/lib/utils";
 import { Order } from "@/types";
+import { ChevronDown } from "lucide-react";
 import moment from "moment";
 import Link from "next/link";
 
@@ -13,24 +15,39 @@ export function OrderCard({ order }: { order: Order }) {
       <CardHeader className="justify-between gap-4 space-y-0 rounded-t-xl bg-muted text-sm md:flex-row md:items-center">
         <div className="flex items-center justify-between gap-8">
           <div>
-            <p>Order placed</p>
+            <p className="text-muted-foreground">Order placed</p>
             <p className="font-semibold">{moment(order.createdAt).format("MMM DD, YYYY")}</p>
           </div>
 
           <div>
-            <p>Total paid</p>
+            <p className="text-muted-foreground">Total paid</p>
             <p className="font-semibold">{formatPriceFull(order.totalAmount / 100)}</p>
           </div>
 
           <div>
-            <p>Ship to</p>
-            <p className="font-semibold">{order.shipping?.name}</p>
+            <p className="text-muted-foreground">Ship to</p>
+            <Popover>
+              <PopoverTrigger className="flex items-center gap-1 font-semibold data-[state=closed]:hover:text-blue-500">
+                {order.shipping?.name}
+                <ChevronDown className="size-4" />
+              </PopoverTrigger>
+              <PopoverContent className="w-fit text-sm">
+                <p className="font-semibold">{order.shipping?.name}</p>
+                <p>
+                  {order.shipping?.line2}-{order.shipping?.line1}
+                </p>
+                <p>
+                  {order.shipping?.city} {order.shipping?.state} {order.shipping?.country}{" "}
+                  {order.shipping?.postalCode}
+                </p>
+              </PopoverContent>
+            </Popover>
           </div>
         </div>
 
         <div className="flex items-center justify-between gap-8">
           <div>
-            <p>Order #</p>
+            <p className="text-muted-foreground">Order #</p>
             <p className="font-semibold tracking-tighter">{order.paymentIntentId}</p>
           </div>
 
