@@ -106,13 +106,29 @@ export const getRelatedProducts = cache(
       name: { contains: word, mode: Prisma.QueryMode.insensitive },
     }));
 
-    return await prisma.product.findMany({
+    // Get potential products that have at least one matching word
+    const potentialProducts = await prisma.product.findMany({
       where: {
         OR: nameConditions,
         id: { not: productId },
       },
-      take: limit,
     });
+
+    // Score the products based on the number of matching words
+    const scoredProducts = potentialProducts.map((potentialProduct) => {
+      const splitPotentialProductName = potentialProduct.name.split(" ");
+      const score = splitPotentialProductName.reduce(
+        (acc, word) => (splitProductName.includes(word) ? acc + 1 : acc),
+        0,
+      );
+
+      return { ...potentialProduct, score };
+    });
+
+    // Sort the scored products by score
+    const sortedProducts = scoredProducts.sort((a, b) => b.score - a.score);
+
+    return sortedProducts.slice(0, limit);
   },
 );
 
