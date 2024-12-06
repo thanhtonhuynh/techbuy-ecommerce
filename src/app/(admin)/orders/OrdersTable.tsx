@@ -22,7 +22,7 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Reference number</TableHead>
+          <TableHead>Order #</TableHead>
 
           <TableHead>Customer</TableHead>
 

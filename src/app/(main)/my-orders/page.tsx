@@ -19,7 +19,7 @@ export default async function Page() {
 
       <section className="mt-4 space-y-1 px-4 md:px-8">
         <p className="pl-1 text-xs text-muted-foreground">
-          Search for orders by reference number, or product name
+          Search for orders by order number, or product name
         </p>
         <Search />
       </section>

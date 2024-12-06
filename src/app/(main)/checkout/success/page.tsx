@@ -53,18 +53,13 @@ export default async function Page(props: { searchParams: SearchParams }) {
 
             <div className="mx-auto w-full space-y-4 md:w-1/2">
               <p className="flex justify-between">
-                <span className="font-semibold">Amount Paid</span>
+                <span className="font-semibold">Total paid</span>
                 <span>{formatPriceFull(paymentIntent.amount / 100)}</span>
               </p>
 
               <p className="flex justify-between">
-                <span className="font-semibold">Reference number</span>
-                <span>{paymentIntent.id}</span>
-              </p>
-
-              <p className="flex justify-between">
                 <span className="font-semibold">Order number</span>
-                <span>{paymentIntent.metadata.orderId}</span>
+                <span>{paymentIntent.id}</span>
               </p>
             </div>
           </div>

@@ -37,7 +37,7 @@ export default async function Page(props: { searchParams?: SearchParams }) {
 
       <section className="mt-4 space-y-1 px-4 md:px-8">
         <p className="pl-1 text-xs text-muted-foreground">
-          Search for orders by payment intent ID, customer name, or email address
+          Search for orders by order number, customer name, or email address
         </p>
         <Search />
       </section>
