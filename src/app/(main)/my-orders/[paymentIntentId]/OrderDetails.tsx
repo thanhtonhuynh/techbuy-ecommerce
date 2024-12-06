@@ -1,4 +1,3 @@
-import { CustomerInfo } from "@/components/order/CustomerInfo";
 import { OrderItems } from "@/components/order/OrderItems";
 import { OrderSummary } from "@/components/order/OrderSummary";
 import { ShippingInfo } from "@/components/order/ShippingInfo";
@@ -27,8 +26,6 @@ export function OrderDetails({ order }: { order: Order }) {
           </span>
         </p>
       </div>
-
-      <CustomerInfo order={order} />
 
       <ShippingInfo order={order} />
 

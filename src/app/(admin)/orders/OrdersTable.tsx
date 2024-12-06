@@ -12,8 +12,8 @@ import { formatPriceFull } from "@/lib/utils";
 import { Order } from "@/types";
 import moment from "moment";
 import { useRouter } from "next/navigation";
+import { DeliveryStatusBadge, PaymentStatusBadge } from "../../../components/order/StatusBadge";
 import { OrderActions } from "./OrderActions";
-import { DeliveryStatusBadge, PaymentStatusBadge } from "./StatusBadge";
 
 export function OrdersTable({ orders }: { orders: Order[] }) {
   const router = useRouter();

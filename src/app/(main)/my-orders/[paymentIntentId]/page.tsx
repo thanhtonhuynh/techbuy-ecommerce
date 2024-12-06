@@ -1,4 +1,4 @@
-import { OrderDetails } from "@/app/(admin)/orders/[paymentIntentId]/OrderDetails";
+import { OrderDetails } from "@/app/(main)/my-orders/[paymentIntentId]/OrderDetails";
 import { getDetailedOrderByPaymentIntentId } from "@/data-access/order";
 import { getCurrentSession } from "@/lib/auth/session";
 import { ChevronRight } from "lucide-react";
@@ -19,14 +19,14 @@ export default async function Page(props: { params: Params }) {
   return (
     <>
       <section className="space-y-1 border-b border-border/40 px-4 py-8 dark:border-border md:px-8 md:py-10 lg:py-12">
-        <h1>My Orders</h1>
+        <h1>Order Details</h1>
       </section>
 
       <section className="mt-4 px-4 md:px-8">
         <BreadcrumbNav />
       </section>
 
-      <section className="mt-8 space-y-8 px-4 md:px-8">
+      <section className="mt-8 space-y-8 px-4 pb-8 md:px-8">
         <OrderDetails order={order} />
       </section>
     </>

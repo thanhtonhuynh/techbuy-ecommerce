@@ -18,7 +18,7 @@ export function OrderItemList({ list }: { list: OrderItem[] }) {
             />
           </div>
 
-          <div className="space-y-1">
+          <div className="w-full space-y-1 text-xs">
             <Link
               href={`/product/${item.product.slug}`}
               className="text-sm font-medium underline-offset-4 transition-all hover:text-blue-500 hover:underline"
@@ -26,17 +26,19 @@ export function OrderItemList({ list }: { list: OrderItem[] }) {
               {item.product.name}
             </Link>
 
-            <div className="flex gap-8">
-              <div className="text-sm text-muted-foreground">
+            <div className="flex justify-between">
+              <div className="text-muted-foreground">
                 <p>Quantity</p>
                 <p className="font-semibold">{item.quantity}</p>
               </div>
-              <div className="text-sm text-muted-foreground">
+
+              <div className="text-muted-foreground">
                 <p>Unit price</p>
                 <p className="font-semibold">{formatPriceFull(item.unitPrice / 100)}</p>
               </div>
-              <div className="text-sm text-muted-foreground">
-                <p>Total price</p>
+
+              <div className="text-muted-foreground">
+                <p>Subtotal</p>
                 <p className="font-semibold">{formatPriceFull(item.totalAmount / 100)}</p>
               </div>
             </div>

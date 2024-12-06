@@ -21,11 +21,11 @@ export default async function Page(props: { params: Params }) {
   return (
     <>
       <section className="space-y-1 border-b border-border/40 px-4 py-8 dark:border-border md:px-8 md:py-10 lg:py-12">
-        <h1>Orders</h1>
+        <h1>Order Details</h1>
       </section>
 
       <section className="mt-4 px-4 md:px-8">
-        <BreadcrumbNav paymentIntentId={params.paymentIntentId} />
+        <BreadcrumbNav />
       </section>
 
       <section className="mt-8 space-y-8 px-4 md:px-8">
@@ -35,7 +35,7 @@ export default async function Page(props: { params: Params }) {
   );
 }
 
-function BreadcrumbNav({ paymentIntentId }: { paymentIntentId: string }) {
+function BreadcrumbNav() {
   return (
     <ul className="flex items-center gap-2 text-sm text-muted-foreground">
       <li>
@@ -50,7 +50,7 @@ function BreadcrumbNav({ paymentIntentId }: { paymentIntentId: string }) {
 
       <ChevronRight size={14} />
 
-      <li className="text-primary">{paymentIntentId}</li>
+      <li className="text-primary">Order Details</li>
     </ul>
   );
 }

@@ -1,10 +1,10 @@
+import { OrderItemList } from "@/components/order/OrderItemList";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { formatPriceFull } from "@/lib/utils";
 import { Order } from "@/types";
 import moment from "moment";
 import Link from "next/link";
-import { OrderItemList } from "../../../components/OrderItemList";
 
 export function OrderCard({ order }: { order: Order }) {
   return (
