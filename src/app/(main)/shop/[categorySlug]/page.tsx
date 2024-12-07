@@ -38,11 +38,16 @@ export default async function Page(props: { params: Params; searchParams?: Searc
       </section>
 
       <section className="px-4 py-8 md:px-8">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <ul className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <li
+              key={product.id}
+              className="rounded-lg border shadow transition duration-300 ease-in-out hover:scale-105"
+            >
+              <ProductCard product={product} />
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
     </>
   );

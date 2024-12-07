@@ -1,10 +1,11 @@
+import { ProductsCarouselSkeleton } from "@/components/ProductsCarouselSkeleton";
 import { getProductBySlug } from "@/data-access/product";
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { AddToCartButton } from "./AddToCart";
-import { RelatedProducts, RelatedProductsSkeleton } from "./RelatedProducts";
+import { RelatedProducts } from "./RelatedProducts";
 
 type Params = Promise<{ slug: string }>;
 
@@ -41,10 +42,10 @@ export default async function Page(props: { params: Params }) {
         </div>
       </section>
 
-      <section className="px-4 py-8 md:px-8">
-        <h2 className="mb-2 font-bold">Related Products</h2>
+      <section className="">
+        <h2 className="mb-2 px-4 font-bold md:px-8">Related Products</h2>
 
-        <Suspense fallback={<RelatedProductsSkeleton />}>
+        <Suspense fallback={<ProductsCarouselSkeleton />}>
           <RelatedProducts id={product.id} />
         </Suspense>
       </section>

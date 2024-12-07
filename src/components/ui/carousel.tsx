@@ -73,10 +73,10 @@ const Carousel = React.forwardRef<
 
   const handleKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (event.key === "ArrowLeft") {
+      if (event.key === "ChevronLeft") {
         event.preventDefault();
         scrollPrev();
-      } else if (event.key === "ArrowRight") {
+      } else if (event.key === "ChevronRight") {
         event.preventDefault();
         scrollNext();
       }
@@ -165,7 +165,7 @@ const CarouselItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
         role="group"
         aria-roledescription="slide"
         className={cn(
-          "min-w-0 shrink-0 grow-0 basis-full",
+          "min-w-0 flex-none basis-full",
           orientation === "horizontal" ? "pl-4" : "pt-4",
           className,
         )}
@@ -186,17 +186,20 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProp
         variant={variant}
         size={size}
         className={cn(
-          "absolute h-12 w-12 rounded-full bg-background/70",
+          "absolute size-10 rounded-full bg-background/50 backdrop-blur",
           orientation === "horizontal"
-            ? "left-3 top-1/2 -translate-y-1/2"
+            ? // ? "-left-12 top-1/2 -translate-y-1/2"
+              "left-4 top-1/2 -translate-y-1/2"
             : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
           className,
+          // !canScrollPrev && "cursor-default opacity-50 hover:bg-background/60",
+          // !canScrollPrev && "hidden",
         )}
-        // disabled={!canScrollPrev}
+        disabled={!canScrollPrev}
         onClick={scrollPrev}
         {...props}
       >
-        <ChevronLeft className="mr-1 h-10 w-10 text-muted-foreground/90" />
+        <ChevronLeft className="size-5" />
         <span className="sr-only">Previous slide</span>
       </Button>
     );
@@ -214,17 +217,20 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
         variant={variant}
         size={size}
         className={cn(
-          "absolute h-12 w-12 rounded-full bg-background/70",
+          "absolute size-10 rounded-full bg-background/50 backdrop-blur",
           orientation === "horizontal"
-            ? "right-3 top-1/2 -translate-y-1/2"
+            ? // ? "-right-12 top-1/2 -translate-y-1/2"
+              "right-4 top-1/2 -translate-y-1/2"
             : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
           className,
+          // !canScrollNext && "cursor-default opacity-50",
+          // !canScrollNext && "hidden",
         )}
-        // disabled={!canScrollNext}
+        disabled={!canScrollNext}
         onClick={scrollNext}
         {...props}
       >
-        <ChevronRight className="ml-1 h-10 w-10 text-muted-foreground/90" />
+        <ChevronRight className="size-5" />
         <span className="sr-only">Next slide</span>
       </Button>
     );

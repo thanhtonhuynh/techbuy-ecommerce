@@ -1,4 +1,4 @@
-import { ProductsCarousel } from "@/components/Carousel";
+import { ProductsCarousel } from "@/components/ProductsCarousel";
 import { getProducts } from "@/data-access/product";
 import Image from "next/image";
 
@@ -40,19 +40,23 @@ export default async function Home() {
         />
       </section>
 
-      <section className="mt-16 space-y-2 px-4 pt-4 md:px-16">
-        <h1 className="gradient-text w-fit">Popular Products</h1>
-        <p className="text-muted-foreground">Discover the most popular products in our store.</p>
+      <section className="mt-16 space-y-1">
+        <div className="px-4 md:px-8">
+          <h1 className="gradient-text w-fit">Popular Products</h1>
+          <p className="text-muted-foreground">Discover the most popular products in our store.</p>
+        </div>
+
+        <ProductsCarousel products={popularProducts} />
       </section>
 
-      <ProductsCarousel products={popularProducts} />
+      <section className="mt-8 space-y-1">
+        <div className="px-4 md:px-8">
+          <h1 className="gradient-text w-fit">Latest Products</h1>
+          <p className="text-muted-foreground">New. Now. Next. See what's new in our store.</p>
+        </div>
 
-      <section className="mt-8 space-y-2 px-4 md:px-16">
-        <h1 className="gradient-text w-fit">Latest Products</h1>
-        <p className="text-muted-foreground">New. Now. Next. See what's new in our store.</p>
+        <ProductsCarousel products={latestProducts.slice(0, 10)} />
       </section>
-
-      <ProductsCarousel products={latestProducts.slice(0, 10)} />
     </>
   );
 }

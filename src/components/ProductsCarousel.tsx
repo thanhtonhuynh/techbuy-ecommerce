@@ -5,7 +5,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { cn } from "@/lib/utils";
 import { Product } from "@prisma/client";
 import { ProductCard } from "./ProductCard";
 
@@ -16,17 +15,21 @@ export function ProductsCarousel({ products }: { products: Product[] }) {
         align: "start",
       }}
     >
-      <CarouselContent className="ml-14 py-8 pr-36">
-        {products.map((product, index) => (
+      <CarouselContent className="mx-12 mr-16 py-4">
+        {products.map((product) => (
           <CarouselItem
             key={product.id}
-            className={cn("basis-auto", index === products.length - 1 && "mr-20")}
+            className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
           >
-            <ProductCard product={product} />
+            <div className="h-full rounded-lg border transition duration-300 ease-in-out hover:scale-105">
+              <ProductCard product={product} />
+            </div>
           </CarouselItem>
         ))}
       </CarouselContent>
+
       <CarouselPrevious />
+
       <CarouselNext />
     </Carousel>
   );
