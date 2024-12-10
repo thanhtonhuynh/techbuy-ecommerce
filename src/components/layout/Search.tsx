@@ -20,7 +20,7 @@ export function Search() {
         type="text"
         name="shop_q"
         placeholder="Search for products..."
-        className="pl-9"
+        className="pl-9 text-sm"
         autoComplete="off"
         defaultValue={searchParams.get("shop_q") || ""}
       />

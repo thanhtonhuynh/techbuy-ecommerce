@@ -16,7 +16,7 @@ import Link from "next/link";
 import { ComponentProps, useState } from "react";
 
 function NavLink({ className, onClick, ...props }: ComponentProps<typeof Link>) {
-  const isMobile = useMediaQuery(`(max-width: 1024px)`);
+  const isMobile = useMediaQuery(`(max-width: 767px)`);
 
   return (
     <li>
@@ -25,7 +25,7 @@ function NavLink({ className, onClick, ...props }: ComponentProps<typeof Link>) 
         variant={`link`}
         className={cn(
           "px-2 font-normal text-muted-foreground transition-colors hover:text-blue-600",
-          isMobile && "h-full justify-start rounded-none border-b py-4 text-primary",
+          isMobile && "h-full w-full justify-start rounded-none border-b py-4 text-primary",
           className,
         )}
       >
@@ -37,8 +37,8 @@ function NavLink({ className, onClick, ...props }: ComponentProps<typeof Link>) 
 
 export function DesktopNav({ categories }: { categories: Category[] }) {
   return (
-    <nav className="hidden lg:block">
-      <ul className="space-x-2">
+    <nav className="hidden md:block">
+      <ul className="flex flex-row space-x-2">
         <NavLink href={`/shop`}>All</NavLink>
         {categories.map((category) => (
           <NavLink key={category.id} href={`/shop/${category.slug}`}>
@@ -55,7 +55,7 @@ export function MobileNav({ categories }: { categories: Category[] }) {
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild className="lg:hidden">
+      <DrawerTrigger asChild className="md:hidden">
         <Button variant={`link`} size={`icon`}>
           <Menu className="size-4" />
         </Button>
