@@ -1,5 +1,5 @@
 import { CartSheet } from "@/components/cart/CartSheet";
-import { Nav, NavLink } from "@/components/layout/Nav";
+import { DesktopNav, MobileNav } from "@/components/layout/Nav";
 import { Search } from "@/components/layout/Search";
 import { UserButton } from "@/components/layout/UserButton";
 import { Button } from "@/components/ui/button";
@@ -17,19 +17,14 @@ export async function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:border-border">
       <div className="flex h-14 items-center justify-between gap-3 px-4">
         <div className="flex items-center space-x-4">
+          <MobileNav categories={categories} />
+
           <Link href="/" className="flex items-center space-x-1 font-bold">
             <MonitorSpeaker size={25} />
             <span className="select-none text-xl tracking-wider">techbuy</span>
           </Link>
 
-          <Nav className="hidden lg:block">
-            <NavLink href={`/shop`}>All</NavLink>
-            {categories.map((category) => (
-              <NavLink key={category.id} href={`/shop/${category.slug}`}>
-                {category.name}
-              </NavLink>
-            ))}
-          </Nav>
+          <DesktopNav categories={categories} />
         </div>
 
         <div className="flex flex-1 items-center space-x-2">
