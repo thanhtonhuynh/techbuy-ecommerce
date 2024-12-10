@@ -45,7 +45,7 @@ export default function RootLayout({
                 <main className="flex-1">{children}</main>
                 <Footer />
               </div> */}
-              {children}
+              <div vaul-drawer-wrapper="">{children}</div>
             </CartProvider>
           </SessionProvider>
         </ThemeProvider>
