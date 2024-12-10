@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { Category } from "@prisma/client";
 import { Menu } from "lucide-react";
 import Link from "next/link";
-import { ComponentProps, useState } from "react";
+import { ComponentProps, useEffect, useState } from "react";
 
 function NavLink({ className, onClick, ...props }: ComponentProps<typeof Link>) {
   const isMobile = useMediaQuery(`(max-width: 767px)`);
@@ -52,6 +52,13 @@ export function DesktopNav({ categories }: { categories: Category[] }) {
 
 export function MobileNav({ categories }: { categories: Category[] }) {
   const [open, setOpen] = useState(false);
+  const isDesktop = useMediaQuery(`(min-width: 768px)`);
+
+  useEffect(() => {
+    if (isDesktop) {
+      setOpen(false);
+    }
+  }, [isDesktop]);
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>

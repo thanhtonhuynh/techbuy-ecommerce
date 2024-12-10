@@ -1,7 +1,7 @@
 import { CartSheet } from "@/components/cart/CartSheet";
 import { DesktopNav, MobileNav } from "@/components/layout/Nav";
 import { Search } from "@/components/layout/Search";
-import { UserButton } from "@/components/layout/UserButton";
+import { UserMenu } from "@/components/layout/UserButton";
 import { Button } from "@/components/ui/button";
 import { getCategories } from "@/data-access/category";
 import { getCurrentSession } from "@/lib/auth/session";
@@ -35,7 +35,7 @@ export async function Header() {
           <CartSheet />
 
           {user ? (
-            <UserButton user={user} />
+            <UserMenu user={user} />
           ) : (
             <Button asChild>
               <Link href={`/login`}>Login</Link>

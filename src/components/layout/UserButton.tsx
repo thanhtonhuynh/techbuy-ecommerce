@@ -1,80 +1,171 @@
+"use client";
+
 import { logoutAction } from "@/app/(main)/(auth)/actions";
 import { ProfilePicture } from "@/components/ProfilePicture";
 import { Button } from "@/components/ui/button";
 import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { User } from "@/lib/auth/session";
 import { hasAccess } from "@/utils/access-control";
 import { Lock, LogOut, Logs, Settings, UserRound } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { Separator } from "../ui/separator";
 
-interface UserButtonProps {
-  user: User;
-}
+export function UserMenu({ user }: { user: User }) {
+  const isDesktop = useMediaQuery(`(min-width: 1024px)`);
+  const [open, setOpen] = useState(false);
 
-export function UserButton({ user }: UserButtonProps) {
+  if (isDesktop) {
+    return (
+      <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenuTrigger asChild>
+          <Button
+            size="icon"
+            variant={`outline`}
+            className="rounded-full"
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            {user.image ? <ProfilePicture image={user.image} size={50} /> : <UserRound size={17} />}
+          </Button>
+        </DropdownMenuTrigger>
+
+        <UserMenuContent user={user} isDesktop={isDesktop} />
+      </DropdownMenu>
+    );
+  }
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button size="icon" variant={`outline`} className="rounded-full">
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
+        <Button
+          size="icon"
+          variant={`outline`}
+          className="rounded-full"
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
           {user.image ? <ProfilePicture image={user.image} size={50} /> : <UserRound size={17} />}
         </Button>
-      </DropdownMenuTrigger>
+      </DrawerTrigger>
 
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel className="space-y-1">
+      <UserMenuContent user={user} isDesktop={isDesktop} />
+    </Drawer>
+  );
+}
+
+function UserMenuContent({ user, isDesktop }: { user: User; isDesktop: boolean }) {
+  if (isDesktop) {
+    return (
+      <DropdownMenuContent className="w-56" align="end">
+        <DropdownMenuLabel className="space-y-1 px-4 py-2">
           <div>{user.name}</div>
-          <div className="text-xs capitalize text-muted-foreground">{user.role}</div>
+
+          {user.role === "admin" && (
+            <div className="text-xs capitalize text-muted-foreground">{user.role}</div>
+          )}
         </DropdownMenuLabel>
 
         <DropdownMenuSeparator />
 
-        {user.accountStatus === "active" && (
-          <>
-            <DropdownMenuGroup>
-              {hasAccess(user.role, "/admin") && (
-                <DropdownMenuItem asChild>
-                  <Link href="/dashboard" className="cursor-pointer">
-                    <Lock size={16} />
-                    Admin dashboard
-                  </Link>
-                </DropdownMenuItem>
-              )}
-
-              <DropdownMenuItem asChild>
-                <Link href="/my-orders" className="cursor-pointer">
-                  <Logs className="size-4" />
-                  <span>My orders</span>
-                </Link>
-              </DropdownMenuItem>
-
-              <DropdownMenuItem asChild>
-                <Link href="/settings" className="cursor-pointer">
-                  <Settings size={16} />
-                  <span>Account settings</span>
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-
-            <DropdownMenuSeparator />
-          </>
-        )}
-
-        <DropdownMenuItem asChild>
-          <form action={logoutAction}>
-            <button type="submit" className="flex w-full items-center gap-2">
-              <LogOut size={16} /> Sign Out
-            </button>
-          </form>
-        </DropdownMenuItem>
+        <UserMenuList user={user} />
       </DropdownMenuContent>
-    </DropdownMenu>
+    );
+  }
+
+  return (
+    <DrawerContent className="pb-6">
+      <DrawerHeader className="pb-3">
+        <DrawerTitle className="flex flex-col gap-1">
+          {user.name}
+          {user.role === "admin" && (
+            <span className="text-xs capitalize text-muted-foreground">{user.role}</span>
+          )}
+        </DrawerTitle>
+      </DrawerHeader>
+
+      <Separator className="mb-1 bg-border/50" />
+
+      <UserMenuList user={user} />
+    </DrawerContent>
+  );
+}
+
+function UserMenuList({ user }: { user: User }) {
+  return (
+    <ul className="space-y-1">
+      {user.accountStatus === "active" && (
+        <>
+          {hasAccess(user.role, "/admin") && (
+            <li>
+              <Button
+                asChild
+                variant={`outline`}
+                className="h-full w-full justify-start rounded-none border-none py-2 shadow-none"
+              >
+                <Link href="/dashboard">
+                  <Lock size={16} />
+                  Admin dashboard
+                </Link>
+              </Button>
+            </li>
+          )}
+
+          <li>
+            <Button
+              asChild
+              variant={`outline`}
+              className="h-full w-full justify-start rounded-none border-none py-2 shadow-none"
+            >
+              <Link href="/my-orders">
+                <Logs className="size-4" />
+                <span>My orders</span>
+              </Link>
+            </Button>
+          </li>
+
+          <li>
+            <Button
+              asChild
+              variant={`outline`}
+              className="h-full w-full justify-start rounded-none border-none py-2 shadow-none"
+            >
+              <Link href="/settings">
+                <Settings size={16} />
+                <span>Account settings</span>
+              </Link>
+            </Button>
+          </li>
+
+          <Separator className="-mx-1 bg-border/50" />
+        </>
+      )}
+      <li>
+        <form action={logoutAction}>
+          <Button
+            variant={`outline`}
+            className="h-full w-full justify-start rounded-none border-none py-2 shadow-none"
+          >
+            <LogOut size={16} /> Sign Out
+          </Button>
+        </form>
+      </li>
+    </ul>
   );
 }
