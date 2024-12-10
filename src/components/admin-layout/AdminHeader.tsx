@@ -1,33 +1,28 @@
-import { UserButton } from "@/components/layout/UserButton";
-import { Button } from "@/components/ui/button";
 import { getCurrentSession } from "@/lib/auth/session";
+import { MonitorSpeaker } from "lucide-react";
 import Link from "next/link";
-import { ModeToggle } from "../layout/ModeToggle";
-import { Nav, NavLink } from "../layout/Nav";
+import { UserMenu } from "../layout/UserButton";
+import { DesktopNav, MobileNav } from "./AdminNav";
 
 export async function AdminHeader() {
   const { user } = await getCurrentSession();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:border-border">
-      <div className="flex h-14 items-center justify-between gap-3 px-4">
-        <div className="flex items-center space-x-4">
-          <Button asChild variant={`outline`}>
-            <Link href="/">Back to Store</Link>
-          </Button>
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 px-4 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:border-border">
+      <div className="flex items-center justify-between gap-3">
+        <MobileNav />
 
-          <Nav className="hidden lg:block">
-            <NavLink href={`/dashboard`}>Dashboard</NavLink>
-            <NavLink href={`/products`}>Products</NavLink>
-            <NavLink href={`/orders`}>Orders</NavLink>
-            <NavLink href={`/categories`}>Categories</NavLink>
-          </Nav>
-        </div>
+        <Link
+          href="/"
+          className="absolute left-1/2 flex -translate-x-1/2 items-center space-x-1 font-bold md:static md:translate-x-0"
+        >
+          <MonitorSpeaker size={25} />
+          <span className="select-none text-xl tracking-wider">techbuy</span>
+        </Link>
 
-        <div className="flex items-center space-x-2">
-          <ModeToggle />
-          {user && <UserButton user={user} />}
-        </div>
+        <DesktopNav />
+
+        {user && <UserMenu user={user} />}
       </div>
     </header>
   );

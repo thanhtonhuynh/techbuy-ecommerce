@@ -3,7 +3,9 @@
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -15,7 +17,7 @@ import { Menu } from "lucide-react";
 import Link from "next/link";
 import { ComponentProps, useEffect, useState } from "react";
 
-function NavLink({ className, onClick, ...props }: ComponentProps<typeof Link>) {
+export function NavLink({ className, ...props }: ComponentProps<typeof Link>) {
   const isMobile = useMediaQuery(`(max-width: 767px)`);
 
   return (
@@ -29,7 +31,7 @@ function NavLink({ className, onClick, ...props }: ComponentProps<typeof Link>) 
           className,
         )}
       >
-        <Link {...props} className={cn("hover:no-underline")} onClick={onClick} />
+        <Link {...props} className={cn("hover:no-underline")} />
       </Button>
     </li>
   );
@@ -70,22 +72,19 @@ export function MobileNav({ categories }: { categories: Category[] }) {
 
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>Menu</DrawerTitle>
+          <DrawerTitle aria-label="menu" />
+          <DrawerDescription aria-describedby="navigation" />
         </DrawerHeader>
 
         <nav className="px-4 pb-8">
           <ul className="flex flex-col">
-            <NavLink href={`/shop`} onClick={() => setOpen(false)}>
-              All
-            </NavLink>
+            <DrawerClose asChild>
+              <NavLink href={`/shop`}>All</NavLink>
+            </DrawerClose>
             {categories.map((category) => (
-              <NavLink
-                key={category.id}
-                href={`/shop/${category.slug}`}
-                onClick={() => setOpen(false)}
-              >
-                {category.name}
-              </NavLink>
+              <DrawerClose asChild key={category.id}>
+                <NavLink href={`/shop/${category.slug}`}>{category.name}</NavLink>
+              </DrawerClose>
             ))}
           </ul>
         </nav>

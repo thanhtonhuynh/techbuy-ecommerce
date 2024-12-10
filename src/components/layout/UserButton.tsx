@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -91,13 +92,13 @@ function UserMenuContent({ user, isDesktop }: { user: User; isDesktop: boolean }
 
   return (
     <DrawerContent className="pb-6">
-      <DrawerHeader className="pb-3">
-        <DrawerTitle className="flex flex-col gap-1">
-          {user.name}
-          {user.role === "admin" && (
-            <span className="text-xs capitalize text-muted-foreground">{user.role}</span>
-          )}
-        </DrawerTitle>
+      <DrawerHeader className="pb-3 text-left">
+        <DrawerTitle className="flex flex-col gap-1">{user.name}</DrawerTitle>
+
+        <DrawerDescription className="flex flex-col text-xs text-muted-foreground">
+          <span>{user.email}</span>
+          {user.role === "admin" && <span className="capitalize">{user.role}</span>}
+        </DrawerDescription>
       </DrawerHeader>
 
       <Separator className="mb-1 bg-border/50" />
