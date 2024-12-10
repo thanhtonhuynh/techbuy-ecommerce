@@ -19,17 +19,19 @@ function NavLink({ className, onClick, ...props }: ComponentProps<typeof Link>) 
   const isMobile = useMediaQuery(`(max-width: 1024px)`);
 
   return (
-    <Button
-      asChild
-      variant={`link`}
-      className={cn(
-        "px-2 font-normal text-muted-foreground transition-colors hover:text-blue-600",
-        isMobile && "h-full justify-start rounded-none border-b py-4 text-primary",
-        className,
-      )}
-    >
-      <Link {...props} className={cn("hover:no-underline")} onClick={onClick} />
-    </Button>
+    <li>
+      <Button
+        asChild
+        variant={`link`}
+        className={cn(
+          "px-2 font-normal text-muted-foreground transition-colors hover:text-blue-600",
+          isMobile && "h-full justify-start rounded-none border-b py-4 text-primary",
+          className,
+        )}
+      >
+        <Link {...props} className={cn("hover:no-underline")} onClick={onClick} />
+      </Button>
+    </li>
   );
 }
 
