@@ -13,15 +13,16 @@ export function OrderCard({ order }: { order: Order }) {
   return (
     <Card>
       <CardHeader className="justify-between gap-4 space-y-0 rounded-t-xl bg-muted text-sm md:flex-row md:items-center">
-        <div className="flex items-center justify-between gap-8">
-          <div>
-            <p className="text-muted-foreground">Order placed</p>
-            <p className="font-semibold">{moment(order.createdAt).format("MMM DD, YYYY")}</p>
-          </div>
-
-          <div>
-            <p className="text-muted-foreground">Total paid</p>
-            <p className="font-semibold">{formatPriceFull(order.totalAmount / 100)}</p>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+          <div className="flex items-center justify-between gap-8">
+            <div>
+              <p className="text-muted-foreground">Order placed</p>
+              <p className="font-semibold">{moment(order.createdAt).format("MMM DD, YYYY")}</p>
+            </div>
+            <div>
+              <p className="text-muted-foreground">Total paid</p>
+              <p className="font-semibold">{formatPriceFull(order.totalAmount / 100)}</p>
+            </div>
           </div>
 
           <div>

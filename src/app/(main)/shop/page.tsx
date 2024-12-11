@@ -40,11 +40,11 @@ export default async function Page(props: { searchParams?: SearchParams }) {
       </section>
 
       <section className="px-4 py-8 md:px-8">
-        <ul className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {products.map((product) => (
             <li
               key={product.id}
-              className="rounded-lg border shadow transition duration-300 ease-in-out hover:scale-105"
+              className="rounded-lg border shadow transition duration-300 ease-in-out hover:scale-105 hover:border-blue-500"
             >
               <ProductCard product={product} />
             </li>

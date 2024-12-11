@@ -22,14 +22,20 @@ export function ShippingInfo({ order }: { order: Order }) {
         <div className="flex justify-between">
           <span>Address</span>
           {order.shipping && (
-            <p className="flex gap-1">
-              <span>{order.shipping.line2}</span>
-              <span>{order.shipping.line1}</span>
-              <span>{order.shipping.city}</span>
-              <span>{order.shipping.state}</span>
-              <span>{order.shipping.postalCode}</span>
-              <span>{order.shipping.country}</span>
-            </p>
+            <div className="flex flex-col items-end">
+              <div>
+                <span>{order.shipping.line2}-</span>
+                <span>{order.shipping.line1}</span>
+              </div>
+
+              <div>
+                <span>{order.shipping.city} </span>
+                <span>{order.shipping.state} </span>
+                <span>{order.shipping.country}</span>
+              </div>
+
+              <div>{order.shipping.postalCode}</div>
+            </div>
           )}
         </div>
       </CardContent>

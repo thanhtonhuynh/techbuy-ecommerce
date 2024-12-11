@@ -11,9 +11,9 @@ export function OrderDetails({ order }: { order: Order }) {
     <Card className="space-y-4 p-6">
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <h2>
+          <h2 className="font-bold">
             <p className="text-sm font-normal text-muted-foreground">Order #</p>
-            <p className="text-xl">{order.paymentIntentId}</p>
+            <p className="text-base">{order.paymentIntentId}</p>
           </h2>
 
           <DeliveryStatusBadge status={order.deliveryStatus} />
