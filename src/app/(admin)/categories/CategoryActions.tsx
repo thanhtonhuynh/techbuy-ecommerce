@@ -11,21 +11,21 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Category } from "@prisma/client";
 import { Ellipsis } from "lucide-react";
@@ -38,7 +38,7 @@ export function CategoryActions({ category }: { category: Category }) {
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)"); // <768px is sm
-  const DynamicTag = isDesktop ? Dialog : Drawer;
+  const DynamicTag = isDesktop ? Dialog : Sheet;
 
   return (
     <DynamicTag open={editOpen || deleteOpen} onOpenChange={editOpen ? setEditOpen : setDeleteOpen}>
@@ -133,22 +133,22 @@ function DeleteContent({
   }
 
   return (
-    <DrawerContent>
-      <DrawerHeader className="text-left">
-        <DrawerTitle>{title}</DrawerTitle>
-        <DrawerDescription>{description}</DrawerDescription>
-      </DrawerHeader>
+    <SheetContent side={`bottom`} className="rounded-t-xl">
+      <SheetHeader className="mb-2 px-4 text-left">
+        <SheetTitle>{title}</SheetTitle>
+        <SheetDescription>{description}</SheetDescription>
+      </SheetHeader>
 
-      <DrawerFooter>
+      <SheetFooter className="gap-2 px-4 pt-2">
+        <SheetClose asChild>
+          <Button variant={`outline`}>Cancel</Button>
+        </SheetClose>
+
         <Button variant={`destructive`} onClick={handleConfirmDelete}>
           Yes, delete category
         </Button>
-
-        <DrawerClose asChild>
-          <Button variant={`outline`}>Cancel</Button>
-        </DrawerClose>
-      </DrawerFooter>
-    </DrawerContent>
+      </SheetFooter>
+    </SheetContent>
   );
 }
 
@@ -180,18 +180,19 @@ function EditContent({
   }
 
   return (
-    <DrawerContent>
-      <DrawerHeader className="text-left">
-        <DrawerTitle>{title}</DrawerTitle>
-      </DrawerHeader>
+    <SheetContent side={`bottom`} className="rounded-t-xl">
+      <SheetHeader className="mb-2 px-4 text-left">
+        <SheetTitle>{title}</SheetTitle>
+        <SheetDescription aria-describedby="edit-category-description" />
+      </SheetHeader>
 
       <CategoryForm className="px-4" setOpen={setEditOpen} category={category} />
 
-      <DrawerFooter className="pt-2">
-        <DrawerClose asChild>
+      <SheetFooter className="px-4 pt-2">
+        <SheetClose asChild>
           <Button variant="outline">Cancel</Button>
-        </DrawerClose>
-      </DrawerFooter>
-    </DrawerContent>
+        </SheetClose>
+      </SheetFooter>
+    </SheetContent>
   );
 }

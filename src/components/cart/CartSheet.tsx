@@ -55,7 +55,7 @@ export function CartSheet() {
         </Button>
       </SheetTrigger>
 
-      <SheetContent className="flex w-full flex-col justify-between">
+      <SheetContent overlay={`blur`} className="flex w-full flex-col justify-between">
         <div>
           <SheetHeader>
             <SheetTitle>My Cart</SheetTitle>

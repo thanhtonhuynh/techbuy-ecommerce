@@ -9,14 +9,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useState } from "react";
@@ -49,24 +50,25 @@ export function AddCategoryButton() {
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
         <Button variant={"outline"}>Add Category</Button>
-      </DrawerTrigger>
+      </SheetTrigger>
 
-      <DrawerContent>
-        <DrawerHeader className="text-left">
-          <DrawerTitle>Add category</DrawerTitle>
-        </DrawerHeader>
+      <SheetContent side="bottom" className="rounded-t-xl">
+        <SheetHeader className="mb-2 px-4 text-left">
+          <SheetTitle>Add category</SheetTitle>
+          <SheetDescription aria-describedby="add-category-description" />
+        </SheetHeader>
 
         <CategoryForm className="px-4" setOpen={setOpen} />
 
-        <DrawerFooter className="pt-2">
-          <DrawerClose asChild>
+        <SheetFooter className="px-4 pt-2">
+          <SheetClose asChild>
             <Button variant="outline">Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+          </SheetClose>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 }

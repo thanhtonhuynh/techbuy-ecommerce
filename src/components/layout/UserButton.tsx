@@ -4,20 +4,20 @@ import { logoutAction } from "@/app/(main)/(auth)/actions";
 import { ProfilePicture } from "@/components/ProfilePicture";
 import { Button } from "@/components/ui/button";
 import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { User } from "@/lib/auth/session";
 import { hasAccess } from "@/utils/access-control";
@@ -52,8 +52,8 @@ export function UserMenu({ user }: { user: User }) {
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
         <Button
           size="icon"
           variant={`outline`}
@@ -64,10 +64,10 @@ export function UserMenu({ user }: { user: User }) {
         >
           {user.image ? <ProfilePicture image={user.image} size={50} /> : <UserRound size={17} />}
         </Button>
-      </DrawerTrigger>
+      </SheetTrigger>
 
       <UserMenuContent user={user} isDesktop={isDesktop} />
-    </Drawer>
+    </Sheet>
   );
 }
 
@@ -91,20 +91,20 @@ function UserMenuContent({ user, isDesktop }: { user: User; isDesktop: boolean }
   }
 
   return (
-    <DrawerContent className="pb-6">
-      <DrawerHeader className="pb-3 text-left">
-        <DrawerTitle className="flex flex-col gap-1">{user.name}</DrawerTitle>
+    <SheetContent side={`bottom`} className="rounded-t-xl pb-6">
+      <SheetHeader className="space-y-1 px-4 pb-3 text-left">
+        <SheetTitle>{user.name}</SheetTitle>
 
-        <DrawerDescription className="flex flex-col text-xs text-muted-foreground">
+        <SheetDescription className="flex flex-col text-xs text-muted-foreground">
           <span>{user.email}</span>
           {user.role === "admin" && <span className="capitalize">{user.role}</span>}
-        </DrawerDescription>
-      </DrawerHeader>
+        </SheetDescription>
+      </SheetHeader>
 
       <Separator className="mb-1 bg-border/50" />
 
       <UserMenuList user={user} />
-    </DrawerContent>
+    </SheetContent>
   );
 }
 

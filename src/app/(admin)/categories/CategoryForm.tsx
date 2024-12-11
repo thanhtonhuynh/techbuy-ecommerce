@@ -63,6 +63,7 @@ export function CategoryForm({
                 <Input
                   {...field}
                   placeholder="Example: iPhone"
+                  className="text-sm"
                   onFocus={(e) => e.target.select()}
                 />
               </FormControl>
@@ -82,6 +83,7 @@ export function CategoryForm({
                 <Input
                   {...field}
                   placeholder="Example: iphone"
+                  className="text-sm"
                   onFocus={(e) => e.target.select()}
                 />
               </FormControl>

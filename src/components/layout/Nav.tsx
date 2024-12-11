@@ -2,14 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { Category } from "@prisma/client";
@@ -63,32 +62,30 @@ export function MobileNav({ categories }: { categories: Category[] }) {
   }, [isDesktop]);
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild className="md:hidden">
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild className="md:hidden">
         <Button variant={`link`} size={`icon`}>
           <Menu className="size-4" />
         </Button>
-      </DrawerTrigger>
+      </SheetTrigger>
 
-      <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle aria-label="menu" />
-          <DrawerDescription aria-describedby="navigation" />
-        </DrawerHeader>
+      <SheetContent side={`bottom`} className="rounded-t-xl">
+        <SheetTitle aria-label="menu" />
+        <SheetDescription aria-describedby="navigation" />
 
-        <nav className="px-4 pb-8">
+        <nav className="px-2">
           <ul className="flex flex-col">
-            <DrawerClose asChild>
+            <SheetClose asChild>
               <NavLink href={`/shop`}>All</NavLink>
-            </DrawerClose>
+            </SheetClose>
             {categories.map((category) => (
-              <DrawerClose asChild key={category.id}>
+              <SheetClose asChild key={category.id}>
                 <NavLink href={`/shop/${category.slug}`}>{category.name}</NavLink>
-              </DrawerClose>
+              </SheetClose>
             ))}
           </ul>
         </nav>
-      </DrawerContent>
-    </Drawer>
+      </SheetContent>
+    </Sheet>
   );
 }

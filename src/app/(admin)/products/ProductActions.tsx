@@ -9,7 +9,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   DropdownMenu,
@@ -18,15 +17,30 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { Product } from "@/types";
 import { Ellipsis } from "lucide-react";
 import Link from "next/link";
+import { Dispatch, SetStateAction, useState } from "react";
 import { toast } from "sonner";
 import { deleteProductAction, updateProductStatusAction } from "./actions";
 
 export function ProductActions({ product }: { product: Product }) {
+  const isDesktop = useMediaQuery("(min-width: 768px)"); // <768px is sm
+  const DynamicTag = isDesktop ? Dialog : Sheet;
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
+    <DynamicTag open={open} onOpenChange={setOpen}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button aria-haspopup="true" size="icon" variant="ghost">
@@ -58,13 +72,21 @@ export function ProductActions({ product }: { product: Product }) {
 
           <DropdownMenuSeparator />
 
-          <DeleteDropdownItem />
+          <DropdownMenuItem asChild>
+            <Button
+              variant={"ghost"}
+              className="w-full cursor-pointer justify-start px-2 text-destructive hover:text-destructive focus-visible:text-destructive focus-visible:ring-0"
+              onClick={() => setOpen(true)}
+            >
+              Delete
+            </Button>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
       {/* Put the dialog here so that when the Delete button is clicked, it wont close the dialog */}
-      <DeleteDialogContent productId={product.id} />
-    </Dialog>
+      <DeleteDialogContent productId={product.id} isDesktop={isDesktop} setOpen={setOpen} />
+    </DynamicTag>
   );
 }
 
@@ -148,52 +170,68 @@ function ArchiveDropdownItem({ productId }: { productId: string }) {
   );
 }
 
-function DeleteDropdownItem() {
+function DeleteDialogContent({
+  productId,
+  isDesktop,
+  setOpen,
+}: {
+  productId: string;
+  isDesktop: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) {
+  const title = "Are you absolutely sure?";
+  const description = "This action cannot be undone. This will permanently delete the product.";
+
+  async function handleConfirmDelete() {
+    toast.promise(deleteProductAction(productId), {
+      loading: "Deleting product...",
+      success: "Product deleted",
+      error: (error) => error.message,
+    });
+    setOpen(false);
+  }
+
+  if (isDesktop) {
+    return (
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
+        </DialogHeader>
+
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant={`outline`}>Cancel</Button>
+          </DialogClose>
+
+          <DialogClose asChild>
+            <Button variant={`destructive`} onClick={handleConfirmDelete}>
+              Yes, delete product
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    );
+  }
+
   return (
-    <DropdownMenuItem asChild>
-      <DialogTrigger asChild>
-        <Button
-          variant={"ghost"}
-          className="w-full cursor-pointer justify-start px-2 py-1 text-destructive hover:text-destructive focus-visible:text-destructive focus-visible:ring-0"
-        >
-          Delete
-        </Button>
-      </DialogTrigger>
-    </DropdownMenuItem>
-  );
-}
+    <SheetContent side={`bottom`} className="rounded-t-xl">
+      <SheetHeader className="mb-2 px-4 text-left">
+        <SheetTitle>{title}</SheetTitle>
+        <SheetDescription>{description}</SheetDescription>
+      </SheetHeader>
 
-function DeleteDialogContent({ productId }: { productId: string }) {
-  return (
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>Are you absolutely sure?</DialogTitle>
-
-        <DialogDescription>
-          This action cannot be undone. This will permanently delete the product.
-        </DialogDescription>
-      </DialogHeader>
-
-      <DialogFooter>
-        <DialogClose asChild>
+      <SheetFooter className="gap-2 px-4 pt-2">
+        <SheetClose asChild>
           <Button variant={`outline`}>Cancel</Button>
-        </DialogClose>
+        </SheetClose>
 
-        <DialogClose asChild>
-          <Button
-            variant={`destructive`}
-            onClick={async () => {
-              toast.promise(deleteProductAction(productId), {
-                loading: "Deleting product...",
-                success: "Product deleted",
-                error: (error) => error.message,
-              });
-            }}
-          >
+        <SheetClose asChild>
+          <Button variant={`destructive`} onClick={handleConfirmDelete}>
             Yes, delete product
           </Button>
-        </DialogClose>
-      </DialogFooter>
-    </DialogContent>
+        </SheetClose>
+      </SheetFooter>
+    </SheetContent>
   );
 }

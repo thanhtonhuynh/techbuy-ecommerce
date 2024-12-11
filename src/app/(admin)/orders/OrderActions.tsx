@@ -9,19 +9,20 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Order } from "@/types";
 import { Ellipsis } from "lucide-react";
@@ -31,7 +32,7 @@ import { DeliveryStatusForm } from "./DeliveryStatusForm";
 
 export function OrderActions({ order }: { order: Order }) {
   const isDesktop = useMediaQuery("(min-width: 768px)"); // <768px is sm
-  const DynamicTag = isDesktop ? Dialog : Drawer;
+  const DynamicTag = isDesktop ? Dialog : Sheet;
   const [open, setOpen] = useState(false);
 
   return (
@@ -99,18 +100,19 @@ function UpdateDeliveryStatusContent({
   }
 
   return (
-    <DrawerContent onClick={(e) => e.stopPropagation()}>
-      <DrawerHeader className="text-left">
-        <DrawerTitle>{title}</DrawerTitle>
-      </DrawerHeader>
+    <SheetContent side={`bottom`} className="rounded-t-xl" onClick={(e) => e.stopPropagation()}>
+      <SheetHeader className="mb-2 px-4 text-left">
+        <SheetTitle>{title}</SheetTitle>
+        <SheetDescription aria-describedby="update-delivery-status-description" />
+      </SheetHeader>
 
       <DeliveryStatusForm className="px-4" setOpen={setOpen} order={order} />
 
-      <DrawerFooter className="pt-2">
-        <DrawerClose asChild>
+      <SheetFooter className="px-4 pt-2">
+        <SheetClose asChild>
           <Button variant="outline">Cancel</Button>
-        </DrawerClose>
-      </DrawerFooter>
-    </DrawerContent>
+        </SheetClose>
+      </SheetFooter>
+    </SheetContent>
   );
 }
