@@ -27,20 +27,24 @@ export default async function Home() {
           </h1>
         </div>
 
-        <h1 className="gradient-text flex flex-col text-4xl lg:hidden">
-          <span>Personal.</span> <span>Private.</span> <span>Powerful.</span>
+        <h1 className="gradient-text flex flex-col gap-2 text-4xl lg:hidden">
+          <span>Personal.</span>
+          <span>Private.</span>
+          <span>Powerful.</span>
         </h1>
 
         <Image
-          src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mac-card-40-imac-202410?wid=500&hei=348&fmt=p-jpg&qlt=100&.v=1731974953703"
+          src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mac-card-40-imac-202410?wid=650&hei=366&fmt=p-jpg&qlt=100&.v=1731974953703"
           alt="iMac"
           width={500}
           height={348}
           quality={100}
+          priority
+          className="hidden sm:block"
         />
       </section>
 
-      <section className="mt-16 space-y-1">
+      <section className="mt-8 space-y-1">
         <div className="px-4 md:px-8">
           <h1 className="gradient-text w-fit">Popular Products</h1>
           <p className="text-muted-foreground">Discover the most popular products in our store.</p>
