@@ -23,7 +23,7 @@ import { User } from "@/lib/auth/session";
 import { hasAccess } from "@/utils/access-control";
 import { Lock, LogOut, Logs, Settings, UserRound } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { ComponentProps, Dispatch, SetStateAction, useState } from "react";
 import { Separator } from "../ui/separator";
 
 export function UserMenu({ user }: { user: User }) {
@@ -46,7 +46,7 @@ export function UserMenu({ user }: { user: User }) {
           </Button>
         </DropdownMenuTrigger>
 
-        <UserMenuContent user={user} isDesktop={isDesktop} />
+        <UserMenuContent user={user} isDesktop={isDesktop} setOpen={setOpen} />
       </DropdownMenu>
     );
   }
@@ -66,12 +66,20 @@ export function UserMenu({ user }: { user: User }) {
         </Button>
       </SheetTrigger>
 
-      <UserMenuContent user={user} isDesktop={isDesktop} />
+      <UserMenuContent user={user} isDesktop={isDesktop} setOpen={setOpen} />
     </Sheet>
   );
 }
 
-function UserMenuContent({ user, isDesktop }: { user: User; isDesktop: boolean }) {
+function UserMenuContent({
+  user,
+  isDesktop,
+  setOpen,
+}: {
+  user: User;
+  isDesktop: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) {
   if (isDesktop) {
     return (
       <DropdownMenuContent className="w-56" align="end">
@@ -85,7 +93,7 @@ function UserMenuContent({ user, isDesktop }: { user: User; isDesktop: boolean }
 
         <DropdownMenuSeparator />
 
-        <UserMenuList user={user} />
+        <UserMenuList user={user} setOpen={setOpen} />
       </DropdownMenuContent>
     );
   }
@@ -103,70 +111,68 @@ function UserMenuContent({ user, isDesktop }: { user: User; isDesktop: boolean }
 
       <Separator className="mb-1 bg-border/50" />
 
-      <UserMenuList user={user} />
+      <UserMenuList user={user} setOpen={setOpen} />
     </SheetContent>
   );
 }
 
-function UserMenuList({ user }: { user: User }) {
+function UserMenuList({
+  user,
+  setOpen,
+}: {
+  user: User;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) {
   return (
     <ul className="space-y-1">
       {user.accountStatus === "active" && (
         <>
           {hasAccess(user.role, "/admin") && (
-            <li>
-              <Button
-                asChild
-                variant={`outline`}
-                className="h-full w-full justify-start rounded-none border-none py-2 shadow-none"
-              >
-                <Link href="/dashboard">
-                  <Lock size={16} />
-                  Admin dashboard
-                </Link>
-              </Button>
-            </li>
+            <NavLink href="/dashboard" onClick={() => setOpen(false)}>
+              <Lock className="size-4" />
+              Admin dashboard
+            </NavLink>
           )}
 
-          <li>
-            <Button
-              asChild
-              variant={`outline`}
-              className="h-full w-full justify-start rounded-none border-none py-2 shadow-none"
-            >
-              <Link href="/my-orders">
-                <Logs className="size-4" />
-                <span>My orders</span>
-              </Link>
-            </Button>
-          </li>
+          <NavLink href="/my-orders" onClick={() => setOpen(false)}>
+            <Logs className="size-4" />
+            My orders
+          </NavLink>
 
-          <li>
-            <Button
-              asChild
-              variant={`outline`}
-              className="h-full w-full justify-start rounded-none border-none py-2 shadow-none"
-            >
-              <Link href="/settings">
-                <Settings size={16} />
-                <span>Account settings</span>
-              </Link>
-            </Button>
-          </li>
+          <NavLink href="/settings" onClick={() => setOpen(false)}>
+            <Settings className="size-4" />
+            Account settings
+          </NavLink>
 
           <Separator className="-mx-1 bg-border/50" />
         </>
       )}
+
       <li>
         <form action={logoutAction}>
           <Button
             variant={`outline`}
             className="h-full w-full justify-start rounded-none border-none py-2 shadow-none"
+            onClick={() => setOpen(false)}
           >
-            <LogOut size={16} /> Sign Out
+            <LogOut className="size-4" /> Sign Out
           </Button>
         </form>
       </li>
     </ul>
+  );
+}
+
+function NavLink({ children, ...props }: ComponentProps<typeof Link>) {
+  return (
+    <li>
+      <Button
+        asChild
+        variant={`outline`}
+        className="h-full w-full justify-start rounded-none border-none py-2 shadow-none"
+      >
+        <Link {...props}>{children}</Link>
+      </Button>
+    </li>
   );
 }
