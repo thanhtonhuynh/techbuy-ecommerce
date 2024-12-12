@@ -1,24 +1,17 @@
 "use server";
 
-import { redirect } from "next/navigation";
-import {
-  createSession,
-  generateSessionToken,
-  setSessionTokenCookie,
-} from "@/lib/auth/session";
-import {
-  getUserByEmailOrUsername,
-  getUserPasswordHash,
-} from "@/data-access/user";
+import { getUserByEmailOrUsername, getUserPasswordHash } from "@/data-access/user";
 import { verifyPassword } from "@/lib/auth/password";
-import { isRedirectError } from "next/dist/client/components/redirect";
+import { createSession, generateSessionToken, setSessionTokenCookie } from "@/lib/auth/session";
+import { redirect } from "next/navigation";
 // import {
 //   getUserEmailVerificationRequestByUserId,
 //   setEmailVerificationRequestCookie,
 // } from '@/lib/email-verification';
+import { syncWithLocalCart } from "@/data-access/cart";
 import { LoginSchema, LoginSchemaTypes } from "@/lib/validations/auth";
 import { rateLimitByKey, unauthenticatedRateLimit } from "@/utils/rate-limiter";
-import { syncWithLocalCart } from "@/data-access/cart";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 export async function loginAction(data: LoginSchemaTypes) {
   try {
@@ -28,9 +21,7 @@ export async function loginAction(data: LoginSchemaTypes) {
 
     const { identifier, password } = LoginSchema.parse(data);
 
-    if (
-      !(await rateLimitByKey({ key: identifier, limit: 3, interval: 10000 }))
-    ) {
+    if (!(await rateLimitByKey({ key: identifier, limit: 3, interval: 10000 }))) {
       return { error: "Too many requests. Please try again later." };
     }
 
