@@ -15,7 +15,7 @@ export function Search() {
 
   useEffect(() => {
     setValue(searchParams.get("shop_q") || "");
-  }, [searchParams.get("shop_q")]);
+  }, [searchParams]);
 
   return (
     <Form action={"/shop"} className="group relative">

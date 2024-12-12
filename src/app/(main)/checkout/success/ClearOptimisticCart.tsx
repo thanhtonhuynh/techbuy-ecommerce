@@ -12,7 +12,7 @@ export function ClearOptimisticCart() {
     // clearOptimisticCart();
     router.refresh();
     // });
-  }, []);
+  }, [router]);
 
   return null;
 }

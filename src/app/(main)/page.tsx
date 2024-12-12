@@ -56,7 +56,7 @@ export default async function Home() {
       <section className="mt-8 space-y-1">
         <div className="px-4 md:px-8">
           <h1 className="gradient-text w-fit">Latest Products</h1>
-          <p className="text-muted-foreground">New. Now. Next. See what's new in our store.</p>
+          <p className="text-muted-foreground">New. Now. Next. See what&apos;s new in our store.</p>
         </div>
 
         <ProductsCarousel products={latestProducts.slice(0, 10)} />

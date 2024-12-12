@@ -39,7 +39,7 @@ export default function ResetPasswordEmail({ user, token }: { user: User; token:
 
                 <Text className="mb-8 text-[14px] font-medium leading-[24px] text-black">
                   Hello {user.name}, Ongba EMS received a request to reset your password. If you
-                  didn't make the request, you can safely ignore this email.
+                  didn&apos;t make the request, you can safely ignore this email.
                 </Text>
 
                 <Text className="mb-8 text-[14px] font-medium leading-[24px] text-black">

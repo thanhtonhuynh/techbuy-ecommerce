@@ -38,7 +38,7 @@ export function CartSheet() {
       if (!isOpen) setIsOpen(true);
     }
     quantityRef.current = optimisticCart?.totalQuantity;
-  }, [optimisticCart?.totalQuantity]);
+  }, [isOpen, optimisticCart, optimisticCart?.totalQuantity]);
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>

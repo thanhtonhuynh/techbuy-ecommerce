@@ -1,10 +1,10 @@
-import { ForgotPasswordForm } from "./ForgotPasswordForm";
-import { redirect } from "next/navigation";
-import { getCurrentSession } from "@/lib/auth/session";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { ErrorMessage } from "@/components/Message";
+import { Button } from "@/components/ui/button";
+import { getCurrentSession } from "@/lib/auth/session";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { ForgotPasswordForm } from "./ForgotPasswordForm";
 
 type SearchParams = Promise<{ resetLinkExpired?: boolean }>;
 
@@ -27,7 +27,7 @@ export default async function Page(props: { searchParams: SearchParams }) {
 
         <div className="space-y-1 text-muted-foreground">
           <p className="text-primary">
-            Enter your email address and we'll send you
+            Enter your email address and we&apos;ll send you
             {resetLinkExpired ? " another" : " a"} link to reset your password.
           </p>
           <p>For security reasons, the link will expire in 30 minutes.</p>

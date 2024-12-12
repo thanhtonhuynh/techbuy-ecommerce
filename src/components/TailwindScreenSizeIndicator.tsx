@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 
 export function TailwindScreenSizeIndicator() {
-  if (process.env.NODE_ENV === "production") return null;
-
   const [size, setSize] = useState({
     width: 0,
     height: 0,
@@ -26,6 +24,8 @@ export function TailwindScreenSizeIndicator() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  if (process.env.NODE_ENV === "production") return null;
 
   return (
     <div className="fixed bottom-4 right-4 z-50 flex h-7 w-fit items-center justify-center gap-1 rounded-full bg-transparent px-2 py-1 font-mono text-xs font-bold text-muted-foreground shadow-[0_0_10px_0_rgba(0,0,0,0.3)]">

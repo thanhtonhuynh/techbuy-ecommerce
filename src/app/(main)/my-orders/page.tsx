@@ -42,7 +42,9 @@ export default async function Page(props: { searchParams?: SearchParams }) {
             No orders found for <span className="font-semibold">&quot;{searchValue}&quot;</span>
           </p>
         ) : (
-          <p className="rounded-md bg-muted p-4 text-center">You haven't placed any orders yet.</p>
+          <p className="rounded-md bg-muted p-4 text-center">
+            You haven&apos;t placed any orders yet.
+          </p>
         )}
 
         <div className="flex items-center justify-between">

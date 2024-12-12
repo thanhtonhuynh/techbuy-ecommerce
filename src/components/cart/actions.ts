@@ -75,7 +75,10 @@ export async function redirectToCheckoutAction() {
   const cart = await getCart();
   if (!cart || !cart.items.length) return;
 
-  (await retrieveAndUpdateOrder(user.id, cart)) ?? (await createOrder(user.id, cart));
+  // (await retrieveAndUpdateOrder(user.id, cart)) ?? (await createOrder(user.id, cart));
+  if (!(await retrieveAndUpdateOrder(user.id, cart))) {
+    await createOrder(user.id, cart);
+  }
 
   redirect(`/checkout`);
 }
