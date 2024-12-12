@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "email": "cp .env ./node_modules/react-email && email dev --dir src/components/email --port 3001",
-    "postinstall": "prisma generate"
+    "email": "cp .env ./node_modules/react-email && email dev --dir src/components/email --port 3001"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.701.0",
