@@ -43,13 +43,7 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
       <TableBody>
         {orders.length ? (
           orders.map((order) => (
-            <TableRow
-              key={order.id}
-              className="cursor-pointer"
-              onClick={() => {
-                router.push(`/orders/${order.paymentIntentId}`);
-              }}
-            >
+            <TableRow key={order.id}>
               <TableCell className="tracking-tighter">{order.paymentIntentId}</TableCell>
 
               <TableCell>

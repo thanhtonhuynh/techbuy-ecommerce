@@ -1,11 +1,12 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { SortFilterItem } from "@/constants";
 import { cn, createUrl } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
-export function FilterItem({ item }: { item: SortFilterItem }) {
+export function FilterItem({ item, onClick }: { item: SortFilterItem; onClick?: () => void }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const active = searchParams.get("sort") === item.slug;
@@ -24,17 +25,19 @@ export function FilterItem({ item }: { item: SortFilterItem }) {
   const DynamicTag = active ? "p" : Link;
 
   return (
-    <li>
-      <DynamicTag
-        href={href}
-        prefetch={!active ? false : undefined}
+    <li onClick={() => !active && onClick?.()}>
+      <Button
+        variant={"link"}
         className={cn(
-          "select-none text-muted-foreground underline-offset-4 hover:underline",
+          "w-full select-none justify-start text-muted-foreground",
           active && "font-semibold text-primary hover:no-underline",
         )}
+        asChild
       >
-        {item.title}
-      </DynamicTag>
+        <DynamicTag href={href} prefetch={!active ? false : undefined}>
+          {item.title}
+        </DynamicTag>
+      </Button>
     </li>
   );
 }

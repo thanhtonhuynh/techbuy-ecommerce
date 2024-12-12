@@ -1,3 +1,4 @@
+import { GoBackButton } from "@/components/buttons/GoBackButton";
 import { ProductsCarouselSkeleton } from "@/components/ProductsCarouselSkeleton";
 import { getProductBySlug } from "@/data-access/product";
 import { formatPrice } from "@/lib/utils";
@@ -19,7 +20,11 @@ export default async function Page(props: { params: Params }) {
 
   return (
     <>
-      <section className="flex flex-col gap-4 px-4 py-8 md:px-8 lg:flex-row lg:items-center">
+      <section className="px-4 py-8 md:px-8">
+        <GoBackButton variant={`outline`}>Back</GoBackButton>
+      </section>
+
+      <section className="mb-8 flex flex-col gap-4 px-4 md:px-8 lg:flex-row lg:items-center">
         <Image
           src={product.image}
           alt={product.name}
