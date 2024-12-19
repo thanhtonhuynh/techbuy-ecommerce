@@ -24,7 +24,7 @@ export function ShippingInfo({ order }: { order: Order }) {
           {order.shipping && (
             <div className="flex flex-col items-end">
               <div>
-                <span>{order.shipping.line2}-</span>
+                <span>{order.shipping?.line2 && order.shipping?.line2 && "-"}</span>
                 <span>{order.shipping.line1}</span>
               </div>
 

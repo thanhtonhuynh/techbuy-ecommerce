@@ -35,7 +35,8 @@ export function OrderCard({ order }: { order: Order }) {
               <PopoverContent className="w-fit text-sm">
                 <p className="font-semibold">{order.shipping?.name}</p>
                 <p>
-                  {order.shipping?.line2}-{order.shipping?.line1}
+                  {order.shipping?.line2 && order.shipping?.line2 && "-"}
+                  {order.shipping?.line1}
                 </p>
                 <p>
                   {order.shipping?.city} {order.shipping?.state} {order.shipping?.country}{" "}
